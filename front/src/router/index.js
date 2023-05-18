@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SearchView from '@/views/SearchView.vue'
-
+import MovieDetail from '@/views/MovieDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -11,6 +11,12 @@ const routes = [
     name: 'search',
     component: SearchView
   },
+  {
+    path: '/detail/:id',
+    name: 'movieDetail',
+    component: MovieDetail,
+    props: true
+  }
 ]
 
 const router = new VueRouter({

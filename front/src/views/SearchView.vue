@@ -2,45 +2,33 @@
 	<v-container>
 		<!-- side bar -->
 		<SideBar/>
-
 		<!-- weather -->
-		<v-row>
-			<v-col
-				cols="12"
-				class="box"
-				align="center"
-			>
-				<h1 @click="getWeather" style="color:white">WEATHER</h1>
-				<h4>{{ latitude }} / {{ longitude }}</h4>
-				<h2 style="color:white">{{ weather }}</h2>
-				<h4>{{ query }}</h4>
-			</v-col>
-		</v-row>
-
+		<WeatherCard
+			@getWeather="getWeather"
+		/>
 		<!-- search bar -->
 		<v-row
-			justify="center"
-		>
-			<v-col
-				cols="6"
-				class="box"
+				justify="center"
 			>
-			<v-toolbar
-					dense
-					rounded
+				<v-col
+					cols="6"
+					class="box"
 				>
-					<v-text-field
-						hide-details
-						append-icon="mdi-magnify"
-						single-line
-						v-model="query"
-						@keyup.enter="sendQuery"
-					></v-text-field>
-				</v-toolbar>
+				<v-toolbar
+						dense
+						rounded
+					>
+						<v-text-field
+							hide-details
+							append-icon="mdi-magnify"
+							single-line
+							v-model="query"
+							@keyup.enter="sendQuery"
+						></v-text-field>
+					</v-toolbar>
 
-			</v-col>
-			
-		</v-row>
+				</v-col>
+			</v-row>
 
 		<!-- Movie Cards -->
 		<v-row
@@ -48,11 +36,16 @@
 			align-content="center"
 			v-if="movieList"
 		>
-			<MovieCard
-				v-for="(movie, index) in movieList"
-				:key="index"
-				:movie="movie"
-			/>
+			<v-col
+				cols="8"
+			>
+					<MovieCard
+						v-for="(movie, index) in movieList"
+						:key="index"
+						:movie="movie"
+					/>
+					<infinite-loading @infinite="load"></infinite-loading>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
@@ -60,68 +53,73 @@
 <script>
 import SideBar from '@/components/SideBar.vue'
 import MovieCard from '@/components/MovieCard.vue'
-import axios from 'axios'
+import WeatherCard from '@/components/WeatherCard.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
 
 export default {
 	name: 'SearchView',
 	components: {
 		SideBar,
-		MovieCard
+		MovieCard,
+		WeatherCard,
+		InfiniteLoading,
 	},
 	data: () => ({
 		drawer: null,
-		latitude: null,
-		longitude: null,
-		weather: null,
-		query: null,
+		answer: null,
+		query: null
 	}),
 	computed: {
 		movieList() {
-			return [{title:'first', content:'first_content'},
-							null,
-							{title:'second', content:'second_content'}]
-		},
+			return this.$store.state.movieList
+		}
 	},
 	methods: {
-		getGeolocation() {
-      if ('geolocation' in navigator) {
-					window.navigator.geolocation.getCurrentPosition((pos) => {
-          this.latitude = pos.coords.latitude
-          this.longitude = pos.coords.longitude
-					console.log(this.latitude)
-					console.log(this.longitude)
-					this.getWeather()
-				})
-      } else {
-        console.log('Error: getGeolocation')
-      }
+		load($state) {
+			this.sendQuery()
+			$state.loaded()
 		},
-		getWeather() {
-			const params = {
-				lat: this.latitude,
-				lon: this.longitude,
-				appid: process.env.VUE_APP_WEATHER_KEY,
-			}
-			axios({
-				url: 'https://api.openweathermap.org/data/2.5/weather',
-				method: 'GET',
-				lat: this.latitude,
-				params:params
-			})
-				.then((res) => {
-					console.log(res.data.weather[0])
-					this.weather = res.data.weather[0].description
-				})
-				.catch((err) => {
-					console.log('wsaefwae', this.latitude)
-					console.log('sdafads',this.longitude)
-					console.log(err)
-				})
+		getWeather(weather) {
+			this.weather = weather
 		},
 		sendQuery() {
 			console.log('sendQuery')
-			this.askChatGPT()
+			// this.askChatGPT()
+			this.parseMessage('aaa')
+		},
+		parseMessage(content) {
+			console.log(content)
+			const movieList = [
+				{
+					title: '대부',
+					posterPath: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
+					genre: [18, 80],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '대부이기때문',
+					id: '1',
+					youtubeId: '6ZUIwj3FgUY'
+				},
+				{
+					title: '쇼생크 탈출',
+					posterPath: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
+					genre: [18, 80],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '쇼생크탈출이기때문',
+					id: '2',
+					youtubeId: '6ZUIwj3FgUY'
+				},
+				{
+					title: '센과 치히로의 행방불명',
+					posterPath: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
+					genre: [16, 10751, 14],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '센과치히로의행방불명이기때문',
+					id: '3',
+					youtubeId: '6ZUIwj3FgUY'
+				},
+			]
+			this.$store.dispatch('getMovieList', movieList)
 		},
 		async askChatGPT() {
 			try {
@@ -134,40 +132,39 @@ export default {
 					messages: [
 						{
 							role: 'system',
-							content: 'You are the Movie sommelier, an AI model created to give people best movie suggestion for their unique needs.'
+							content: `You are the MovieGPT, an AI model trained to give people movie suggestion that fits perfectly for the weather.`
 						},
 						{
 							role: 'assistant',
-							content: 'Recommend me 10 movies as form "title:title, reason:reason"'
+							content: `Today's weather is "${this.weather}". You must give user suggestion based on the weather. Explain your suggestion related to the weather.`
 						},
 						{
 							role: 'assistant',
-							content: `You must suggest movie perfect for weather like ${this.weather}. Write your reason related to the weather.`
+							content: "First, give me 10 movies. "
 						},
-						{role: "user", 
-						content: `${this.query}. Make recommendation according to the weather and my query. Also give me TMDB API movie _id of each movies as python list form. `
-					}],
-					temperature: 0.7
+						{
+							role: 'assistant',
+							content: "Then pick 5 best which fits for today's weather."
+						},
+						{
+							role: "user",
+							content: `And ${this.query}. Give me the result as JSON form like '{title:{releaseDate:2020, reason:reason why you suggested}}'`
+						},
+					],
+					temperature: 0.62
 				})
-				console.log('completion:', completion)
-				console.log('completion.data', completion.data)
-				console.log('completion.data.choices', completion.data.choices)
-				console.log('end: ', completion.data.choices[0].message.content)
-
+				const content = completion.data.choices[0].message.content
+				console.log('content:\n', content)
+				const payload = this.parseMessage(content)
+				this.$emit('getAnswer', payload)
 				// this.answer = JSON.parse(completion.data.choices[0].message.content)
 				// this.reason = this.answer.reason
 				// return this.searchMovie(this.answer.movieTitle, this.answer.releaseYear)
 			} catch (error) {
 				console.log('gpt error:', error)
-				// this.movie = null
-				// this.error = error.message
 			}
 		}
 	},
-	created() {
-		this.getGeolocation()
-		// this.getWeather()
-	}
 }
 </script>
 
