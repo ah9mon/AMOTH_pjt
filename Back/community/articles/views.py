@@ -10,10 +10,10 @@ DRF의 @api_view 데코레이터는 CSRF 보호를 위한 토큰을 자동으로
 from rest_framework import status
 
 #Model
-from .models import Article, Comment
+from .models import Article, Comment, Like
 
 #Serializer
-from .serializers import ArticleSerializer, CommentSerializer
+from .serializers import ArticleSerializer, CommentSerializer, LikeSerializer
 
 # Create your views here.
 @api_view(['GET', 'POST'])
@@ -67,7 +67,9 @@ def comment_list(request, article_pk):
     elif request.method == 'POST':
         print('>>>')
         article = get_object_or_404(Article, pk=article_pk)
+        print(request.data)
         serializer = CommentSerializer(data = request.data)
+        print(serializer)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -88,3 +90,32 @@ def comment_detail(request, comment_pk):
             serializer.save()
             return Response(serializer.data)
     
+@api_view(['POST'])
+def like_article(request):
+    '''
+    좋아요/좋아요 취소 
+    '''
+    if request.method =='POST':
+        user_pk = request.POST.get('user_pk')
+        article_pk = request.POST.get('article_pk')
+        likes = Like.objects.filter(user_id = user_pk) # 요청 보낸 유저가 좋아요한 게시글 리스트 다 받기 
+        
+        # 해당 게시글 좋아요 여부 체크
+        for like in likes:
+
+            # 좋아요 했으면 좋아요 취소 
+            if like.article.id == int(article_pk):
+                like.delete()
+                return Response(status=status.HTTP_200_OK)
+
+        # 좋아요 안했으면 좋아요
+        article = get_object_or_404(Article, pk = int(article_pk))
+        data = {
+            'user_id' : user_pk,
+        }
+        serializer = LikeSerializer(data = data)
+        if serializer.is_valid():
+            serializer.save(article=article)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+        
