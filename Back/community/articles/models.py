@@ -11,8 +11,12 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Comment(models.Model) :
+class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     content = models.CharField(max_length=400)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Like(models.Model):
+    user_id = models.TextField()
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
