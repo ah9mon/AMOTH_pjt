@@ -20,7 +20,11 @@ from .serializers import ArticleSerializer, CommentSerializer, LikeSerializer
 def article_list(request):
     # 게시글 데이터 READ 요청
     if request.method == 'GET':
-        user_id = request.POST.get('user_id')
+        '''
+        user_id를 
+        params에 넣어서 보내기
+        '''
+        user_id = request.GET.get('user_id')
 
         # user_id가 요청에 섞여왔으면 -> 마이페이지의 내가 쓴 게시글 전체보기
         if user_id :
@@ -45,8 +49,17 @@ def article_list(request):
 def article_detail(request, article_pk):
     '''
     DELETE, PUT에선 user_id 같이 보내줘야함
+    DELETE -> params에 넣어서 보내기 -> request.GET 으로 읽기
+    PUT -> body에 넣어서 보내기 -> request.POST or request.data 으로 읽기
     '''
     article = get_object_or_404(Article, pk=article_pk)
+    # print(article.user_id)
+    '''
+    print(request.GET) # params에 있는거 request를 사전형 객체로 만들어줌 
+    print(request.POST) # body에 있는거 request를 사전형 객체로 만들어줌 
+    print(request.data) # body에 있는거 request를 사전형 객체로 만들어줌
+    '''
+    # print(user_id)
 
     # 게시글 상세 조회
     if request.method == 'GET':
@@ -56,19 +69,18 @@ def article_detail(request, article_pk):
     
     # 게시글 삭제
     elif request.method == 'DELETE':
-        user_id = request.DELETE.get('user_id')
-
+        user_id = request.GET.get('user_id')
         # 게시글 작성자 == 요청 user 면
         if article.user_id == user_id: 
             article.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
+            print('권한없어서 삭제 불가')
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     
     # 게시글 수정
     elif request.method == 'PUT':
-        user_id = request.PUT.get('user_id')
-
+        user_id = request.POST.get('user_id')
         # 게시글 작성자 == 요청 user 면 
         if article.user_id == user_id:
             serializer = ArticleSerializer(article, data= request.data)
@@ -89,11 +101,8 @@ def comment_list(request, article_pk):
 
     # 댓글 생성
     elif request.method == 'POST':
-        print('>>>')
         article = get_object_or_404(Article, pk=article_pk)
-        print(request.data)
-        serializer = CommentSerializer(data = request.data)
-        print(serializer)
+        serializer = CommentSerializer(data = request.POST)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -104,7 +113,7 @@ def comment_detail(request, comment_pk):
 
     # 댓글 삭제 
     if request.method == 'DELETE':
-        user_id = request.DELETE.get('user_id')
+        user_id = request.GET.get('user_id')
         if comment.user_id == user_id:           
             comment.delete()
             return Response(status=status.HTTP_200_OK)
@@ -113,7 +122,7 @@ def comment_detail(request, comment_pk):
     
     # 댓글 수정
     elif request.method == 'PATCH':
-        user_id = request.PATCH.get('user_id')
+        user_id = request.POST.get('user_id')
         if comment.user_id == user_id:
             serializer = CommentSerializer(comment, data=request.data, partial=True)
             if serializer.is_valid():
