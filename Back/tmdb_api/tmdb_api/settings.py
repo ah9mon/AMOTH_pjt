@@ -39,6 +39,7 @@ def get_secret(setting, secrets=secrets):
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret("SECRET_KEY")
 API_KEY = get_secret("TMDB_api_key")
+TMDB_AUTH = get_secret("TMDB_auth")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

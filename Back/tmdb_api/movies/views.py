@@ -1,10 +1,11 @@
-from django.shortcuts import render
+
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 # rest_framework
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 # Models
 from .models import Movie
@@ -15,77 +16,106 @@ from .serializers import MovieSerializer
 # requests
 import requests
 
-# ast
-import ast
-
 # TMDB API
 TMDB_api_key = settings.API_KEY
-BASE_url = "https://api.themoviedb.org/3/movie/"
+TMDB_auth = settings.TMDB_AUTH
+BASE_url = "https://api.themoviedb.org/3/search/movie"
 
 # Create your views here.
+def get_movie_in_tmdbapi(movie_title, release_data):
+    '''
+    TMDB API를 이용해서 영화 데이터 가져오는 함수  
+    '''
+    query = movie_title
+    language = "en-US"
+    primary_release_year = release_data[:4]
+    url = f'{BASE_url}?query={query}&language={language}&primary_release_year={primary_release_year}&api_key={TMDB_api_key}&page=1'
+    headers = {
+        "accept": "application/json",
+        "Authorization": f'Bearer {TMDB_api_key}'
+    }
+    res = requests.get(url, headers=headers)
+    movie_data = res.json().get('results') # api로 요청한 영화 데이터
+  
+    if movie_data:
+        data = {
+            "movie_id" : movie_data[0].get('id'),
+            "title" : movie_data[0].get('title'),
+            "overview" : movie_data[0].get('overview'),
+            "release_date" : movie_data[0].get('release_date'),
+            "poster_path" : movie_data[0].get('poster_path')
+        }
+
+        return data
+    else:
+        return None
 
 # tmdb에서 영화리스트 데이터 가져오기 
-@api_view(['GET', 'POST']) # gpt, 내가 본 영화등록 : POST / CRUD의 사운드 트랙 게시글은 GET
-def get_or_post_movies_data(request):
-    movies_in_DB = Movie.objects.all()
-    # params 로 {movies_id:[1,2,3,4]} 형태로 movies_id 보낸거 받기
-    # response에서 TMDB API나 DB에서 검색할 때 쓸 movie_id 추출
-    movies_id_str = request.GET.get("movies_id", "")
-    try :
-        movies_id_list = ast.literal_eval(movies_id_str)
-    except (ValueError, SyntaxError):
-        movies_id_list = []
-        # return HttpResponseNotFound("Invalid movies_id data")
+@api_view(['POST']) # gpt, 내가 본 영화등록 : POST / CRUD의 사운드 트랙 게시글은 GET
+def movies_data(request):
+    '''
+    POST
+    1. 메인페이지 추천영화 gpt한테 받은 movie이름으로 영화 검색 -> DB에 있는 영화면 저장 x, DB에 없는 영화면 저장   
+    2. user의 단일 영화 검색 (게시글 작성할때)
 
-    existing_movies = [] 
-    new_movies_id = [] 
-    new_movies = [] # DB에 없는 영화 객체들을 담을 리스트
+    front에서 줘야할 json 데이터 
+    { 
+    	movies :  {
+    		movie1 : {
+    			Title : 'title', 
+    			Reason for Recommendation: 'reason'
+    		}, 
+    		movie2 : {
+    			Title2:'title', 
+    			Reason:'reason'
+    		},
+    	    ...
+        }
+    }
+    '''
 
-    # DB에 존재하는 영화인지 아닌지 찾기
-    for movie_id in movies_id_list:
-        
-        # 같은 movie_id를 가진 영화가 있는지 찾기 (DB에 존재하는 영화인지)
-        existing_movie = movies_in_DB.filter(movie_id=movie_id).first()
-        
-        if existing_movie: 
-            existing_movies.append(existing_movie)
-        else:
-            new_movies_id.append(movie_id)
-            
     if request.method == "POST":
-        
-        # 반복문으로 영화 데이터 API로 가져오기 
-        for new_movie_id in new_movies_id:
-            # TMDB API로 GET 요청을 보내 영화 데이터 가져오기
-            url = f'{BASE_url}/{new_movie_id}?api_key={TMDB_api_key}'
-            res = requests.get(url)
-            if res.ok:
-                movie_data = res.json() # api로 요청한 영화 데이터 
+        existing_movies = [] 
+        new_movies = [] # DB에 없는 영화 객체들을 담을 리스트
+
+        movies = request.data.get("movies")
+
+        if movies:
+            for key, value in movies.items():
+                title = value.get('title')
+                release_date = value.get('release_date')
+                # print(title, release_date)
+                movie = get_movie_in_tmdbapi(title,release_date) # TMDB에서 영화 데이터 가져오기 
+                # gpt가 잘못된 데이터 줬으면 아래 코드 생략
+                if not movie:
+                    continue
                 
-                # 객체 형태로 데이터 저장 
-                movie = Movie()
-                movie.movie_id = movie_data.get("id")
-                movie.title = movie_data.get("title")
-                movie.overview = movie_data.get("poster_path")
-                movie.release_date = movie_data.get("overview")
-                movie.poster_path = movie_data.get("release_date")
-                movie.save() 
-                
-                # 이번 요청에서 저장한 movie 객체 담기
-                new_movies.append(movie)
+                movie_id = movie.get('movie_id')
 
-        movies = new_movies + existing_movies # 요청받은 영화들을 합쳐서 보내기
+                try:
+                    existing_movie = Movie.objects.get(movie_id = movie_id)
+                except:
+                    existing_movie = None
 
-    elif request.method == "GET":
+                if existing_movie:
+                    existing_movies.append(existing_movie)
+                else:
+                    # 객체 형태로 데이터 저장 
+                    new_movie = Movie()
+                    new_movie.movie_id = movie_id
+                    new_movie.title = movie.get("title")
+                    new_movie.overview = movie.get("poster_path")
+                    new_movie.release_date = movie.get("overview")
+                    new_movie.poster_path = movie.get("release_date")
+                    new_movie.save() 
 
-        # create form으로 이동할 때 영화 선택에 필요한 모든 영화 데이터 가져오기
-        if not existing_movies and not new_movies: # 둘다 비었으면 모든 영화데이터를 요청
-            movies = movies_in_DB
-        
-        # create시 영화 한개만 요청할때 처리 
-        else: 
-            movies = existing_movies
+                    # 이번 요청에서 저장한 movie 객체 담기
+                    new_movies.append(new_movie)
 
-    serializer = MovieSerializer(movies, many=True)
-    serialized_movies = serializer.data
-    return Response(serialized_movies)
+            movies_data = existing_movies + new_movies 
+
+        else: # create form으로 이동할 때 영화 선택에 필요한 모든 영화 데이터 가져오기
+            movies_data = Movie.objects.all()
+ 
+        serializer = MovieSerializer(movies_data, many =True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
