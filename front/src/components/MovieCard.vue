@@ -1,7 +1,7 @@
 <template>
 	<v-card 
 		v-if="movie" tile
-		class="mt-3 pa-1 blured d-flex flex-no-wrap" 
+		class="mt-3 pa-1 blur d-flex flex-no-wrap" 
 		style="height:140px"
 		@click="toMovieDetail"
 	>
@@ -47,10 +47,6 @@ export default {
 </script>
 
 <style>
-.blured {
-	background-color: rgb(255 255 255 / 0.6) !important;
-	backdrop-filter: blur(10px) !important;
-}
 .posterImage {
 	height: 132px;
 }

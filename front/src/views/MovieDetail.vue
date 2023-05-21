@@ -1,5 +1,5 @@
 <template>
-	<v-container class="mt-5 blured">
+	<v-container class="mt-5 blur">
 		<!-- poster & youtube -->
 		<v-row
 			class="d-flex"
@@ -67,8 +67,4 @@ export default {
 </script>
 
 <style>
-.blured {
-	background-color: rgb(255 255 255 / 0.6) !important;
-	backdrop-filter: blur(10px) !important;
-}
 </style>

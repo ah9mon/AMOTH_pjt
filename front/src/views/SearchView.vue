@@ -12,7 +12,7 @@
 			>
 				<v-col
 					cols="6"
-					class="box"
+					class="blur"
 				>
 				<v-toolbar
 						dense
@@ -169,15 +169,6 @@ export default {
 </script>
 
 <style>
-.box {
-	background-color: rgb(255 255 255 / 0.6);
-	backdrop-filter: blur(10px);
-	border: 3px solid red;
-}
-.box1 {
-	background-color: rgb(255 255 255 / 0.6);
-	backdrop-filter: blur(10px);
-}
 .hamburger {
 	color:white !important;
 	font-size: large !important;
