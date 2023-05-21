@@ -11,7 +11,8 @@
 				justify="center"
 			>
 				<v-col
-					cols="6"
+					cols="8"
+					lg="6"
 					class="blur"
 				>
 				<v-toolbar
@@ -37,7 +38,7 @@
 			v-if="movieList"
 		>
 			<v-col
-				cols="8"
+				lg="8"
 			>
 					<MovieCard
 						v-for="(movie, index) in movieList"
@@ -47,6 +48,9 @@
 					<infinite-loading @infinite="load"></infinite-loading>
 			</v-col>
 		</v-row>
+		<v-btn class="scroll-up" @click="scrollUp">
+			click this
+		</v-btn>
 	</v-container>
 </template>
 
@@ -76,6 +80,13 @@ export default {
 		}
 	},
 	methods: {
+		scrollUp() {
+			window.scroll({
+				top: 0,
+				left: 0,
+				behavior: 'smooth'
+			})
+		},
 		load($state) {
 			this.sendQuery()
 			$state.loaded()
@@ -98,7 +109,7 @@ export default {
 					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
 					answer: '대부이기때문',
 					id: '1',
-					youtubeId: '6ZUIwj3FgUY'
+					youtubeId: '1glMKLFRrnI'
 				},
 				{
 					title: '쇼생크 탈출',
@@ -174,5 +185,10 @@ export default {
 	font-size: large !important;
 	width: 100px !important;
 }
-
+.scroll-up {
+	position: fixed;
+	background-color: red;
+	bottom: 5%;
+	right: 16px;
+}
 </style>

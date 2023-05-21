@@ -1,5 +1,5 @@
 <template>
-	<v-container class="mt-5 blur">
+	<v-container class="blur big-tile">
 		<!-- poster & youtube -->
 		<v-row
 			class="d-flex"

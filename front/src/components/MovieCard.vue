@@ -5,7 +5,7 @@
 		style="height:140px"
 		@click="toMovieDetail"
 	>
-		<div class="poseter">
+		<div class="poster">
 			<v-img :src="url + movie.posterPath" contain class="posterImage"></v-img>
 		</div>
 		<div class='content'>
