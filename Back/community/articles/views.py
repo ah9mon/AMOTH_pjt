@@ -26,16 +26,24 @@ def article_list(request):
         '''
         user_id = request.GET.get('user_id')
 
-        # user_id가 요청에 섞여왔으면 -> 마이페이지의 내가 쓴 게시글 전체보기
+        # user_id가 요청에 섞여왔으면 -> 마이페이지의 내가 쓴 게시글, 좋아요한 게시글 전체보기
         if user_id :
-            articles = get_list_or_404(Article, user_id = user_id)
+            my_articles = get_list_or_404(Article, user_id = user_id) # 나의 게시글
+            liked_article = get_list_or_404(Like, user_id = user_id) # 내가 좋아요한 게시글
+
+            my_serializer = ArticleSerializer(my_articles, many=True)
+            liked_serializer = LikeSerializer(liked_article, many=True)
+
+            serializer_data = [my_serializer.data , liked_serializer.data]
         
         # user_id가 없이 왔으면 -> 게시글 전체보기
         else:
             articles = get_list_or_404(Article)
 
-        serializer = ArticleSerializer(articles, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = ArticleSerializer(articles, many=True)
+            serializer_data = serializer.data
+
+        return Response(serializer_data, status=status.HTTP_200_OK)
     
     # 게시글 데이터 CREATE 요청
     elif request.method == 'POST': 
@@ -159,4 +167,4 @@ def like_article(request,article_pk):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-# 내가 좋아요한 게시글만 불러오기 
+

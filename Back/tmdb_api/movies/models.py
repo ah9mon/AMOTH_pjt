@@ -7,5 +7,6 @@ class Movie(models.Model):
     overview = models.TextField()
     release_date = models.TextField()
     poster_path = models.TextField()
+    backdrop_path = models.TextField()
     
 # user movie table
