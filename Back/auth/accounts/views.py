@@ -119,7 +119,7 @@ def KakaoCallback(request):
 
 
 def KakaoAuth(request):
-    access_token = request
+    access_token = request.META.get('HTTP_AUTHORIZATION')
     print(access_token)
     user = get_userdata(access_token)
 
@@ -129,8 +129,10 @@ def KakaoAuth(request):
         userdata = get_object_or_404(User, email = email)
         serializer = UserSerializer(userdata)
         user_id = serializer.data.get('id')
+        profile_picture = serializer.data.get('profile_image')
         context = {
             'user_id' : user_id,
+            "profile_picture" : profile_picture
         }
         return JsonResponse(context, status=status.HTTP_200_OK)
     

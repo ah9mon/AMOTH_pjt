@@ -46,7 +46,9 @@
 						:key="index"
 						:movie="movie"
 					/>
-					<infinite-loading @infinite="load"></infinite-loading>
+					<!-- <infinite-loading 
+						@infinite="load"
+					></infinite-loading> -->
 			</v-col>
 		</v-row>
 		<v-btn class="scroll-up" @click="scrollUp">
@@ -60,7 +62,7 @@
 import SideBar from '@/components/SideBar.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
-import InfiniteLoading from 'vue-infinite-loading'
+// import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
 import axios from 'axios'
 
@@ -70,7 +72,7 @@ export default {
 		SideBar,
 		MovieCard,
 		WeatherCard,
-		InfiniteLoading,
+		// InfiniteLoading,
 	},
 	data: () => ({
 		drawer: null,
@@ -102,64 +104,70 @@ export default {
 		},
 		sendQuery() {
 			console.log('sendQuery')
-			// this.askChatGPT()
-			// this.parseMessage('aaa')
+			this.askChatGPT()
 			console.log(this.$store.state.token)
+		},
+		parseMessage(content) {
+			console.log('answer: ',content)
+			// const movieList = [
+			// 	{
+			// 		title: '대부',
+			// 		posterPath: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
+			// 		genre: [18, 80],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '대부이기때문',
+			// 		id: '1',
+			// 		youtubeId: '1glMKLFRrnI'
+			// 	},
+			// 	{
+			// 		title: '쇼생크 탈출',
+			// 		posterPath: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
+			// 		genre: [18, 80],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '쇼생크탈출이기때문',
+			// 		id: '2',
+			// 		youtubeId: '6ZUIwj3FgUY'
+			// 	},
+			// 	{
+			// 		title: '센과 치히로의 행방불명',
+			// 		posterPath: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
+			// 		genre: [16, 10751, 14],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '센과치히로의행방불명이기때문',
+			// 		id: '3',
+			// 		youtubeId: '6ZUIwj3FgUY'
+			// 	},
+			// ]
+			const start = content.indexOf('{')
+
+			const end = content.lastIndexOf('}')
+			console.log('start/end', start, end)
+			console.log('json: ', content.slice(start, end + 1))
+			const payload = JSON.parse(content.slice(start, end + 1))
+
 			axios({
 				method: 'GET',
 				url: 'http://127.0.0.1:8000/api/kakao/auth',
 				headers: {
-					'access_token': this.$store.state.token,
+					'authorization': this.$store.state.token
 				}
 			})
-				.then((res) => {
-					console.log(res)
+				.then(() => {
+					axios({
+						method: 'POST',
+						url: 'http://127.0.0.1:8001/api/tmdb/movies',
+						data: payload
+					})
+						.then((res) => {
+							console.log(res)
+							this.$store.dispatch('getMovieList', res)
+						})
 				})
-		},
-		parseMessage(content) {
-			console.log(content)
-			const movieList = [
-				{
-					title: '대부',
-					posterPath: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
-					genre: [18, 80],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '대부이기때문',
-					id: '1',
-					youtubeId: '1glMKLFRrnI'
-				},
-				{
-					title: '쇼생크 탈출',
-					posterPath: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
-					genre: [18, 80],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '쇼생크탈출이기때문',
-					id: '2',
-					youtubeId: '6ZUIwj3FgUY'
-				},
-				{
-					title: '센과 치히로의 행방불명',
-					posterPath: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
-					genre: [16, 10751, 14],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '센과치히로의행방불명이기때문',
-					id: '3',
-					youtubeId: '6ZUIwj3FgUY'
-				},
-			]
-			// const titleList = ['대부', '스즈메의 문단속', '가디언즈 오브 갤럭시 3']
-			// axios({
-			// 	method: 'GET',
-			// 	url: ''
-			// })
-			// 	.then((res))
-			// 	.catch((err) => console.log(err))
-			// const movieList = []
-
-			this.$store.dispatch('getMovieList', movieList)
+				.catch((error) => console.log(error))
 		},
 		async askChatGPT() {
 			try {
+				console.log('ASK START:')
 				const configuration = new Configuration({
 					apiKey: process.env.VUE_APP_GPT_KEY
 				})
@@ -176,27 +184,21 @@ export default {
 							content: `Today's weather is "${this.weather}". You must give user suggestion based on the weather. Explain your suggestion related to the weather.`
 						},
 						{
-							role: 'assistant',
-							content: "First, give me 10 movies. "
-						},
-						{
-							role: 'assistant',
-							content: "Then pick 5 best which fits for today's weather."
-						},
-						{
 							role: "user",
-							content: `And ${this.query}. Give me the result as JSON form like '{title:{releaseDate:2020, reason:reason why you suggested}}'`
+							content: `And ${this.query}. Please recommend 10 movies in sunny weather and JSON format. {
+								"movies" : {
+									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
+									"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
+									...
+									}
+								}
+								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 						},
 					],
 					temperature: 0.62
 				})
 				const content = completion.data.choices[0].message.content
-				console.log('content:\n', content)
-				const payload = this.parseMessage(content)
-				this.$emit('getAnswer', payload)
-				// this.answer = JSON.parse(completion.data.choices[0].message.content)
-				// this.reason = this.answer.reason
-				// return this.searchMovie(this.answer.movieTitle, this.answer.releaseYear)
+				this.parseMessage(content)
 			} catch (error) {
 				console.log('gpt error:', error)
 			}

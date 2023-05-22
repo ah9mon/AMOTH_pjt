@@ -104,9 +104,9 @@ def movies_data(request):
                     new_movie = Movie()
                     new_movie.movie_id = movie_id
                     new_movie.title = movie.get("title")
-                    new_movie.overview = movie.get("poster_path")
-                    new_movie.release_date = movie.get("overview")
-                    new_movie.poster_path = movie.get("release_date")
+                    new_movie.overview = movie.get("overview")
+                    new_movie.release_date = movie.get("release_date")
+                    new_movie.poster_path = movie.get("poster_path")
                     new_movie.save() 
 
                     # 이번 요청에서 저장한 movie 객체 담기
@@ -119,3 +119,9 @@ def movies_data(request):
  
         serializer = MovieSerializer(movies_data, many =True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# 영화 검색 1개 기능 
+
+
+# 내가 본영화 

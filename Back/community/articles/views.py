@@ -132,13 +132,13 @@ def comment_detail(request, comment_pk):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     
 @api_view(['POST'])
-def like_article(request):
+def like_article(request,article_pk):
     '''
     좋아요/좋아요 취소 
     '''
     if request.method =='POST':
         user_id = request.POST.get('user_id')
-        article_id = request.POST.get('article_id')
+        article_id = article_pk
         likes = Like.objects.filter(user_id = user_id) # 요청 보낸 유저가 좋아요한 게시글 리스트 다 받기 
         
         # 해당 게시글 좋아요 여부 체크
@@ -159,4 +159,4 @@ def like_article(request):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-        
+# 내가 좋아요한 게시글만 불러오기 
