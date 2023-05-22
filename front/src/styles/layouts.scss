@@ -1,0 +1,24 @@
+#background {
+	// background-image: url("@/assets/Background.jpg");
+	background-color: beige;
+	background-size: cover;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.blur {
+	background-color: rgb(255 255 255 / 0.6);
+	backdrop-filter: blur(10px);
+	// box-shadow: 0 14px 28px blue, 0 6px 6px red;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.45);
+}
+
+.big-tile {
+	height: 90%;
+	margin-top: 30px;
+}
+
+.small-tile {
+	height: 60%;
+	margin-top: 30px;
+}

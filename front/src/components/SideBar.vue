@@ -11,10 +11,14 @@
         >ProfilPicture</v-list-item>
         <v-divider></v-divider>
         <v-list nav>
-          <v-list-item title="Profile" value="profile">
+          <v-list-item title="Profile" value="profile"
+            @click="toProfileView"
+          >
             Profile
           </v-list-item>
-          <v-list-item title="Playlists" value="playlist">
+          <v-list-item title="Playlists" value="playlist"
+            @click="toArticleListView"
+          >
             Playlists
           </v-list-item>
         </v-list>
@@ -33,6 +37,14 @@
 export default {
 	name: 'SearchView',
 	data: () => ({ drawer: null }),
+  methods: {
+    toProfileView() {
+      this.$router.push({name: 'profile', params:{id:1}})
+    },
+    toArticleListView() {
+      this.$router.push({name: 'articleList'})
+    }
+  }
 }
 </script>
 

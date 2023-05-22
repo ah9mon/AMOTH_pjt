@@ -2,7 +2,7 @@
 	<v-row>
 			<v-col
 				cols="12"
-				class="box"
+				class="blur"
 				align="center"
 			>
 				<h1 @click="getWeather" style="color:white">WEATHER</h1>
