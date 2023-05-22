@@ -1,0 +1,16 @@
+FROM python:3
+# WORKDIR ~/Desktop/git/SoundTrack-Finding-and-Recommendation-Service/Back/auth  맞는지?
+
+
+# Install packages
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Copy all
+COPY . .
+
+RUN python manage.py migrate
+
+EXPOSE 8000
+
+RUN python manage.py runserver
