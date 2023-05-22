@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ArticleCard from '@/components/ArticleCard.vue';
 
 export default {
@@ -26,26 +27,34 @@ export default {
 	components: {
 		ArticleCard
 	},
-	// computed: {
-	// 	articleList() {
-
-	// 	}
-	// },
 	data() {
 		return {
-			articleList: [
-				{
-					title: 'first article',
-					writer: 'man1',
-					id: '1'
-				},
-				{
-					title: 'second article',
-					writer: 'man2',
-					id: '2'
-				}
-			]
+			articleList: null
 		}
+	},
+	methods: {
+		getArticleList() {
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'authorization': this.$store.state.token
+				}
+			})
+				.then(() => {
+					axios({
+						method: 'GET',
+						url: 'http://127.0.0.1:8002/api/community/articles'
+					})
+						.then((res) => {
+							console.log(res)
+							this.articleList = res.data
+						})
+				})
+		}
+	},
+	created() {
+		this.getArticleList()
 	}
 }
 </script>

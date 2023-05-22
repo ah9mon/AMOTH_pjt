@@ -24,32 +24,49 @@
 			<v-col
 				cols="4"
 			>
-				{{ article.comments }}
+				{{ comments }}
 			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
 	name: 'ArticleDetailView',
 	props: {
-		id: String
+		id: Number
 	},
-	computed: {
-		article() {
-			// get article by id
-			return {
-					title: 'first article',
-					writer: 'man1',
-					id: '1',
-					content: 'first article content',
-					comments: [
-						'first comment',
-						'second comment'
-					]
-				}
+	data() {
+		return {
+			article: null,
+			comments: null
 		}
+	},
+	methods: {
+		getArticle() {
+			axios({
+				method: 'GET',
+				url: `http://127.0.0.1:8002/api/community/articles/${this.id}`
+			})
+				.then((res) => {
+					this.article = res.data
+				})
+		},
+		getComments() {
+			axios({
+				method: 'GET',
+				url: `http://127.0.0.1:8002/api/community/articles/${this.id}/comments`
+			})
+				.then((res) => {
+					this.comments = res.data
+				})
+		}
+	},
+	created() {
+		this.getArticle()
+		this.getComments()
 	}
 }
 </script>

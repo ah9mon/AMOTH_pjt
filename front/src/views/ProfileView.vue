@@ -9,13 +9,13 @@
 					class="profile-picture"
 					style="height: 40%"
 				>
-					profile picture???
+					<v-img  style="width:100px height:425px" :src="profile_picture"></v-img>
 				</v-row>
 				<v-row
 					class="my-articles"
 					style="height: 30%"
 				>
-					my articles
+					{{ myArticles }}
 				</v-row>
 				<v-row
 				class="liked-articles"
@@ -37,9 +37,46 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
 	name: 'ProfileView',
-
+	data() {
+		return {
+			user_id: null,
+			profile_picture: null,
+			myArticles: null
+		}
+	},
+	methods: {
+		getUserInfo() {
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'authorization': this.$store.state.token
+				}
+			})
+				.then((res) => {
+					console.log(res)
+					this.user_id = res.data.user_id
+					this.profile_picture = res.data.profile_picture
+					axios({
+						method: 'GET',
+						url: 'http://127.0.0.1:8002/api/community/articles',
+						params: {'user_id': this.user_id}
+					})
+						.then((res)=>{
+							console.log(res)
+							this.myArticles = res.data
+						})
+						.catch((err)=>console.log(err))
+				})
+		}
+	},
+	created() {
+		this.getUserInfo()
+	}
 }
 </script>
 

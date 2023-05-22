@@ -6,14 +6,14 @@
 		@click="toMovieDetail"
 	>
 		<div class="poster">
-			<v-img :src="url + movie.posterPath" contain class="posterImage"></v-img>
+			<v-img :src="url + movie.poster_path" contain class="posterImage"></v-img>
 		</div>
 		<div class='content'>
 			<h2>{{ movie.title }}</h2>
 			{{ movie.answer }}
 		</div>
 		<div class="soundtracks">
-			<p v-for="(track, index) in movie.soundtracks" :key="index">
+			<p v-for="(track, index) in soundtracks" :key="index">
 				{{ track }}
 			</p>
 		</div>
@@ -30,7 +30,8 @@ export default {
 	},
 	data() {
 		return {
-			url: 'https://image.tmdb.org/t/p/w92/'
+			url: 'https://image.tmdb.org/t/p/w92/',
+			soundtracks: null
 		}
 	},
 	methods: {
@@ -40,7 +41,7 @@ export default {
 				params: {id: this.movie.id}
 			})
 			console.log(this.movie.id)
-		}
+		},
 	}
 
 }
