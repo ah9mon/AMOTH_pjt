@@ -19,7 +19,8 @@ const store = new Vuex.Store({
   },
   mutations: {
     SAVE_MOVIE_LIST(state, payload) {
-      state.movieList = state.movieList.concat(payload.data)
+      // state.movieList = state.movieList.concat(payload.data)
+      state.movieList = state.movieList.concat(payload)
       console.log('payload: ',payload)
       console.log('payload data: ',payload.data)
       console.log(state.movieList)
