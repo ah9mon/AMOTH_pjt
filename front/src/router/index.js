@@ -6,7 +6,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import ArticleListView from '@/views/ArticleListView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import LoginView from '@/views/LoginView.vue'
-
+import store from '@/store/index.js'
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,5 +50,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  const allowAllPages = ['login']
+  const isAuthRequired = !allowAllPages.includes(to.name)
+  let isLoggedIn = false
+  if (store.state.token) {
+    isLoggedIn = true
+  }
+  if (isAuthRequired === true && !isLoggedIn) {
+    next({name: 'login'})
+  } else if (isLoggedIn && !isAuthRequired) {
+    next({name: 'search'})
+  } else {
+    next()
+  }
+})
 export default router

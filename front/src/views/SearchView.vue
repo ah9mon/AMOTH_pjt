@@ -7,6 +7,7 @@
 			@getWeather="getWeather"
 		/>
 		<!-- search bar -->
+		<h1>accessToken: {{ accessToken }}</h1>
 		<v-row
 				justify="center"
 			>
@@ -55,11 +56,13 @@
 </template>
 
 <script>
+// import axios from 'axios'
 import SideBar from '@/components/SideBar.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
+import axios from 'axios'
 
 export default {
 	name: 'SearchView',
@@ -72,11 +75,14 @@ export default {
 	data: () => ({
 		drawer: null,
 		answer: null,
-		query: null
+		query: null,
 	}),
 	computed: {
 		movieList() {
 			return this.$store.state.movieList
+		},
+		accessToken() {
+			return this.$route.query.access_token
 		}
 	},
 	methods: {
@@ -97,7 +103,18 @@ export default {
 		sendQuery() {
 			console.log('sendQuery')
 			// this.askChatGPT()
-			this.parseMessage('aaa')
+			// this.parseMessage('aaa')
+			console.log(this.$store.state.token)
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'access_token': this.$store.state.token,
+				}
+			})
+				.then((res) => {
+					console.log(res)
+				})
 		},
 		parseMessage(content) {
 			console.log(content)
@@ -130,6 +147,15 @@ export default {
 					youtubeId: '6ZUIwj3FgUY'
 				},
 			]
+			// const titleList = ['대부', '스즈메의 문단속', '가디언즈 오브 갤럭시 3']
+			// axios({
+			// 	method: 'GET',
+			// 	url: ''
+			// })
+			// 	.then((res))
+			// 	.catch((err) => console.log(err))
+			// const movieList = []
+
 			this.$store.dispatch('getMovieList', movieList)
 		},
 		async askChatGPT() {
