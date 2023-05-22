@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, get_object_or_404, get_list_or_404
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
 # rest_framework
 from rest_framework.response import Response
@@ -69,6 +69,7 @@ def get_access_token(code):
 ### 카카오 로그인 및 회원가입 ###
 ###########################
 
+
 def KakaoLogin(request):
     # 1. 인가 코드 받기 요청 
     redirect_uri = 'http://127.0.0.1:8000/api/kakao/callback'
@@ -109,7 +110,8 @@ def KakaoCallback(request):
         'access_token' : access_token 
     }
     
-    return JsonResponse(context, status=status.HTTP_200_OK) # 발급 받았던 토큰 프론트로 넘겨주기 
+    return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}')
+    # return JsonResponse(context, status=status.HTTP_200_OK) # 발급 받았던 토큰 프론트로 넘겨주기 
 
 ###########################
 ##### 사용자 로그인 처리 #####
@@ -117,7 +119,8 @@ def KakaoCallback(request):
 
 
 def KakaoAuth(request):
-    access_token = request.GET.get('access_token')
+    access_token = request
+    print(access_token)
     user = get_userdata(access_token)
 
     # 토큰이 유효해서 사용자 정보를 가져오기 성공했으면
@@ -133,6 +136,7 @@ def KakaoAuth(request):
     
     # 토큰이 유효하지 않으면 로그인 페이지로 redirect
     else:
+        print('>>>')
         login_url = 'http://127.0.0.1:8000/api/kakao'
         return redirect(login_url)
 
