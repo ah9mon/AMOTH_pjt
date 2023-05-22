@@ -40,9 +40,14 @@
 						</v-form>
 					</v-sheet>
 					<div class="d-flex mt-9" style="justify-content: space-evenly">
-						<v-btn>
+						<a href="http://127.0.0.1:8000/api/kakao"><v-btn>
 							kakao
-						</v-btn>
+						</v-btn></a>
+						<!-- <v-btn
+							@click="kakaoLogin"
+						>
+							kakao
+						</v-btn> -->
 						<v-btn>
 							google
 						</v-btn>
@@ -54,19 +59,37 @@
 </template>
 
 <script>
+// import axios from 'axios'
+
 export default {
 	name: 'LoginView',
 	data() {
 		return {
 			rules: [
 				value => this.checkValid(value),
-			]
+			],
+			userName: null,
+			password: null
+		}
+	},
+	created() {
+		if (this.$route.query.access_token != null) {
+			this.$store.dispatch('saveToken', this.$route.query.access_token)
+			this.$router.push({name: 'search'})
 		}
 	},
 	methods: {
 		checkValid() {
 
-		}
+		},
+		// kakaoLogin() {
+		// 	axios({
+		// 		method:'GET',
+		// 		url: "http://127.0.0.1:8000/api/kakao"
+		// 	})
+		// 		.then((res) => console.log(res))
+		// 		.catch((err) => console.log(err))
+		// }
 	}
 }
 </script>

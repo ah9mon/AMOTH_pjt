@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
+  plugins: [
+    createPersistedState()
+  ],
   state: {
-    movieList: []
+    movieList: [],
+    token: null,
   },
   getters: {
     getMovie: (state) => (id) => {
@@ -17,14 +22,22 @@ export default new Vuex.Store({
       state.movieList = state.movieList.concat(payload)
       console.log(payload)
       console.log(state.movieList)
+    },
+    SAVE_TOKEN(state, payload) {
+      state.token = payload
     }
   },
   actions: {
     getMovieList(context, payload) {
       console.log('payload: ', payload)
       context.commit('SAVE_MOVIE_LIST', payload)
+    },
+    saveToken(context, payload) {
+      context.commit('SAVE_TOKEN', payload)
     }
   },
   modules: {
   }
 })
+
+export default store
