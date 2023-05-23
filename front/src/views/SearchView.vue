@@ -7,7 +7,6 @@
 			@getWeather="getWeather"
 		/>
 		<!-- search bar -->
-		<h1>accessToken: {{ accessToken }}</h1>
 		<v-row
 				justify="center"
 			>
@@ -16,21 +15,53 @@
 					lg="6"
 					class="blur"
 				>
-				<v-toolbar
-						dense
-						rounded
-					>
-						<v-text-field
-							hide-details
-							append-icon="mdi-magnify"
-							single-line
-							v-model="query"
-							@keyup.enter="sendQuery"
-						></v-text-field>
+					<v-toolbar
+							dense
+							rounded
+						>
+							<v-text-field
+								hide-details
+								append-icon="mdi-magnify"
+								single-line
+								v-model="query"
+								@keyup.enter="sendQuery"
+							></v-text-field>
 					</v-toolbar>
 
+					<v-menu
+						open-on-hover
+						bottom
+						offset-y
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn
+								class="searchMenu"
+								color="primary"
+								dark
+								v-bind="attrs"
+								v-on="on"
+							>
+							<v-icon size="30">
+								mdi-magnify</v-icon>
+							</v-btn>
+						</template>
+						
+						<v-list>
+							<v-list-item
+								@click="toggleGPT"
+							>
+							<v-list-item-title>askChatGPT</v-list-item-title>
+							</v-list-item>
+							<v-list-item
+								@click="toggleDB"
+							>
+							<v-list-item-title>find DB</v-list-item-title>
+							</v-list-item>
+						</v-list>
+					</v-menu>
 				</v-col>
 			</v-row>
+		
 
 		<!-- Movie Cards -->
 		<v-row
@@ -46,77 +77,50 @@
 						:key="index"
 						:movie="movie"
 					/>
-					<!-- <infinite-loading 
-						@infinite="load"
-					></infinite-loading> -->
 			</v-col>
 		</v-row>
-		<!-- menu button -->
-    <v-menu
-      open-on-hover
-      top
-      offset-y
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-					class="menu"
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          MENU
-        </v-btn>
-      </template>
 
-      <v-list>
-				<v-list-item
-            @click="logout"
-        >
-          Logout
-        </v-list-item>
-				<v-list-item
-          @click="toArticleListView"
-        >
-          Articles
-				</v-list-item>
-				<v-list-item
-					@click="articleCreate"
-				>
-				<v-list-item-title>Create Article</v-list-item-title>
-				</v-list-item>
+		<!-- loading -->
+		<v-row
+			justify="center"
+			class="mt-5 mb-5"
+		>
+			<v-progress-circular
+				color="primary"
+				indeterminate
+				v-if="isAsking"
+				size="100"
+				width="10"
+			>
+			</v-progress-circular>
+			<h1>{{ GPTerror }}</h1>
+			<div style="height: 100px">
 				
-				<v-list-item
-					@click="scrollUp"
-				>
-				<v-list-item-title>Scroll Up</v-list-item-title>
-				</v-list-item>
-      </v-list>
-    </v-menu>
+			</div>
+		</v-row>
 	</v-container>
 </template>
 
 <script>
 import axios from 'axios'
-// import SideBar from '@/components/SideBar.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
-// import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
 
 export default {
 	name: 'SearchView',
 	components: {
-		// SideBar,
 		MovieCard,
 		WeatherCard,
-		// InfiniteLoading,
 	},
 	data: () => ({
 		drawer: null,
 		answer: null,
 		query: null,
 		suggested: null,
+		ask: true,
+		isAsking: false,
+		GPTerror: null,
 	}),
 	computed: {
 		movieList() {
@@ -127,26 +131,34 @@ export default {
 		}
 	},
 	methods: {
-		scrollUp() {
+		scrollDown() {
 			window.scroll({
-				top: 0,
+				top: document.body.scrollHeight,
 				left: 0,
 				behavior: 'smooth'
 			})
-		},
-    toArticleListView() {
-      this.$router.push({name: 'articleList'})
-    },
-    logout() {
-      this.$store.dispatch('deleteLocalStore')
-      this.$router.push({name: 'login'})
-    },
-		articleCreate() {
-			this.$router.push({name:'articleCreate'})
-		},
-		load($state) {
+		},	
+		toggleGPT() {
+			this.ask = true
 			this.sendQuery()
-			$state.loaded()
+		},
+		toggleDB() {
+			this.ask = false
+			this.sendQuery()
+		},
+		sendQuery() {
+			if (this.isAsking) {
+				console.log('U R asking')
+				return
+			}
+			this.isAsking = true
+			console.log('sendQuery')
+			if (this.ask === true) {
+				this.askChatGPT()
+			} else {
+				this.findDB()
+			}
+			this.scrollDown()
 		},
 		getWeather(weather) {
 			this.weather = weather
@@ -162,51 +174,14 @@ export default {
 				.then((res) => {
 					console.log(res)
 					this.suggested = res.data
+					this.isAsking = false
+					this.scrollDown()
 				})
 		},
-		sendQuery() {
-			console.log('sendQuery')
-			// this.askChatGPT()
-			// this.parseMessage('aaa')
-			this.findDB()
-			console.log(this.$store.state.token)
-		},
 		parseMessage(content) {
-			console.log('answer: ',content)
-			// const ml = [
-			// 	{
-			// 		title: '대부',
-			// 		poster_path: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
-			// 		genre: [18, 80],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '대부이기때문',
-			// 		id: 1,
-			// 		youtubeId: '1glMKLFRrnI'
-			// 	},
-			// 	{
-			// 		title: '쇼생크 탈출',
-			// 		poster_path: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
-			// 		genre: [18, 80],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '쇼생크탈출이기때문',
-			// 		id: 2,
-			// 		youtubeId: '6ZUIwj3FgUY'
-			// 	},
-			// 	{
-			// 		title: '센과 치히로의 행방불명',
-			// 		poster_path: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
-			// 		genre: [16, 10751, 14],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '센과치히로의행방불명이기때문',
-			// 		id: 3,
-			// 		youtubeId: '6ZUIwj3FgUY'
-			// 	},
-			// ]
+			console.log('GPT answer:\n', content)
 			const start = content.indexOf('{')
-
 			const end = content.lastIndexOf('}')
-			console.log('start/end', start, end)
-			console.log('json: ', content.slice(start, end + 1))
 			const payload = JSON.parse(content.slice(start, end + 1))
 
 			axios({
@@ -223,8 +198,17 @@ export default {
 						data: payload
 					})
 						.then((res) => {
-							console.log(res)
+							console.log('THIS IS RES: ',res)
+							let temp = []
+							for (const obj of res.data) {
+								let tempObj = obj
+								tempObj.reason = payload.filter().reason
+								temp.push()
+							}
 							this.$store.dispatch('getMovieList', res)
+							// res.data: 10array with id, backdrop path etc
+							// need to add reason
+							this.scrollDown()
 						})
 				})
 				.catch((error) => console.log(error))
@@ -249,7 +233,7 @@ export default {
 						},
 						{
 							role: "user",
-							content: `And ${this.query}. Please recommend 10 movies in sunny weather and JSON format. {
+							content: `And ${this.query}. Please recommend 10 movies in JSON format. {
 								"movies" : {
 									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
 									"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
@@ -259,12 +243,15 @@ export default {
 								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 						},
 					],
-					temperature: 0.62
+					temperature: 0.61
 				})
 				const content = completion.data.choices[0].message.content
 				this.parseMessage(content)
+				this.isAsking = false
 			} catch (error) {
+				this.isAsking = false
 				console.log('gpt error:', error)
+				this.GPTerror = error
 			}
 		}
 	},
@@ -281,5 +268,10 @@ export default {
 	position: fixed;
 	bottom: 5%;
 	right: 16px;
+}
+.searchMenu {
+	position: absolute;
+	top: 24%;
+	right: 4.5%;
 }
 </style>

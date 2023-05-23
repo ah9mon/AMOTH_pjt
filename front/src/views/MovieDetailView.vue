@@ -38,10 +38,10 @@
 			<v-col
 				cols="8"
 			>
-				<iframe width="100%" height="100%"
+				<!-- <iframe width="100%" height="100%"
 					:src='youtubeListURL + soundtrackId'
 					allowfullscreen
-				></iframe>
+				></iframe> -->
 			</v-col>
 		</v-row>
 	</v-container>
@@ -85,6 +85,7 @@ export default {
 		}
 	},
 	created() {
+		console.log('why???', this.$router)
 		axios({
 			method: 'GET',
 			url: `https://api.themoviedb.org/3/movie/${String(this.movie.movie_id)}/videos`,

@@ -1,22 +1,20 @@
 <template>
   <v-app id="background">
     <v-main>
-      <v-row>
-        <v-col
-          cols="3"
-          aspect-ratio="1"
-        >
-          <v-img :src="profile_picture"></v-img>
-        </v-col>
-      </v-row>
       <router-view/>
+      <!-- menu button -->
+      <MenuButton/>
     </v-main>
   </v-app>
 </template>
 <script>
+import MenuButton from './components/MenuButton.vue';
 
 export default {
   name: 'App',
+  components: {
+    MenuButton
+  },
   computed: {
     profile_picture() {
       return this.$store.state.profile_picture

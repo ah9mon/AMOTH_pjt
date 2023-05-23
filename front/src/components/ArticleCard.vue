@@ -27,7 +27,11 @@ export default {
 	},
 	methods: {
 		toArticleDetail() {
-			this.$router.push({name: 'articleDetail', params:{id:1}})
+			this.$router.push({name: 'articleDetail', 
+			params:{
+				article: this.article,
+				id: this.article.id
+			}})
 		}
 	}
 }

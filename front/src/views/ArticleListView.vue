@@ -47,7 +47,7 @@ export default {
 						url: 'http://127.0.0.1:8002/api/community/articles'
 					})
 						.then((res) => {
-							console.log(res)
+							console.log('articleList: ', res)
 							this.articleList = res.data
 						})
 				})
