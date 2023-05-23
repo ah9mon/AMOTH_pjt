@@ -43,35 +43,28 @@ export default {
 	name: 'ProfileView',
 	data() {
 		return {
-			user_id: null,
-			profile_picture: null,
 			myArticles: null
 		}
 	},
+	computed: {
+		user_id() {
+			return this.$store.state.user_id
+		},
+		profile_picture() {
+			return this.$store.state.profile_picture
+		}
+	},
 	methods: {
-		getUserInfo() {
+		getMyArticles() {
 			axios({
-				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
-				headers: {
-					'authorization': this.$store.state.token
-				}
-			})
-				.then((res) => {
-					console.log(res)
-					this.user_id = res.data.user_id
-					this.profile_picture = res.data.profile_picture
-					axios({
 						method: 'GET',
 						url: 'http://127.0.0.1:8002/api/community/articles',
 						params: {'user_id': this.user_id}
 					})
 						.then((res)=>{
-							console.log(res)
 							this.myArticles = res.data
 						})
 						.catch((err)=>console.log(err))
-				})
 		}
 	},
 	created() {

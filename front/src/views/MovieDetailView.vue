@@ -88,8 +88,6 @@ export default {
 		axios({
 			method: 'GET',
 			url: `https://api.themoviedb.org/3/movie/${String(this.movie.movie_id)}/videos`,
-
-			// params: {language:'ko', api_key:'1395a6d8b9a1c30c3699c8181b8663a6'}
 			params: {api_key:'1395a6d8b9a1c30c3699c8181b8663a6'}
 		})
 			.then((res) => {

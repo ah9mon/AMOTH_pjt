@@ -4,7 +4,6 @@ from django.db import models
 class Article(models.Model):
     user_id = models.TextField()
     title = models.CharField(max_length=100)
-    movie_id = models.IntegerField()
     movie_title = models.TextField()
     music_title = models.TextField()
     content = models.TextField()

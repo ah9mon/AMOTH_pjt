@@ -21,7 +21,7 @@ def get_soundtrack(request):
 
     # 노래 제목도 넘겨 받았으면 꺼내기 
     music_title = request.GET.get('music_title')
-
+    print()
     # Youtube API로 해당 영화의 soundtrack playlist 받기 
     part = 'snippet'
     maxResults = 1
@@ -39,7 +39,8 @@ def get_soundtrack(request):
     print(soundtrack_data)
     context = {
         'id' : soundtrack_data.get('items')[0].get('id'),
-        'title' : soundtrack_data.get('items')[0].get('snippet').get('title')
+        'title' : soundtrack_data.get('items')[0].get('snippet').get('title'),
+        'thumbnails' : soundtrack_data.get('items')[0].get('snippet').get('thumbnails').get('high')
     }
 
     return Response(context)

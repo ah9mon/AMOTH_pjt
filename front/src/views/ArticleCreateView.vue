@@ -13,6 +13,18 @@
 				label="Title"
 				required
 			></v-text-field>
+			<v-text-field
+				v-model="movieTitle"
+				:rules="movieTitleRules"
+				label="MovieTitle"
+				required
+			></v-text-field>
+			<v-text-field
+				v-model="soundtrackTitle"
+				:rules="soundtrackTitleRules"
+				label="SoundtrackTitle"
+				required
+			></v-text-field>
 
 			<v-textarea
 				v-model="content"
@@ -21,14 +33,6 @@
 				outlined
 				required
 			></v-textarea>
-
-			<v-select
-				v-model="select"
-				:items="items"
-				:rules="[v => !!v || 'Item is required']"
-				label="Item"
-				required
-			></v-select>
 
 			<v-btn
 				:disabled="!valid"
@@ -72,17 +76,20 @@ export default {
       contentRules: [
         v => !!v || 'Content is required',
       ],
-      select: null,
-      items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
+      movieTitle: '',
+      movieTitleRules: [
+        v => !!v || 'Movie title is required',
+      ],
+      soundtrackTitle: '',
+      soundtrackTitleRules: [
+        v => !!v || 'Soundtrack title is required',
       ],
     }),
 	methods: {
 		validate () {
 			this.$refs.form.validate()
+			this.createArticle()
+			this.$router.push({name: 'search'})
 		},
 		reset () {
 			this.$refs.form.reset()
@@ -92,19 +99,30 @@ export default {
 		},
 		createArticle() {
 			axios({
-				method: 'POST',
-				url: 'http://127.0.0.1:8002/api/articles',
-				data: {
-					title: this.title,
-					content: this.content,
-					// movie id???
-					// music title?????
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'authorization': this.$store.state.token
 				}
 			})
 				.then((res) => {
-					this.$router.push({name: 'articleDetail', parms:{id:res.data.pk}})
+					axios({
+						method: 'POST',
+						url: 'http://127.0.0.1:8002/api/community/articles',
+						data: {
+							user_id: res.data.user_id,
+							title: this.title,
+							content: this.content,
+							movie_title: this.movieTitle,
+							music_title: this.soundtrackTitle
+						}
+					})
+						.then((res) => {
+							console.log('articledetail', res)
+							this.$router.push({name: 'articleDetail', params:{id:res.data.id}})
+						})
+						.catch((err)=>console.log(err))
 				})
-				.catch((err)=>console.log(err))
 		}
 	},
 }

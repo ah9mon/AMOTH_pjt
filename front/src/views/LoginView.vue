@@ -12,42 +12,10 @@
 					
 				>
 					<h1>LOGIN</h1>
-					<v-sheet 
-						class="mx-auto"
-						width="300"
-					>
-						<v-form
-							validate-on="submit"
-							@submit.prevent="login"
-							class="pa-4"
-						>
-							<v-text-field
-								v-model="userName"
-								:rules="rules"
-								label="User name"
-							></v-text-field>
-							<v-text-field
-								v-model="password"
-								:rules="rules"
-								label="password"
-							></v-text-field>
-							<v-btn
-								type="submit"
-								block
-							>
-								Submit
-							</v-btn>
-						</v-form>
-					</v-sheet>
 					<div class="d-flex mt-9" style="justify-content: space-evenly">
 						<a href="http://127.0.0.1:8000/api/kakao"><v-btn>
 							kakao
 						</v-btn></a>
-						<!-- <v-btn
-							@click="kakaoLogin"
-						>
-							kakao
-						</v-btn> -->
 						<v-btn>
 							google
 						</v-btn>
@@ -59,15 +27,12 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
 	name: 'LoginView',
 	data() {
 		return {
-			rules: [
-				value => this.checkValid(value),
-			],
 			userName: null,
 			password: null
 		}
@@ -75,21 +40,28 @@ export default {
 	created() {
 		if (this.$route.query.access_token != null) {
 			this.$store.dispatch('saveToken', this.$route.query.access_token)
+			this.getUserInfo()
 			this.$router.push({name: 'search'})
 		}
 	},
 	methods: {
-		checkValid() {
-
-		},
-		// kakaoLogin() {
-		// 	axios({
-		// 		method:'GET',
-		// 		url: "http://127.0.0.1:8000/api/kakao"
-		// 	})
-		// 		.then((res) => console.log(res))
-		// 		.catch((err) => console.log(err))
-		// }
+		getUserInfo() {
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'authorization': this.$store.state.token
+				}
+			})
+				.then((res) => {
+					console.log('Logged In')
+					const payload = {
+						'user_id': res.data.user_id,
+						'profile_picture': res.data.profile_picture
+					}
+					this.$store.dispatch('saveUserInfo', payload)
+				})
+		}
 	}
 }
 </script>
