@@ -23,7 +23,15 @@ const store = new Vuex.Store({
     SAVE_MOVIE_LIST(state, payload) {
       // state.movieList = state.movieList.concat(payload.data)
       for (const movie of payload.data) {
-        if (!state.movieList.includes(movie)) {
+        console.log(movie)
+        let isNew = true
+        for (const haveMovie of state.movieList) {
+          if (haveMovie.movie_id === movie.movie_id) {
+            //updatereason???
+            isNew = false
+          }
+        }
+        if (isNew) {
           state.movieList = state.movieList.concat(movie)
         }
       }

@@ -1,0 +1,16 @@
+0. 기능
+	- 처음 열 때 날씨 추천 받기
+	- movie card에 reason 추가, store에 저장 및 필요시 업데이트
+	- article, comment 삭제 기능 추가
+	- GPT / DB 검색 결과 toggle 및 검색 버튼 색 변경
+
+1. 디자인
+	- primary 등 색 변경
+	- profile 세로 길이 설정
+	- 동적으로 배경 이미지(backdrop) 설정
+
+2. 기타
+	- readme 작성
+
+3. 시간되면
+	- watched movie 추가

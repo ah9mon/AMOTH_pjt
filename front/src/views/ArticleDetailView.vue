@@ -1,5 +1,5 @@
 <template>
-	<v-container class="blur big-tile">
+	<v-container class="blur big-tile" v-if="article">
 		<!-- title/number of likes -->
 		<v-row class="top-row">
 			<v-col
@@ -29,29 +29,16 @@
 				>
 					LIKE
 				</v-btn>
-				<v-btn @click="getYoutubeId">
-					getYOUTUBEID
-				</v-btn>
-				<a 
-					target="_blank"
-					:href="youtubeURL + youtubeInfo.id.videoId" 
+				<SoundtrackCard
 					v-if="youtubeInfo"
-				>
-					<v-img 
-						style="width:100px height:425px" :src="youtubeInfo.thumbnails.url">
-					</v-img>
-				</a>
+					:youtube-info="youtubeInfo"
+				/>
 
 			</v-col>
 			<v-col
 				cols="4"
 			>
-				<v-list-item
-					v-for="(comment, index) in comments"
-					:key="index"
-				>
-					{{ comment }}
-				</v-list-item>
+
 				<!-- create comment dialog -->
 				<v-dialog
 					v-model="dialog"
@@ -114,6 +101,31 @@
 						</v-card>
 					</v-form>
 				</v-dialog>
+				
+				<!-- comments -->
+				<v-list dense
+					class="overflow-y-auto"
+					max-height="85%"
+					width="100%"
+					:flat=true
+					style="background-color: transparent"
+				>
+					<v-subheader>Comments</v-subheader>
+					<v-list-item-group
+						color="primary"
+					>
+						<v-list-item
+							v-for="(comment, index) in comments"
+							:key = index
+						>
+							<v-list-item-content>
+								<v-list-item-title>
+									{{ comment.content }}
+								</v-list-item-title>
+							</v-list-item-content>
+						</v-list-item>
+					</v-list-item-group>
+				</v-list>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -121,20 +133,19 @@
 
 <script>
 import axios from 'axios'
+import SoundtrackCard from '@/components/SoundtrackCard.vue'
 
 export default {
 	name: 'ArticleDetailView',
 	props: {
-		id: String
+		id: Number,
+		article: Object
+	},
+	components: {
+		SoundtrackCard
 	},
 	data() {
 		return {
-			article: {
-				title: '',
-				content: '',
-				movie_title: '',
-				music_title: ''
-			},
 			comments: null,
 			dialog: false,
 			commentContent: null,
@@ -144,9 +155,7 @@ export default {
 			],
 			likedCount: 0,
 			isLiked: false,
-			userId: null,
 			youtubeInfo: null,
-			youtubeURL: 'https://www.youtube.com/watch?v=',
 		}
 	},
 	methods: {
@@ -160,16 +169,15 @@ export default {
 				}
 			})
 				.then((res) => {
-					console.log(res)
 					this.youtubeInfo = res.data
 				})
 		},
 		likeArticle() {
 			axios({
 				method: 'POST',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.id}/likes`,
+				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/likes`,
 				data: {
-					'user_id': this.userId
+					user_id: this.$store.state.user_id
 				}
 			})
 				.then(() => {
@@ -179,22 +187,22 @@ export default {
 		getArticle() {
 			axios({
 				method: 'GET',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.id}`,
+				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}`,
 				params : {
-					"user_id" : this.userId
+					user_id : this.$store.state.user_id
 				}
 
 			})
 				.then((res) => {
-					this.article = res.data.article
 					this.likedCount = res.data.liked_count,
 					this.isLiked = res.data.liked
+					this.getYoutubeId()
 				})
 		},
 		getComments() {
 			axios({
 				method: 'GET',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.id}/comments`
+				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/comments`
 			})
 				.then((res) => {
 					this.comments = res.data
@@ -209,9 +217,9 @@ export default {
 			const temp = this.commentContent
 			axios({
 				method: 'POST',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.id}/comments`,
+				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/comments`,
 				data: {
-					user_id: this.user_id,
+					user_id: this.$store.state.user_id,
 					content: temp
 				}
 			})
@@ -230,11 +238,11 @@ export default {
 					'authorization': this.$store.state.token
 				}
 			})
-			.then((res) => {
-				this.userId = res.data.user_id
+			.then(() => {
 				this.getArticle()
 				this.getComments()
 			})
+		console.log('this is article: ', this.article)
 	}
 }
 </script>
