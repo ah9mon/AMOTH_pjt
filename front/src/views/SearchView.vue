@@ -51,9 +51,38 @@
 					></infinite-loading> -->
 			</v-col>
 		</v-row>
-		<v-btn class="scroll-up" @click="scrollUp">
-			click this
-		</v-btn>
+		<!-- menu button -->
+    <v-menu
+      open-on-hover
+      top
+      offset-y
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+					class="menu"
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          MENU
+        </v-btn>
+      </template>
+
+      <v-list>
+				<v-list-item
+					@click="articleCreate"
+				>
+				<v-list-item-title>Create Article</v-list-item-title>
+				</v-list-item>
+				
+				<v-list-item
+					@click="scrollUp"
+				>
+				<v-list-item-title>Scroll Up</v-list-item-title>
+				</v-list-item>
+      </v-list>
+    </v-menu>
 	</v-container>
 </template>
 
@@ -64,7 +93,7 @@ import MovieCard from '@/components/MovieCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
 // import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
 	name: 'SearchView',
@@ -95,6 +124,9 @@ export default {
 				behavior: 'smooth'
 			})
 		},
+		articleCreate() {
+			this.$router.push({name:'articleCreate'})
+		},
 		load($state) {
 			this.sendQuery()
 			$state.loaded()
@@ -104,66 +136,68 @@ export default {
 		},
 		sendQuery() {
 			console.log('sendQuery')
-			this.askChatGPT()
+			// this.askChatGPT()
+			this.parseMessage('aaa')
 			console.log(this.$store.state.token)
 		},
 		parseMessage(content) {
 			console.log('answer: ',content)
-			// const movieList = [
-			// 	{
-			// 		title: '대부',
-			// 		posterPath: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
-			// 		genre: [18, 80],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '대부이기때문',
-			// 		id: '1',
-			// 		youtubeId: '1glMKLFRrnI'
-			// 	},
-			// 	{
-			// 		title: '쇼생크 탈출',
-			// 		posterPath: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
-			// 		genre: [18, 80],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '쇼생크탈출이기때문',
-			// 		id: '2',
-			// 		youtubeId: '6ZUIwj3FgUY'
-			// 	},
-			// 	{
-			// 		title: '센과 치히로의 행방불명',
-			// 		posterPath: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
-			// 		genre: [16, 10751, 14],
-			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-			// 		answer: '센과치히로의행방불명이기때문',
-			// 		id: '3',
-			// 		youtubeId: '6ZUIwj3FgUY'
-			// 	},
-			// ]
+			const ml = [
+				{
+					title: '대부',
+					poster_path: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
+					genre: [18, 80],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '대부이기때문',
+					id: 1,
+					youtubeId: '1glMKLFRrnI'
+				},
+				{
+					title: '쇼생크 탈출',
+					poster_path: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
+					genre: [18, 80],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '쇼생크탈출이기때문',
+					id: 2,
+					youtubeId: '6ZUIwj3FgUY'
+				},
+				{
+					title: '센과 치히로의 행방불명',
+					poster_path: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
+					genre: [16, 10751, 14],
+					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+					answer: '센과치히로의행방불명이기때문',
+					id: 3,
+					youtubeId: '6ZUIwj3FgUY'
+				},
+			]
 			const start = content.indexOf('{')
 
 			const end = content.lastIndexOf('}')
 			console.log('start/end', start, end)
 			console.log('json: ', content.slice(start, end + 1))
-			const payload = JSON.parse(content.slice(start, end + 1))
+			// const payload = JSON.parse(content.slice(start, end + 1))
 
-			axios({
-				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
-				headers: {
-					'authorization': this.$store.state.token
-				}
-			})
-				.then(() => {
-					axios({
-						method: 'POST',
-						url: 'http://127.0.0.1:8001/api/tmdb/movies',
-						data: payload
-					})
-						.then((res) => {
-							console.log(res)
-							this.$store.dispatch('getMovieList', res)
-						})
-				})
-				.catch((error) => console.log(error))
+		// 	axios({
+		// 		method: 'GET',
+		// 		url: 'http://127.0.0.1:8000/api/kakao/auth',
+		// 		headers: {
+		// 			'authorization': this.$store.state.token
+		// 		}
+		// 	})
+		// 		.then(() => {
+		// 			axios({
+		// 				method: 'POST',
+		// 				url: 'http://127.0.0.1:8001/api/tmdb/movies',
+		// 				data: payload
+		// 			})
+		// 				.then((res) => {
+		// 					console.log(res)
+		// 					this.$store.dispatch('getMovieList', res)
+		// 				})
+		// 		})
+		// 		.catch((error) => console.log(error))
+		this.$store.dispatch('getMovieList', ml)
 		},
 		async askChatGPT() {
 			try {
@@ -213,9 +247,8 @@ export default {
 	font-size: large !important;
 	width: 100px !important;
 }
-.scroll-up {
+.menu {
 	position: fixed;
-	background-color: red;
 	bottom: 5%;
 	right: 16px;
 }

@@ -41,7 +41,8 @@
 				<iframe width="100%" height="100%"
 					:src='youtubeListURL + soundtrackId'
 					allowfullscreen
-				></iframe>			</v-col>
+				></iframe>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
