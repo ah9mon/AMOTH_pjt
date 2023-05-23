@@ -34,7 +34,10 @@ def article_list(request):
             my_serializer = ArticleSerializer(my_articles, many=True)
             liked_serializer = LikeSerializer(liked_article, many=True)
 
-            serializer_data = [my_serializer.data , liked_serializer.data]
+            serializer_data = {
+                "my_articles" : my_serializer.data,
+                "liked_articles" : liked_serializer.data,
+            }
         
         # user_id가 없이 왔으면 -> 게시글 전체보기
         else:
@@ -51,6 +54,7 @@ def article_list(request):
         serializer = ArticleSerializer(data = request.data) # 역직렬화
         if serializer.is_valid(raise_exception=True): # 유효성 검사 / 실패하면 400code 
             serializer.save()
+            print(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED) # 직렬화해서 상태코드랑 같이 보내기
 
 @api_view(['GET','DELETE','PUT'])
@@ -61,6 +65,7 @@ def article_detail(request, article_pk):
     PUT -> body에 넣어서 보내기 -> request.POST or request.data 으로 읽기
     '''
     article = get_object_or_404(Article, pk=article_pk)
+    user_id = request.GET.get('user_id')
     # print(article.user_id)
     '''
     print(request.GET) # params에 있는거 request를 사전형 객체로 만들어줌 
@@ -71,13 +76,28 @@ def article_detail(request, article_pk):
 
     # 게시글 상세 조회
     if request.method == 'GET':
+        liked = False
+        likes = article.like_set.all()
+        # 현재 유저의 좋아요 여부 찾기
+        for liked_article in likes:
+            if liked_article.user_id == user_id:
+                liked = True
+                break
+        
+        liked_count = len(likes)
+        
         serializer = ArticleSerializer(article)
-        print(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        data = {
+                "article" : serializer.data,
+                "liked_count" : liked_count,
+                "liked" : liked,
+            }
+        return Response(data, status=status.HTTP_200_OK)
     
     # 게시글 삭제
     elif request.method == 'DELETE':
-        user_id = request.GET.get('user_id')
+        
         # 게시글 작성자 == 요청 user 면
         if article.user_id == user_id: 
             article.delete()
@@ -88,7 +108,6 @@ def article_detail(request, article_pk):
     
     # 게시글 수정
     elif request.method == 'PUT':
-        user_id = request.POST.get('user_id')
         # 게시글 작성자 == 요청 user 면 
         if article.user_id == user_id:
             serializer = ArticleSerializer(article, data= request.data)
@@ -101,8 +120,8 @@ def article_detail(request, article_pk):
 @api_view(['GET', 'POST'])
 def comment_list(request, article_pk):
     # 해당 게시글의 댓글 불러오기 
-    if request.method == 'GET':
-        comments = get_list_or_404(Comment, article = article_pk)
+    if request.method == 'GET': 
+        comments = Comment.objects.filter(article = article_pk)
         print(comments)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -110,7 +129,7 @@ def comment_list(request, article_pk):
     # 댓글 생성
     elif request.method == 'POST':
         article = get_object_or_404(Article, pk=article_pk)
-        serializer = CommentSerializer(data = request.POST)
+        serializer = CommentSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -145,7 +164,8 @@ def like_article(request,article_pk):
     좋아요/좋아요 취소 
     '''
     if request.method =='POST':
-        user_id = request.POST.get('user_id')
+        user_id = request.data.get('user_id')
+        print(user_id)
         article_id = article_pk
         likes = Like.objects.filter(user_id = user_id) # 요청 보낸 유저가 좋아요한 게시글 리스트 다 받기 
         
@@ -166,5 +186,5 @@ def like_article(request,article_pk):
         if serializer.is_valid():
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
 
+# 

@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<!-- side bar -->
-		<SideBar/>
+		<!-- <SideBar/> -->
 		<!-- weather -->
 		<WeatherCard
 			@getWeather="getWeather"
@@ -71,6 +71,16 @@
 
       <v-list>
 				<v-list-item
+            @click="logout"
+        >
+          Logout
+        </v-list-item>
+				<v-list-item
+          @click="toArticleListView"
+        >
+          Articles
+				</v-list-item>
+				<v-list-item
 					@click="articleCreate"
 				>
 				<v-list-item-title>Create Article</v-list-item-title>
@@ -87,18 +97,17 @@
 </template>
 
 <script>
-// import axios from 'axios'
-import SideBar from '@/components/SideBar.vue'
+import axios from 'axios'
+// import SideBar from '@/components/SideBar.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
 // import InfiniteLoading from 'vue-infinite-loading'
 import { Configuration, OpenAIApi } from 'openai'
-// import axios from 'axios'
 
 export default {
 	name: 'SearchView',
 	components: {
-		SideBar,
+		// SideBar,
 		MovieCard,
 		WeatherCard,
 		// InfiniteLoading,
@@ -107,6 +116,7 @@ export default {
 		drawer: null,
 		answer: null,
 		query: null,
+		suggested: null,
 	}),
 	computed: {
 		movieList() {
@@ -124,6 +134,13 @@ export default {
 				behavior: 'smooth'
 			})
 		},
+    toArticleListView() {
+      this.$router.push({name: 'articleList'})
+    },
+    logout() {
+      this.$store.dispatch('deleteLocalStore')
+      this.$router.push({name: 'login'})
+    },
 		articleCreate() {
 			this.$router.push({name:'articleCreate'})
 		},
@@ -134,70 +151,83 @@ export default {
 		getWeather(weather) {
 			this.weather = weather
 		},
+		findDB() {
+			axios({
+				method: 'POST',
+				url: 'http://127.0.0.1:8001/api/tmdb/movies/search',
+				params: {
+					'q': this.query
+				}
+			})
+				.then((res) => {
+					console.log(res)
+					this.suggested = res.data
+				})
+		},
 		sendQuery() {
 			console.log('sendQuery')
 			// this.askChatGPT()
-			this.parseMessage('aaa')
+			// this.parseMessage('aaa')
+			this.findDB()
 			console.log(this.$store.state.token)
 		},
 		parseMessage(content) {
 			console.log('answer: ',content)
-			const ml = [
-				{
-					title: '대부',
-					poster_path: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
-					genre: [18, 80],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '대부이기때문',
-					id: 1,
-					youtubeId: '1glMKLFRrnI'
-				},
-				{
-					title: '쇼생크 탈출',
-					poster_path: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
-					genre: [18, 80],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '쇼생크탈출이기때문',
-					id: 2,
-					youtubeId: '6ZUIwj3FgUY'
-				},
-				{
-					title: '센과 치히로의 행방불명',
-					poster_path: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
-					genre: [16, 10751, 14],
-					soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
-					answer: '센과치히로의행방불명이기때문',
-					id: 3,
-					youtubeId: '6ZUIwj3FgUY'
-				},
-			]
+			// const ml = [
+			// 	{
+			// 		title: '대부',
+			// 		poster_path: '/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg',
+			// 		genre: [18, 80],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '대부이기때문',
+			// 		id: 1,
+			// 		youtubeId: '1glMKLFRrnI'
+			// 	},
+			// 	{
+			// 		title: '쇼생크 탈출',
+			// 		poster_path: '/oAt6OtpwYCdJI76AVtVKW1eorYx.jpg',
+			// 		genre: [18, 80],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '쇼생크탈출이기때문',
+			// 		id: 2,
+			// 		youtubeId: '6ZUIwj3FgUY'
+			// 	},
+			// 	{
+			// 		title: '센과 치히로의 행방불명',
+			// 		poster_path: '/u1L4qxIu5sC2P082uMHYt7Ifvnj.jpg',
+			// 		genre: [16, 10751, 14],
+			// 		soundtracks: ['soundtrack1', 'soundtrack2', 'soundtrack3'],
+			// 		answer: '센과치히로의행방불명이기때문',
+			// 		id: 3,
+			// 		youtubeId: '6ZUIwj3FgUY'
+			// 	},
+			// ]
 			const start = content.indexOf('{')
 
 			const end = content.lastIndexOf('}')
 			console.log('start/end', start, end)
 			console.log('json: ', content.slice(start, end + 1))
-			// const payload = JSON.parse(content.slice(start, end + 1))
+			const payload = JSON.parse(content.slice(start, end + 1))
 
-		// 	axios({
-		// 		method: 'GET',
-		// 		url: 'http://127.0.0.1:8000/api/kakao/auth',
-		// 		headers: {
-		// 			'authorization': this.$store.state.token
-		// 		}
-		// 	})
-		// 		.then(() => {
-		// 			axios({
-		// 				method: 'POST',
-		// 				url: 'http://127.0.0.1:8001/api/tmdb/movies',
-		// 				data: payload
-		// 			})
-		// 				.then((res) => {
-		// 					console.log(res)
-		// 					this.$store.dispatch('getMovieList', res)
-		// 				})
-		// 		})
-		// 		.catch((error) => console.log(error))
-		this.$store.dispatch('getMovieList', ml)
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				headers: {
+					'authorization': this.$store.state.token
+				}
+			})
+				.then(() => {
+					axios({
+						method: 'POST',
+						url: 'http://127.0.0.1:8001/api/tmdb/movies',
+						data: payload
+					})
+						.then((res) => {
+							console.log(res)
+							this.$store.dispatch('getMovieList', res)
+						})
+				})
+				.catch((error) => console.log(error))
 		},
 		async askChatGPT() {
 			try {

@@ -16,16 +16,6 @@
           >
             Profile
           </v-list-item>
-          <v-list-item title="Playlists" value="playlist"
-            @click="toArticleListView"
-          >
-            Playlists
-          </v-list-item>
-          <v-list-item title="Logout" value="Logout"
-            @click="deleteToken"
-          >
-            Logout
-          </v-list-item>
         </v-list>
       </v-navigation-drawer>
       <v-app-bar class="transparent" flat>
@@ -45,13 +35,6 @@ export default {
   methods: {
     toProfileView() {
       this.$router.push({name: 'profile', params:{id:1}})
-    },
-    toArticleListView() {
-      this.$router.push({name: 'articleList'})
-    },
-    deleteToken() {
-      this.$store.dispatch('deleteToken')
-      this.$router.push({name: 'login'})
     }
   }
 }
