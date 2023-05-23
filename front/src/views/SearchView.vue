@@ -36,7 +36,7 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn
 								class="searchMenu"
-								color="primary"
+								:color="ask ? 'primary' : 'secondary'"
 								dark
 								v-bind="attrs"
 								v-on="on"
@@ -67,16 +67,31 @@
 		<v-row
 			class="d-flex flex-column"
 			align-content="center"
-			v-if="movieList"
+			v-if="movieList && ask"
 		>
 			<v-col
 				lg="8"
 			>
-					<MovieCard
-						v-for="(movie, index) in movieList"
-						:key="index"
-						:movie="movie"
-					/>
+				<MovieCard
+					v-for="(movie, index) in movieList"
+					:key="index"
+					:movie="movie"
+				/>
+			</v-col>
+		</v-row>
+		<v-row
+			class="d-flex flex-column"
+			align-content="center"
+			v-if="databaseList && !ask"
+		>
+			<v-col
+				lg="8"
+			>
+				<MovieCard
+					v-for="(movie, index) in databaseList"
+					:key="index"
+					:movie="movie"
+				/>
 			</v-col>
 		</v-row>
 
@@ -117,7 +132,6 @@ export default {
 		drawer: null,
 		answer: null,
 		query: null,
-		suggested: null,
 		ask: true,
 		isAsking: false,
 		GPTerror: null,
@@ -125,6 +139,9 @@ export default {
 	computed: {
 		movieList() {
 			return this.$store.state.movieList
+		},
+		databaseList() {
+			return this.$store.state.databaseList
 		},
 		accessToken() {
 			return this.$route.query.access_token
@@ -140,11 +157,11 @@ export default {
 		},	
 		toggleGPT() {
 			this.ask = true
-			this.sendQuery()
+			// this.sendQuery()
 		},
 		toggleDB() {
 			this.ask = false
-			this.sendQuery()
+			// this.sendQuery()
 		},
 		sendQuery() {
 			if (this.isAsking) {
@@ -172,8 +189,7 @@ export default {
 				}
 			})
 				.then((res) => {
-					console.log(res)
-					this.suggested = res.data
+					this.$store.dispatch('updateDatabaseList', res.data)
 					this.isAsking = false
 					this.scrollDown()
 				})
@@ -183,7 +199,7 @@ export default {
 			const start = content.indexOf('{')
 			const end = content.lastIndexOf('}')
 			const payload = JSON.parse(content.slice(start, end + 1))
-
+			console.log('parsed answer:', payload)
 			axios({
 				method: 'GET',
 				url: 'http://127.0.0.1:8000/api/kakao/auth',
@@ -198,16 +214,17 @@ export default {
 						data: payload
 					})
 						.then((res) => {
-							console.log('THIS IS RES: ',res)
 							let temp = []
 							for (const obj of res.data) {
 								let tempObj = obj
-								tempObj.reason = payload.filter().reason
-								temp.push()
+								for (const movieKey in payload.movies) {
+									if (tempObj.title === payload.movies[movieKey].title) {
+										tempObj.reason = payload.movies[movieKey].reason
+										temp.push(tempObj)
+									}
+								}
 							}
-							this.$store.dispatch('getMovieList', res)
-							// res.data: 10array with id, backdrop path etc
-							// need to add reason
+							this.$store.dispatch('updateMovieList', temp)
 							this.scrollDown()
 						})
 				})
@@ -243,7 +260,7 @@ export default {
 								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 						},
 					],
-					temperature: 0.61
+					temperature: 0.62
 				})
 				const content = completion.data.choices[0].message.content
 				this.parseMessage(content)

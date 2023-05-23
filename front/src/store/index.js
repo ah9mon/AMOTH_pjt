@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   ],
   state: {
     movieList: [],
+    databaseList: [],
     token: null,
     user_id: null,
     profile_picture: null,
@@ -20,15 +21,15 @@ const store = new Vuex.Store({
     } 
   },
   mutations: {
-    SAVE_MOVIE_LIST(state, payload) {
+    UPDATE_MOVIE_LIST(state, payload) {
       // state.movieList = state.movieList.concat(payload.data)
-      for (const movie of payload.data) {
-        console.log(movie)
+      for (const movie of payload) {
         let isNew = true
-        for (const haveMovie of state.movieList) {
-          if (haveMovie.movie_id === movie.movie_id) {
-            //updatereason???
+        for (const movieKey in state.movieList) {
+          if (state.movieList[movieKey].movie_id === movie.movie_id) {
             isNew = false
+            state.movieList[movieKey].reason = movie.reason
+            break
           }
         }
         if (isNew) {
@@ -36,9 +37,11 @@ const store = new Vuex.Store({
         }
       }
       // state.movieList = state.movieList.concat(payload)
-      console.log('payload: ',payload)
-      console.log('payload data: ',payload.data)
-      console.log(state.movieList)
+      console.log('updated to local storage:', state.movieList)
+    },
+    UPDATE_DATABASE_LIST(state, payload) {
+      console.log(payload)
+      state.databaseList = state.databaseList.concat(payload)
     },
     SAVE_TOKEN(state, payload) {
       state.token = payload
@@ -55,9 +58,12 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getMovieList(context, payload) {
+    updateMovieList(context, payload) {
       console.log('payload: ', payload)
-      context.commit('SAVE_MOVIE_LIST', payload)
+      context.commit('UPDATE_MOVIE_LIST', payload)
+    },
+    updateDatabaseList(context, payload) {
+      context.commit('UPDATE_DATABASE_LIST', payload)
     },
     saveToken(context, payload) {
       context.commit('SAVE_TOKEN', payload)

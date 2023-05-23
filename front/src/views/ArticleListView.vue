@@ -50,6 +50,7 @@ export default {
 							console.log('articleList: ', res)
 							this.articleList = res.data
 						})
+						.catch((err) => console.log(err))
 				})
 		}
 	},

@@ -80,10 +80,15 @@ export default {
 			this.$router.back()
 		},
     toArticleListView() {
-      this.$router.push({name: 'articleList'})
+			if (this.$route.path === `/article`) {
+				console.log('blocked')
+			} else {
+				this.$router.push({
+					name: 'articleList',
+				})
+			}
     },
 		toProfileView() {
-			console.log(this.$route.path)
 			if (this.$route.path === `/profile/${this.$store.state.user_id}`) {
 				console.log('blocked')
 			} else {
@@ -107,7 +112,13 @@ export default {
       this.$router.push({name: 'login'})
     },
 		articleCreate() {
-			this.$router.push({name:'articleCreate'})
+			if (this.$route.path === `/create`) {
+				console.log('blocked')
+			} else {
+				this.$router.push({
+					name: 'articleCreate',
+				})
+			}
 		},
 	}
 }
