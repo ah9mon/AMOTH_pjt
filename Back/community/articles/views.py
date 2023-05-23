@@ -41,7 +41,7 @@ def article_list(request):
         
         # user_id가 없이 왔으면 -> 게시글 전체보기
         else:
-            articles = get_list_or_404(Article)
+            articles = Article.objects.all()
 
             serializer = ArticleSerializer(articles, many=True)
             serializer_data = serializer.data
@@ -128,7 +128,7 @@ def comment_list(request, article_pk):
 
     # 댓글 생성
     elif request.method == 'POST':
-        article = get_object_or_404(Article, pk=article_pk)
+        article = Article.objects.all()
         serializer = CommentSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
@@ -178,7 +178,7 @@ def like_article(request,article_pk):
                 return Response(status=status.HTTP_200_OK)
 
         # 좋아요 안했으면 좋아요
-        article = get_object_or_404(Article, pk = int(article_id))
+        article = Article.objects.get(id = int(article_id))
         data = {
             'user_id' : user_id,
         }
@@ -186,5 +186,3 @@ def like_article(request,article_pk):
         if serializer.is_valid():
             serializer.save(article=article)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-# 
