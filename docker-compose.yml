@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  back-auth:
+    build:
+      context: ./back/auth
+      dockerfile: dockerfile
+    ports:
+      - 8000:8000
+    image: hangyeoleom/amoth_auth:20230523
+
+  back-tmdb-api:
+    build:
+      context: ./back/tmdb_api
+      dockerfile: dockerfile
+    ports:
+      - 8001:8000
+    image: hangyeoleom/amoth_tmdb_api:20230523
+
+  back-community:
+    build:
+      context: ./back/community
+      dockerfile: dockerfile
+    ports:
+      - 8002:8000
+    image: hangyeoleom/amoth_community:20230523
+
+  back-youtube-api:
+    build:
+      context: ./back/youtube_api
+      dockerfile: dockerfile
+    ports:
+      - 8003:8000
+    image: hangyeoleom/amoth_youtube_api:20230523
+
+  back-translate:
+    build:
+      context: ./back/translate
+      dockerfile: dockerfile
+    ports:
+      - 8004:8000
+    image: hangyeoleom/amoth_translate:20230523
+
+  front-vue-:
+    build:
+      context: ./front
+      dockerfile: dockerfile
+    ports:
+      - 8080:8080
+    image: hangyeoleom/amoth_front:20230523
