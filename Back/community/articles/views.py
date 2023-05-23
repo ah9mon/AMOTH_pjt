@@ -128,7 +128,7 @@ def comment_list(request, article_pk):
 
     # 댓글 생성
     elif request.method == 'POST':
-        article = Article.objects.all()
+        article = Article.objects.get(id=article_pk)
         serializer = CommentSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article)
