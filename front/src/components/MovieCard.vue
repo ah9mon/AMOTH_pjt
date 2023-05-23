@@ -10,7 +10,7 @@
 		</div>
 		<div class='content'>
 			<h2>{{ movie.title }}</h2>
-			{{ movie.answer }}
+			{{ movie.reason }}
 		</div>
 		<div class="soundtracks">
 			<p v-for="(track, index) in soundtracks" :key="index">
@@ -57,8 +57,8 @@ export default {
 .content {
 	flex-basis: 60%;
 	background-color: red;
-	overflow: hidden;
-	white-space: nowrap;
+	overflow:hidden;
+	white-space: pre-wrap;
 	text-overflow: ellipsis;
 }
 .soundtracks {

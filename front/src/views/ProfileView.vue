@@ -1,6 +1,8 @@
 <template>
 	<v-container class="blur big-tile">
-		<v-row>
+		<v-row
+			style="height: 100%"
+		>
 			<!-- left column for profile picture & articles-->
 			<v-col
 				cols="6"
@@ -9,7 +11,10 @@
 					class="profile-picture"
 					style="height: 40%"
 				>
-					<v-img :src="profile_picture" style="height: 100%"></v-img>
+					<v-img 
+					v-if="profile_picture"
+					:src="profile_picture" style="height: 100%"></v-img>
+					<h1 v-else>NO PROFILE PICTURE</h1>
 				</v-row>
 				<v-row
 					class="my-articles"

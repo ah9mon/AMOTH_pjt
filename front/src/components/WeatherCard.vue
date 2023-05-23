@@ -29,8 +29,6 @@ export default {
 					window.navigator.geolocation.getCurrentPosition((pos) => {
 					this.latitude = pos.coords.latitude
 					this.longitude = pos.coords.longitude
-					console.log(this.latitude)
-					console.log(this.longitude)
 					this.getWeather()
 				})
 			} else {
@@ -46,7 +44,6 @@ export default {
 			axios({
 				url: 'https://api.openweathermap.org/data/2.5/weather',
 				method: 'GET',
-				lat: this.latitude,
 				params:params
 			})
 				.then((res) => {

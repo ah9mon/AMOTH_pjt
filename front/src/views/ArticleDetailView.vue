@@ -11,6 +11,14 @@
 				cols="4"
 			>
 				Number of likes
+				
+				{{ isLiked }}
+				{{ likedCount }}
+				<v-btn
+					@click="likeArticle"
+				>
+					LIKE
+				</v-btn>
 			</v-col>
 		</v-row>
 
@@ -22,17 +30,18 @@
 				<h2>{{ article.movie_title }}</h2>
 				<h3>{{ article.music_title }}</h3>
 				{{ article.content }}
-				{{ isLiked }}
-				{{ likedCount }}
-				<v-btn
-					@click="likeArticle"
-				>
-					LIKE
-				</v-btn>
 				<SoundtrackCard
 					v-if="youtubeInfo"
 					:youtube-info="youtubeInfo"
 				/>
+				<v-btn
+					:absolute="true"
+					:bottom="true"
+					:left="true"
+					@click="deleteArticle"
+				>
+					delete article
+				</v-btn>
 
 			</v-col>
 			<v-col
@@ -123,6 +132,17 @@
 									{{ comment.content }}
 								</v-list-item-title>
 							</v-list-item-content>
+							<v-list-item-content>
+								<v-btn
+										v-if="comment.user_id == user_id"
+										@click="deleteComment(comment.id)"
+										max-width="1"
+										:absolute="true"
+										:right="true"
+									>
+										x
+									</v-btn>
+							</v-list-item-content>
 						</v-list-item>
 					</v-list-item-group>
 				</v-list>
@@ -138,14 +158,14 @@ import SoundtrackCard from '@/components/SoundtrackCard.vue'
 export default {
 	name: 'ArticleDetailView',
 	props: {
-		id: Number,
-		article: Object
+		id: String,
 	},
 	components: {
 		SoundtrackCard
 	},
 	data() {
 		return {
+			article: null,
 			comments: null,
 			dialog: false,
 			commentContent: null,
@@ -158,18 +178,35 @@ export default {
 			youtubeInfo: null,
 		}
 	},
+	computed: {
+		user_id() {
+			return this.$store.state.user_id
+		}
+	},
 	methods: {
 		getYoutubeId() {
+			// axios({
+			// 	method: 'GET',
+			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+			// 	params: {
+			// 		'movie_title': this.article.movie_title,
+			// 		'music_title': this.article.music_title
+			// 	}
+			// })
+			// 	.then((res) => {
+			// 		this.youtubeInfo = res.data
+			// 	})
+		},
+		deleteArticle() {
 			axios({
-				method: 'GET',
-				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-				params: {
-					'movie_title': this.article.movie_title,
-					'music_title': this.article.music_title
+				method: 'DELETE',
+				url: `http://127.0.0.1:8002/api/community/articles/${this.id}`,
+				params : {
+					user_id : this.user_id
 				}
 			})
-				.then((res) => {
-					this.youtubeInfo = res.data
+				.then(() => {
+					this.$router.push({name: 'articleList'})
 				})
 		},
 		likeArticle() {
@@ -177,7 +214,7 @@ export default {
 				method: 'POST',
 				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/likes`,
 				data: {
-					user_id: this.$store.state.user_id
+					user_id: this.user_id
 				}
 			})
 				.then(() => {
@@ -187,14 +224,16 @@ export default {
 		getArticle() {
 			axios({
 				method: 'GET',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}`,
+				url: `http://127.0.0.1:8002/api/community/articles/${this.id}`,
 				params : {
-					user_id : this.$store.state.user_id
+					user_id : this.user_id
 				}
 
 			})
 				.then((res) => {
+					console.log(res.data)
 					this.likedCount = res.data.liked_count,
+					this.article = res.data.article,
 					this.isLiked = res.data.liked
 					this.getYoutubeId()
 				})
@@ -202,10 +241,22 @@ export default {
 		getComments() {
 			axios({
 				method: 'GET',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/comments`
+				url: `http://127.0.0.1:8002/api/community/articles/${this.id}/comments`
 			})
 				.then((res) => {
 					this.comments = res.data
+				})
+		},
+		deleteComment(comment_pk) {
+			axios({
+				method: 'DELETE',
+				url: `http://127.0.0.1:8002/api/community/comments/${comment_pk}`,
+				params: {
+					'user_id': this.user_id
+				}
+			})
+				.then(() => {
+					this.getComments()
 				})
 		},
 		closeCommentDialog() {
@@ -219,7 +270,7 @@ export default {
 				method: 'POST',
 				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/comments`,
 				data: {
-					user_id: this.$store.state.user_id,
+					user_id: this.user_id,
 					content: temp
 				}
 			})
