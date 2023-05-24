@@ -1,13 +1,14 @@
 0. 기능
-	- 처음 열 때 날씨 추천 받기
-	- movie card에 reason 추가, store에 저장 및 필요시 업데이트
-	- article, comment 삭제 기능 추가
-	- GPT / DB 검색 결과 toggle 및 검색 버튼 색 변경
+	- ArticleListView Pagination OK
 
 1. 디자인
 	- primary 등 색 변경
 	- profile 세로 길이 설정
-	- 동적으로 배경 이미지(backdrop) 설정
+	- MovieDetail 세로 길이 조절 OK
+	- 세 로 길 이 
+	- 동적으로 배경 이미지(backdrop) 설정 OK
+	- comments, liked articles 등 스크롤 디자인 설정 OK
+	- profile picture 잘라서 가져오기?
 
 2. 기타
 	- readme 작성

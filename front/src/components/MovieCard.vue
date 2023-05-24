@@ -1,7 +1,7 @@
 <template>
 	<v-card 
-		v-if="movie" tile
-		class="mt-3 pa-1 blur d-flex flex-no-wrap" 
+		v-if="movie" 
+		class="mt-3 pa-1 d-flex flex-no-wrap blur" 
 		style="height:140px"
 		@click="toMovieDetail"
 	>
@@ -38,9 +38,8 @@ export default {
 		toMovieDetail() {
 			this.$router.push({
 				name:'movieDetail',
-				params: {id: this.movie.id}
+				params: {id: String(this.movie.id)}
 			})
-			console.log(this.movie.id)
 		},
 	}
 
@@ -56,14 +55,14 @@ export default {
 }
 .content {
 	flex-basis: 60%;
-	background-color: red;
+	/* background-color: red; */
 	overflow:hidden;
 	white-space: pre-wrap;
 	text-overflow: ellipsis;
 }
 .soundtracks {
 	flex-basis: 30%;
-	background-color: blue;
+	/* background-color: blue; */
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;

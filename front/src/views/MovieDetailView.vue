@@ -1,17 +1,22 @@
 <template>
-	<v-container class="blur big-tile">
+	<v-container class="blur big-tile" :fluid="true">
 		<!-- poster & youtube -->
 		<v-row
-			class="d-flex"
 		>
 			<v-col
 				cols="4"
+				lg="3"
 				class="pa-1"
 			>
-				<v-img  style="width:100px height:425px" :src="posterURL + movie.poster_path"></v-img>
+				<v-img 
+					contain
+					style="max-height: 500px; min-width:105px"
+					:src="posterURL + movie.poster_path"
+				></v-img>
 			</v-col>
 			<v-col
 				cols="8"
+				lg="9"
 				class="pa-1"
 			>
 				<iframe width="100%" height="100%"
@@ -22,26 +27,34 @@
 		</v-row>
 
 		<!-- content -->
-		<v-row>
+		<v-row
+		>
 			<v-col
-				cols="4"
-				class="d-flex flex-column"
+				cols="12"
+				lg="8"
 			>
-				<div style="height: 100px">
-					{{ movie.title }}
-					{{ movie }}
-				</div>
-				<div style="height: 200px">
-				</div>
+				<v-row>
+					<v-col>
+						<h1>
+							{{ movie.title }}
+						</h1>
+					</v-col>
+				</v-row>
 
+				<v-row>
+					<v-col>
+						{{ movie.overview }}
+					</v-col>
+				</v-row>
 			</v-col>
 			<v-col
-				cols="8"
+				cols="12"
+				lg="4"
 			>
-				<!-- <iframe width="100%" height="100%"
-					:src='youtubeListURL + soundtrackId'
-					allowfullscreen
-				></iframe> -->
+				<SoundtrackCard
+					v-if="youtubeInfo"
+					:youtube-info="youtubeInfo"
+				/>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -49,27 +62,46 @@
 
 <script>
 import axios from 'axios'
+import imgURL from '@/assets/Background.jpg'
+import SoundtrackCard from '@/components/SoundtrackCard.vue'
 
 export default {
 	name: 'MovieDetail',
+	components: {
+		SoundtrackCard
+	},
 	props: {
-		id: Number
+		id: String
 	},
 	data () {
 		return {
-			posterURL: 'https://image.tmdb.org/t/p/w780',
+			posterURL: 'https://image.tmdb.org/t/p/w500',
+			backdropURL: 'https://image.tmdb.org/t/p/original',
 			youtubeURL: 'https://www.youtube.com/embed/',
 			youtubeId: null,
-			youtubeListURL: 'https://www.youtube.com/embed/videoseries?list=',
-			soundtrackId: null
+			soundtrackId: null,
+			youtubeInfo: null
 		}
 	},
 	computed: {
 		movie() {
-			return this.$store.getters.getMovie(this.id)
+			return this.$store.getters.getMovie(Number(this.id))
 		},
 	},
 	methods: {
+		getYoutubeInfo() {
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+				params: {
+					'movie_title': this.movie.title,
+				}
+			})
+				.then((res) => {
+					console.log(res.data)
+					this.youtubeInfo = res.data
+				})
+		},
 		getSoundtracks() {
 			axios({
 				method: 'GET',
@@ -85,7 +117,10 @@ export default {
 		}
 	},
 	created() {
-		console.log('why???', this.$router)
+		window.scroll({
+				top: 0,
+				left: 0,
+		})
 		axios({
 			method: 'GET',
 			url: `https://api.themoviedb.org/3/movie/${String(this.movie.movie_id)}/videos`,
@@ -104,7 +139,20 @@ export default {
 			.catch((err) => {
 				console.log(err)
 			})
-		this.getSoundtracks()
+		this.getYoutubeInfo()
+	},
+	mounted() {
+		const style1 = `background-image: url(${this.backdropURL}${this.movie.backdrop_path});`
+		const style2 = `background-position: center center;`
+		const style3 = `background-attachment: fixed;`
+		document.querySelector('#background').setAttribute('style', style1 + style2 + style3)
+	},
+	beforeDestroy() {
+		const style1 = `background-image: url("${imgURL}");`
+		const style2 = `background-position: center center;`
+		const style3 = `background-attachment: fixed;`
+		document.querySelector('#background').setAttribute('style', style1 + style2 + style3)
+		
 	}
 
 }

@@ -113,7 +113,6 @@
 				
 				<!-- comments -->
 				<v-list dense
-					class="overflow-y-auto"
 					max-height="85%"
 					width="100%"
 					:flat=true
@@ -185,17 +184,17 @@ export default {
 	},
 	methods: {
 		getYoutubeId() {
-			// axios({
-			// 	method: 'GET',
-			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-			// 	params: {
-			// 		'movie_title': this.article.movie_title,
-			// 		'music_title': this.article.music_title
-			// 	}
-			// })
-			// 	.then((res) => {
-			// 		this.youtubeInfo = res.data
-			// 	})
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+				params: {
+					'movie_title': this.article.movie_title,
+					'music_title': this.article.music_title
+				}
+			})
+				.then((res) => {
+					this.youtubeInfo = res.data
+				})
 		},
 		deleteArticle() {
 			axios({
@@ -207,6 +206,9 @@ export default {
 			})
 				.then(() => {
 					this.$router.push({name: 'articleList'})
+				})
+				.catch(() => {
+					alert('본인이 작성한 게시글이 아닙니다!')
 				})
 		},
 		likeArticle() {

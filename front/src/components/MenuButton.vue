@@ -23,12 +23,12 @@
         >
           Logout
         </v-list-item>
-				<v-list-item
-            @click="toProfileView"
-						:style="'background: url(' + this.$store.state.profile_picture + ')'"
-						class="back"
-        >
-          <span style="color: white">Profile</span>
+				<v-list-item 
+					@click="toProfileView"
+					class="text-color white--text"
+					:style="'background-image: url(' + this.$store.state.profile_picture + ');' + '\nbackground-position: center center;'"
+					>
+					Profile
         </v-list-item>
 				<v-list-item
           @click="toArticleListView"
@@ -94,7 +94,7 @@ export default {
 			} else {
 				this.$router.push({
 					name: 'profile',
-					params: {id: this.$store.state.user_id}
+					params: {id: String(this.$store.state.user_id)}
 				})
 			}
 		},
@@ -125,8 +125,9 @@ export default {
 </script>
 
 <style>
-.back {
-	background: url('@/assets/Background.jpg');
-	background-size: auto 100%;
+.text-color {
+	/* mix-blend-mode: difference; */
+	text-shadow: 0px 0px 5px black;
+	background-position: center;
 }
 </style>

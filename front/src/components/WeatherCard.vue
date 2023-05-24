@@ -5,9 +5,8 @@
 				class="blur"
 				align="center"
 			>
-				<h1 @click="getWeather" style="color:white">WEATHER</h1>
-				<h4>{{ latitude }} / {{ longitude }}</h4>
-				<h2 style="color:white">{{ weather }}</h2>
+				<h1 class="weather-title" @click="getWeather">WEATHER</h1>
+				<h2 class="weather">{{ weather }}</h2>
 			</v-col>
 		</v-row>
 </template>
@@ -65,5 +64,11 @@ export default {
 </script>
 
 <style>
-
+.weather-title {
+	color: black;
+	letter-spacing: 0.5rem;
+}
+.weather {
+	color: black;
+}
 </style>
