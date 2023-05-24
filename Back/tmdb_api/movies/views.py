@@ -24,9 +24,10 @@ BASE_url = "https://api.themoviedb.org/3/search/movie"
 # Create your views here.
 
 
-######################################
-############ API ################
 ################################
+############ API ###############
+################################
+
 def get_movie_in_tmdbapi(movie_title, release_data):
     '''
     TMDB API를 이용해서 영화 데이터 가져오는 함수  
@@ -58,29 +59,23 @@ def get_movie_in_tmdbapi(movie_title, release_data):
 
 def detect_lang(q):
     papago_detect_url = f"http://127.0.0.1:8004/api/papago/detect?q={q}" # 검색어만 prams넣고 보내기
-
     detected = requests.get(papago_detect_url)
     return detected.json().get('langCode')
 
 def translate_q(q,lang):
     papago_translate_url = f"http://127.0.0.1:8004/api/papago/translate?q={q}&lang={lang}"  # 검색어와 언어감지 결과 같이 보내기 
-
     translated = requests.get(papago_translate_url)
     return translated.json().get('message').get('result').get('translatedText')
 
 ###################################
 ###################################
-####################################
+###################################
 
 # tmdb에서 영화리스트 데이터 가져오기 
 @api_view(['POST']) # gpt, 내가 본 영화등록 : POST / CRUD의 사운드 트랙 게시글은 GET
 def movies_data(request):
     '''
-    POST
-    1. 메인페이지 추천영화 gpt한테 받은 movie이름으로 영화 검색 -> DB에 있는 영화면 저장 x, DB에 없는 영화면 저장   
-    2. user의 단일 영화 검색 (게시글 작성할때)
-
-    front에서 줘야할 json 데이터 
+    front에서 줘야할 데이터 
     { 
     	movies :  {
     		movie1 : {
@@ -106,7 +101,6 @@ def movies_data(request):
             for key, value in movies.items():
                 title = value.get('title')
                 release_date = value.get('release_date')
-                # print(title, release_date)
                 movie = get_movie_in_tmdbapi(title,release_date) # TMDB에서 영화 데이터 가져오기 
 
                 # gpt가 잘못된 데이터 줬으면 아래 코드 생략
@@ -152,11 +146,9 @@ def movies_data(request):
 @api_view(['POST'])
 def get_movie_in_db(request):
     q = request.GET.get('q') # 검색어가 params로 넘어옴
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',q)
     lang = detect_lang(q) # 검색어 언어감지
     translated_text = translate_q(q,lang) # 검색어 영어로 번역 
     translated_text_list = translated_text.split() # 검색
-    print('-------------------------',translated_text_list) 
 
     find_movies = []
     movies = Movie.objects.all()
@@ -173,7 +165,3 @@ def get_movie_in_db(request):
     find_movies = temp
     serializer = MovieSerializer(find_movies, many=True)
     return Response(serializer.data)
-
-# 내가 본영화 
-# 만드려면 Like 처럼 해야함-> tmdb api 기능만을 했으면 좋겠음 
-# 좋아요한 게시글(음악) 이면 충분하지 않을지 ?? 
