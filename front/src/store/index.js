@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     movieList: [],
     databaseList: [],
     token: null,
+    source: null,
     user_id: null,
     profile_picture: null,
   },
@@ -33,7 +34,8 @@ const store = new Vuex.Store({
           }
         }
         if (isNew) {
-          state.movieList = state.movieList.concat(movie)
+          // state.movieList = state.movieList.concat(movie)
+          state.movieList.splice(0, 0, movie)
         }
       }
       // state.movieList = state.movieList.concat(payload)
@@ -41,10 +43,13 @@ const store = new Vuex.Store({
     },
     UPDATE_DATABASE_LIST(state, payload) {
       console.log(payload)
-      state.databaseList = state.databaseList.concat(payload)
+      state.databaseList = payload.concat(state.databaseList)
     },
     SAVE_TOKEN(state, payload) {
       state.token = payload
+    },
+    SAVE_SOURCE(state, payload) {
+      state.source = payload
     },
     DELETE_LOCAL_STORE(state) {
       state.movieList = []
@@ -67,6 +72,9 @@ const store = new Vuex.Store({
     },
     saveToken(context, payload) {
       context.commit('SAVE_TOKEN', payload)
+    },
+    saveSource(context, payload) {
+      context.commit('SAVE_SOURCE', payload)
     },
     deleteLocalStore(context) {
       context.commit('DELETE_LOCAL_STORE')

@@ -6,10 +6,10 @@
 		>
 			<v-col
 				lg="10"
-				style="padding-top: 3%"
+				style="max-height: 90vh;"
 			>
 				<ArticleCard
-					v-for="(article, index) in articleList.slice((page - 1) * 8, page * 8)"
+					v-for="(article, index) in articleList.slice((page - 1) * 9, page * 9)"
 					:key="index"
 					:article="article"
 				/>
@@ -49,7 +49,7 @@ export default {
 		getArticleList() {
 			axios({
 				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				url: `http://127.0.0.1:8000/api/${this.$store.state.source}/auth`,
 				headers: {
 					'authorization': this.$store.state.token
 				}

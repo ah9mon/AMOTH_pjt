@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container id="search">
 		<!-- side bar -->
 		<!-- <SideBar/> -->
 		<!-- weather -->
@@ -62,6 +62,21 @@
 				</v-col>
 			</v-row>
 		
+		<!-- loading -->
+		<v-row
+			justify="center"
+			class="mt-6 mb-1"
+		>
+			<v-progress-circular
+				color="primary"
+				indeterminate
+				v-if="isAsking"
+				size="100"
+				width="8"
+			>
+			</v-progress-circular>
+			<h1>{{ GPTerror }}</h1>
+		</v-row>
 
 		<!-- Movie Cards -->
 		<v-row
@@ -95,24 +110,6 @@
 			</v-col>
 		</v-row>
 
-		<!-- loading -->
-		<v-row
-			justify="center"
-			class="mt-5 mb-5"
-		>
-			<v-progress-circular
-				color="primary"
-				indeterminate
-				v-if="isAsking"
-				size="100"
-				width="10"
-			>
-			</v-progress-circular>
-			<h1>{{ GPTerror }}</h1>
-			<div style="height: 100px">
-				
-			</div>
-		</v-row>
 	</v-container>
 </template>
 
@@ -148,9 +145,9 @@ export default {
 		}
 	},
 	methods: {
-		scrollDown() {
+		scrollUp() {
 			window.scroll({
-				top: document.body.scrollHeight,
+				top: 0,
 				left: 0,
 				behavior: 'smooth'
 			})
@@ -175,7 +172,6 @@ export default {
 			} else {
 				this.findDB()
 			}
-			this.scrollDown()
 		},
 		getWeather(weather) {
 			this.weather = weather
@@ -191,7 +187,8 @@ export default {
 				.then((res) => {
 					this.$store.dispatch('updateDatabaseList', res.data)
 					this.isAsking = false
-					this.scrollDown()
+					this.scrollUp()
+					this.query = null
 				})
 		},
 		parseMessage(content) {
@@ -202,7 +199,7 @@ export default {
 			console.log('parsed answer:', payload)
 			axios({
 				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				url: `http://127.0.0.1:8000/api/${this.$store.state.source}/auth`,
 				headers: {
 					'authorization': this.$store.state.token
 				}
@@ -225,7 +222,8 @@ export default {
 								}
 							}
 							this.$store.dispatch('updateMovieList', temp)
-							this.scrollDown()
+							this.scrollUp()
+							this.query = null
 						})
 				})
 				.catch((error) => console.log(error))
@@ -276,6 +274,9 @@ export default {
 </script>
 
 <style>
+#search {
+	max-height: none;
+}
 .hamburger {
 	color:white !important;
 	font-size: large !important;

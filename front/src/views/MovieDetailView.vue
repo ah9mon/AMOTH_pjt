@@ -90,17 +90,17 @@ export default {
 	},
 	methods: {
 		getYoutubeInfo() {
-			axios({
-				method: 'GET',
-				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-				params: {
-					'movie_title': this.movie.title,
-				}
-			})
-				.then((res) => {
-					console.log(res.data)
-					this.youtubeInfo = res.data
-				})
+			// axios({
+			// 	method: 'GET',
+			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+			// 	params: {
+			// 		'movie_title': this.movie.title,
+			// 	}
+			// })
+			// 	.then((res) => {
+			// 		console.log(res.data)
+			// 		this.youtubeInfo = res.data
+			// 	})
 		},
 		getSoundtracks() {
 			axios({
