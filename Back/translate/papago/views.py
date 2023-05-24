@@ -55,5 +55,4 @@ def translate_to_use_papago(request):
         "text" : q
     }
     translated = requests.post(translate_url, headers=headers, data=body)
-    # print(translated.json())
     return Response(translated.json())

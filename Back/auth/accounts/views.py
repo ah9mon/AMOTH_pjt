@@ -58,7 +58,7 @@ def get_access_token(code):
     
     # post로 요청 
     token_data = requests.post(token_url, data=data).json()
-    print(token_data)
+
     access_token = token_data.get('access_token')
     # token_type = token_res.json().get('token_type')
     # refresh_token = token_res.json().get('refresh_token')
@@ -68,7 +68,6 @@ def get_access_token(code):
 ###########################
 ### 카카오 로그인 및 회원가입 ###
 ###########################
-
 
 def KakaoLogin(request):
     # 1. 인가 코드 받기 요청 
@@ -111,16 +110,14 @@ def KakaoCallback(request):
     }
     
     return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}')
-    # return JsonResponse(context, status=status.HTTP_200_OK) # 발급 받았던 토큰 프론트로 넘겨주기 
 
 ###########################
 ##### 사용자 로그인 처리 #####
 ###########################
 
-
 def KakaoAuth(request):
     access_token = request.META.get('HTTP_AUTHORIZATION')
-    print(access_token)
+
     user = get_userdata(access_token)
 
     # 토큰이 유효해서 사용자 정보를 가져오기 성공했으면
@@ -138,7 +135,6 @@ def KakaoAuth(request):
     
     # 토큰이 유효하지 않으면 로그인 페이지로 redirect
     else:
-        print('>>>')
         login_url = 'http://127.0.0.1:8000/api/kakao'
         return redirect(login_url)
 
