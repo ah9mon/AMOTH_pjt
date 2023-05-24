@@ -54,7 +54,6 @@ def article_list(request):
         serializer = ArticleSerializer(data = request.data) # 역직렬화
         if serializer.is_valid(raise_exception=True): # 유효성 검사 / 실패하면 400code 
             serializer.save()
-            print(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED) # 직렬화해서 상태코드랑 같이 보내기
 
 @api_view(['GET','DELETE','PUT'])
@@ -103,7 +102,6 @@ def article_detail(request, article_pk):
             article.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
-            print('권한없어서 삭제 불가')
             return Response(status=status.HTTP_401_UNAUTHORIZED)
     
     # 게시글 수정
@@ -122,7 +120,6 @@ def comment_list(request, article_pk):
     # 해당 게시글의 댓글 불러오기 
     if request.method == 'GET': 
         comments = Comment.objects.filter(article = article_pk)
-        print(comments)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -165,7 +162,6 @@ def like_article(request,article_pk):
     '''
     if request.method =='POST':
         user_id = request.data.get('user_id')
-        print(user_id)
         article_id = article_pk
         likes = Like.objects.filter(user_id = user_id) # 요청 보낸 유저가 좋아요한 게시글 리스트 다 받기 
         
