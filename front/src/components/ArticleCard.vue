@@ -1,8 +1,9 @@
 <template>
 	<v-card 
 		v-if="article"
-		class="article-card mt-3 pa-1 d-flex flex-no-wrap" 
+		class="article-card mt-3 pa-1 d-flex flex-no-wrap"
 		@click="toArticleDetail"
+		tile
 	>
 
 		<div class="writer">
@@ -92,7 +93,6 @@ export default {
 	overflow: hidden;
 	white-space: nowrap;
 	padding-left: 1vh;
-	border-right-color: black;
 	border-right-style: solid;
 }
 .title {

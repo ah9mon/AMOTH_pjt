@@ -1,9 +1,10 @@
 <template>
 	<v-card 
 		v-if="movie" 
-		class="mt-3 pa-1 d-flex flex-no-wrap blur" 
-		style="height:140px"
+		class="mt-3 pt-1 d-flex flex-no-wrap blur" 
+		style="height:110px"
 		@click="toMovieDetail"
+		tile
 	>
 		<div class="poster">
 			<v-img :src="url + movie.poster_path" contain class="posterImage"></v-img>
@@ -48,7 +49,7 @@ export default {
 
 <style>
 .posterImage {
-	height: 132px;
+	height: 103px;
 }
 .poster {
 	flex-basis: 10%;

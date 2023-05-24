@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     source: null,
     user_id: null,
     profile_picture: null,
+    darkmode: true
   },
   getters: {
     getMovie: (state) => (id) => {
@@ -52,14 +53,20 @@ const store = new Vuex.Store({
       state.source = payload
     },
     DELETE_LOCAL_STORE(state) {
+      console.log('logout and delet local storage')
       state.movieList = []
+      state.databaseList = []
       state.token = null
+      state.source = null
       state.user_id = null
       state.profile_picture = null
     },
     SAVE_USER_INFO(state, payload) {
       state.user_id = payload.user_id
       state.profile_picture = payload.profile_picture
+    },
+    TOGGLE_DARK_MODE(state, payload) {
+      state.darkmode = payload
     }
   },
   actions: {
@@ -81,6 +88,9 @@ const store = new Vuex.Store({
     },
     saveUserInfo(context, payload) {
       context.commit('SAVE_USER_INFO', payload)
+    },
+    toggleDarkMode(context, payload) {
+      context.commit('TOGGLE_DARK_MODE', payload)
     }
   },
   modules: {

@@ -1,7 +1,7 @@
 <template>
 	<v-container class="blur big-tile">
 		<v-row
-			v-if="articleList"
+			v-if="pageLength"
 			justify="center"
 		>
 			<v-col
@@ -42,6 +42,9 @@ export default {
 	},
 	computed: {
 		pageLength() {
+			if (this.articleList === null) {
+				return 0
+			}
 			return Math.ceil(this.articleList.length / 8)
 		}
 	},
@@ -74,6 +77,7 @@ export default {
 	},
 	created() {
 		this.getArticleList()
+		console.log('aaaa',this.articleList)
 	}
 }
 </script>

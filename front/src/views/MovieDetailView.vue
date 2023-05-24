@@ -62,7 +62,7 @@
 
 <script>
 import axios from 'axios'
-import imgURL from '@/assets/Background.jpg'
+// import imgURL from '@/assets/Background.jpg'
 import SoundtrackCard from '@/components/SoundtrackCard.vue'
 
 export default {
@@ -87,6 +87,14 @@ export default {
 		movie() {
 			return this.$store.getters.getMovie(Number(this.id))
 		},
+		isDark() {
+			return this.$vuetify.theme.dark
+		}
+	},
+	watch: {
+		isDark() {
+			this.changeMode()
+		}
 	},
 	methods: {
 		getYoutubeInfo() {
@@ -114,6 +122,14 @@ export default {
 					console.log(this.soundtrackId)
 				})
 				.catch((err) => console.log(err))
+		},
+		changeMode() {
+			const darkstyle = `background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(${this.backdropURL}${this.movie.backdrop_path});`
+			const lightstyle = `background-image: url(${this.backdropURL}${this.movie.backdrop_path});`
+			const style2 = `background-position: center center;`
+			const style3 = `background-attachment: fixed;`
+			const style1 = this.$vuetify.theme.dark ? darkstyle : lightstyle
+			document.querySelector('#background').setAttribute('style', style1 + style2 + style3)
 		}
 	},
 	created() {
@@ -142,17 +158,13 @@ export default {
 		this.getYoutubeInfo()
 	},
 	mounted() {
-		const style1 = `background-image: url(${this.backdropURL}${this.movie.backdrop_path});`
-		const style2 = `background-position: center center;`
-		const style3 = `background-attachment: fixed;`
-		document.querySelector('#background').setAttribute('style', style1 + style2 + style3)
+		this.changeMode()
 	},
 	beforeDestroy() {
-		const style1 = `background-image: url("${imgURL}");`
-		const style2 = `background-position: center center;`
-		const style3 = `background-attachment: fixed;`
-		document.querySelector('#background').setAttribute('style', style1 + style2 + style3)
-		
+		const lightBackground = `background: ${this.$vuetify.theme.themes.light.background.base};`
+		const darkBackground = `background: ${this.$vuetify.theme.themes.dark.background.base};`
+		const background = this.isDark ? darkBackground : lightBackground
+		document.querySelector('#background').setAttribute('style', background)
 	}
 
 }
