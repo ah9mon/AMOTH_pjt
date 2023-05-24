@@ -24,4 +24,20 @@ export default {
 </script>
 
 <style>
+.container {
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  width: 0.5em; /* 스크롤바 너비 */
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: transparent; /* 스크롤바 트랙 배경색 */
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgb(129, 129, 129); /* 스크롤바 색상 */
+}
 </style>

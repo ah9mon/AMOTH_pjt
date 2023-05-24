@@ -250,7 +250,7 @@ export default {
 						},
 						{
 							role: "user",
-							content: `And ${this.query}. Please recommend 10 movies in JSON format. {
+							content: `And ${this.query}. Please recommend 10 movies perfect for weather like "${this.weather}" in JSON format. {
 								"movies" : {
 									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
 									"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
@@ -289,6 +289,6 @@ export default {
 .searchMenu {
 	position: absolute;
 	top: 24%;
-	right: 4.5%;
+	right: 1vw;
 }
 </style>

@@ -1,17 +1,24 @@
 <template>
-	<v-container class="blur big-tile d-flex">
+	<v-container class="blur big-tile">
 		<v-row
 			v-if="articleList"
+			justify="center"
 		>
 			<v-col
 				lg="10"
+				style="padding-top: 3%"
 			>
 				<ArticleCard
-					v-for="(article, index) in articleList"
+					v-for="(article, index) in articleList.slice((page - 1) * 8, page * 8)"
 					:key="index"
 					:article="article"
 				/>
-				<!-- need pagination! -->
+				<!-- pagination! -->
+				<v-pagination
+					class="pagination"
+					v-model="page"
+					:length="pageLength"
+				></v-pagination>
 			</v-col>
 		</v-row>
 		<h1 v-else>NO ARTICLE</h1>
@@ -29,7 +36,13 @@ export default {
 	},
 	data() {
 		return {
-			articleList: null
+			articleList: null,
+			page: 1,
+		}
+	},
+	computed: {
+		pageLength() {
+			return Math.ceil(this.articleList.length / 8)
 		}
 	},
 	methods: {
@@ -54,6 +67,11 @@ export default {
 				})
 		}
 	},
+	watch: {
+		page() {
+			console.log(this.page)
+		}
+	},
 	created() {
 		this.getArticleList()
 	}
@@ -61,5 +79,4 @@ export default {
 </script>
 
 <style>
-
 </style>

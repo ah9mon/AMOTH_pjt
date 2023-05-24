@@ -1,7 +1,7 @@
 <template>
 	<a 
 		target="_blank"
-		:href="youtubeURL + youtubeInfo.id.videoId" 
+		:href="goId" 
 	>
 		<v-img 
 			style="width:100px height:425px" :src="youtubeInfo.thumbnails.url">
@@ -18,6 +18,18 @@ export default {
 	data() {
 		return {
 			youtubeURL: 'https://www.youtube.com/watch?v=',
+			youtubePlaylistURL: 'https://www.youtube.com/watch?v=?????&list=',
+			videoId: this.youtubeInfo.id.videoId,
+			playlistId: this.youtubeInfo.id.playlistId,
+		}
+	},
+	computed: {
+		goId() {
+			if (this.videoId === undefined) {
+				return this.youtubePlaylistURL + this.playlistId
+			} else {
+				return this.youtubeURL + this.videoId
+			}
 		}
 	}
 }

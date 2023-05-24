@@ -39,7 +39,7 @@ export default {
 
 <style>
 .article-card {
-	height: 10%;
+	height: 8.5%;
 }
 .writer {
 	flex-basis: 20%;

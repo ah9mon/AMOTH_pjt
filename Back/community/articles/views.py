@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 
 # DRF
 from rest_framework.response import Response
@@ -28,8 +28,8 @@ def article_list(request):
 
         # user_id가 요청에 섞여왔으면 -> 마이페이지의 내가 쓴 게시글, 좋아요한 게시글 전체보기
         if user_id :
-            my_articles = get_list_or_404(Article, user_id = user_id) # 나의 게시글
-            liked_article = get_list_or_404(Like, user_id = user_id) # 내가 좋아요한 게시글
+            my_articles = Article.objects.filter(user_id = user_id) # 나의 게시글
+            liked_article = Like.objects.filter(user_id = user_id) # 내가 좋아요한 게시글
 
             my_serializer = ArticleSerializer(my_articles, many=True)
             liked_serializer = LikeSerializer(liked_article, many=True)
