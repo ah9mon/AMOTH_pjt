@@ -113,7 +113,7 @@ def KakaoCallback(request):
         'access_token' : access_token 
     }
     
-    return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}&source=Kakao')
+    return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}&source=kakao')
 
 ###########################
 ##### 사용자 로그인 처리 #####
@@ -192,8 +192,8 @@ def NaverCallback(request):
         existing_user = users.filter(email = email)
         if not existing_user: # DB에 없는 사용자면 
             serializer.save()
-    print('>>>')
-    return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}&source=Naver')
+
+    return HttpResponseRedirect(f'http://127.0.0.1:8080/login?access_token={access_token}&source=naver')
 
 ##########################
 ##### 사용자 로그인 처리 #####
@@ -208,11 +208,10 @@ def NaverAuth(request):
         "Authorization" : f'Bearer {access_token}'
     }
     user = requests.get(url, headers=headers)
-    print(user.json())
 
     # 토큰이 유효해서 사용자 정보를 가져오기 성공했으면
     if user:
-        email = user.json().get('kakao_account').get('email')
+        email = user.json().get('response').get('email')
         userdata = get_object_or_404(User, email = email)
         serializer = UserSerializer(userdata)
         user_id = serializer.data.get('id')
