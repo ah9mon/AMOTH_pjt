@@ -4,21 +4,20 @@
 		<v-row class="top-row">
 			<v-col
 				cols="8"
+				class="text-box"
 			>
 				<h1>{{ article.title }}</h1>
 			</v-col>
 			<v-col
 				cols="4"
+				class="pa-5"
 			>
-				Number of likes
-				
-				{{ isLiked }}
-				{{ likedCount }}
-				<v-btn
-					@click="likeArticle"
-				>
-					LIKE
-				</v-btn>
+				<LikeButton
+					:isLiked="isLiked"
+					:article="article"
+					:likedCount="likedCount"
+					@update="getArticle"
+				/>
 			</v-col>
 		</v-row>
 
@@ -26,6 +25,7 @@
 		<v-row>
 			<v-col
 				cols="8"
+				class="text-box"
 			>
 				<h2>{{ article.movie_title }}</h2>
 				<h3>{{ article.music_title }}</h3>
@@ -153,6 +153,7 @@
 <script>
 import axios from 'axios'
 import SoundtrackCard from '@/components/SoundtrackCard.vue'
+import LikeButton from '@/components/LikeButton.vue'
 
 export default {
 	name: 'ArticleDetailView',
@@ -160,7 +161,8 @@ export default {
 		id: String,
 	},
 	components: {
-		SoundtrackCard
+		SoundtrackCard,
+		LikeButton
 	},
 	data() {
 		return {
@@ -184,17 +186,17 @@ export default {
 	},
 	methods: {
 		getYoutubeId() {
-			axios({
-				method: 'GET',
-				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-				params: {
-					'movie_title': this.article.movie_title,
-					'music_title': this.article.music_title
-				}
-			})
-				.then((res) => {
-					this.youtubeInfo = res.data
-				})
+			// axios({
+			// 	method: 'GET',
+			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+			// 	params: {
+			// 		'movie_title': this.article.movie_title,
+			// 		'music_title': this.article.music_title
+			// 	}
+			// })
+			// 	.then((res) => {
+			// 		this.youtubeInfo = res.data
+			// 	})
 		},
 		deleteArticle() {
 			axios({
@@ -209,18 +211,6 @@ export default {
 				})
 				.catch(() => {
 					alert('본인이 작성한 게시글이 아닙니다!')
-				})
-		},
-		likeArticle() {
-			axios({
-				method: 'POST',
-				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/likes`,
-				data: {
-					user_id: this.user_id
-				}
-			})
-				.then(() => {
-					this.getArticle()
 				})
 		},
 		getArticle() {
@@ -286,7 +276,7 @@ export default {
 	created() {
 		axios({
 				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				url: `http://127.0.0.1:8000/api/${this.$store.state.source}/auth`,
 				headers: {
 					'authorization': this.$store.state.token
 				}
@@ -303,7 +293,11 @@ export default {
 <style>
 .top-row {
 	border-bottom-style: solid;
-	height: 12%;
+	height: 8vh;
 }
-
+.text-box {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
 </style>

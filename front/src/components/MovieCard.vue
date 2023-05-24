@@ -54,17 +54,10 @@ export default {
 	flex-basis: 10%;
 }
 .content {
-	flex-basis: 60%;
+	flex-basis: 88%;
 	/* background-color: red; */
 	overflow:hidden;
 	white-space: pre-wrap;
-	text-overflow: ellipsis;
-}
-.soundtracks {
-	flex-basis: 30%;
-	/* background-color: blue; */
-	overflow: hidden;
-	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 </style>

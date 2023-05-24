@@ -4,7 +4,7 @@
 		:href="goId" 
 	>
 		<v-img 
-			style="width:100px height:425px" :src="youtubeInfo.thumbnails.url">
+			style="max-height:59vh;" :src="youtubeInfo.thumbnails.url">
 		</v-img>
 	</a>
 </template>
@@ -18,7 +18,7 @@ export default {
 	data() {
 		return {
 			youtubeURL: 'https://www.youtube.com/watch?v=',
-			youtubePlaylistURL: 'https://www.youtube.com/watch?v=?????&list=',
+			youtubePlaylistURL: 'https://www.youtube.com/watch?v=&list=',
 			videoId: this.youtubeInfo.id.videoId,
 			playlistId: this.youtubeInfo.id.playlistId,
 		}
@@ -26,7 +26,7 @@ export default {
 	computed: {
 		goId() {
 			if (this.videoId === undefined) {
-				return this.youtubePlaylistURL + this.playlistId
+				return this.youtubePlaylistURL + this.playlistId + '&index=1'
 			} else {
 				return this.youtubeURL + this.videoId
 			}

@@ -8,9 +8,12 @@
 			>
 				<div 
 					class="login d-flex flex-column pt-lg-15"
-					align="center"
-					
+					style="align-items: center;"
 				>
+					<v-img 
+					:src="logo2"
+					style="max-width: 1000px;"></v-img>
+
 					<h1>LOGIN</h1>
 					<div class="d-flex mt-9" style="justify-content: space-evenly">
 						<a href="http://127.0.0.1:8000/api/kakao"><v-btn>
@@ -29,6 +32,8 @@
 <script>
 import axios from 'axios'
 import { Configuration, OpenAIApi } from 'openai'
+import logo from '@/assets/logo.png'
+import logo2 from '@/assets/logo2.png'
 
 export default {
 	name: 'LoginView',
@@ -38,12 +43,15 @@ export default {
 			password: null,
 			latitude: null,
 			longitude: null,
+			logo: logo,
+			logo2: logo2
 		}
 	},
 	created() {
 		this.initiate()
 		if (this.$route.query.access_token != null) {
 			this.$store.dispatch('saveToken', this.$route.query.access_token)
+			this.$store.dispatch('saveSource', this.$route.query.source)
 			this.getUserInfo()
 			this.$router.push({name: 'search'})
 		}
@@ -55,7 +63,7 @@ export default {
 		getUserInfo() {
 			axios({
 				method: 'GET',
-				url: 'http://127.0.0.1:8000/api/kakao/auth',
+				url: `http://127.0.0.1:8000/api/${this.$store.state.source}/auth`,
 				headers: {
 					'authorization': this.$store.state.token
 				}
@@ -170,8 +178,4 @@ export default {
 </script>
 
 <style>
-.login {
-	background-color: red;
-	height: 90%;
-}
 </style>
