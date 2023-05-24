@@ -1,0 +1,9 @@
+app:
+  cors:
+    allowedOrigins: '*'
+    allowedMethods: '*'
+
+youtube:
+  api:
+    baseUrl: "https://www.googleapis.com/youtube/v3/search"
+    key: AIzaSyAeUKeminYOQ8G0Va0L6P01rqLSc4lORgo
