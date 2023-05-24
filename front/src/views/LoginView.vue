@@ -16,12 +16,12 @@
 
 					<h1>LOGIN</h1>
 					<div class="d-flex mt-9" style="justify-content: space-evenly">
-						<a href="http://127.0.0.1:8000/api/kakao"><v-btn>
-							kakao
-						</v-btn></a>
-						<v-btn>
-							google
-						</v-btn>
+						<a href="http://127.0.0.1:8000/api/kakao">
+							<v-img :src="kakaoLogin" width="100px"></v-img>
+						</a>
+						<a href="http://127.0.0.1:8000/api/naver">
+							<v-img :src="naverLogin" width="100px"></v-img>
+						</a>
 					</div>
 				</div>
 			</v-col>
@@ -34,6 +34,8 @@ import axios from 'axios'
 import { Configuration, OpenAIApi } from 'openai'
 import logo from '@/assets/logo.png'
 import logo2 from '@/assets/logo2.png'
+import kakaoLogin from '@/assets/kakao.png'
+import naverLogin from '@/assets/naver.png'
 
 export default {
 	name: 'LoginView',
@@ -44,7 +46,9 @@ export default {
 			latitude: null,
 			longitude: null,
 			logo: logo,
-			logo2: logo2
+			logo2: logo2,
+			kakaoLogin: kakaoLogin,
+			naverLogin: naverLogin
 		}
 	},
 	created() {
