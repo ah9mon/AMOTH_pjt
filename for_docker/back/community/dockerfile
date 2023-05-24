@@ -1,0 +1,23 @@
+FROM python:3
+
+# 각각의 컨테이너에서 동일한 작업 디렉토리로 설정하는 것은 가능하며, 프로젝트 구조의 일관성을 유지하기 위해 권장되는 방법
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+
+
+# Install packages
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Copy all
+COPY . .
+
+RUN python manage.py makemigrations
+RUN python manage.py migrate
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] 
+# 실제 운영 환경 에서는 Django 개발 서버 대신 웹 서버를 사용 / Gunicorn, uWSGI 등의 웹 서버와 함께 Django를 실행
+# Docker 컨테이너 내에서 Django 서버를 직접 실행하는 것은 권장되지 않음 (RUN python manage.py runserver)

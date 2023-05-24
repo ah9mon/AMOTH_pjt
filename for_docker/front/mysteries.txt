@@ -1,0 +1,1 @@
+1. sidebar 제작시 app prop은 어떤 역할을 하나?
