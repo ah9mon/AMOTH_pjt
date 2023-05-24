@@ -18,7 +18,31 @@ export default {
   computed: {
     profile_picture() {
       return this.$store.state.profile_picture
+    },
+		isDark() {
+			return this.$vuetify.theme.dark
+		}
+  },
+	watch: {
+		isDark() {
+      this.changeBackground()
+		}
+	},
+  methods: {
+		applyDarkMode() {
+			this.$vuetify.theme.dark = this.$store.state.darkmode
+		},
+    changeBackground() {
+      const lightBackground = `background: ${this.$vuetify.theme.themes.light.background};`
+      const darkBackground = `background: ${this.$vuetify.theme.themes.dark.background};`
+      const background = this.isDark ? darkBackground : lightBackground
+      console.log(background)
+      document.querySelector('#background').setAttribute('style', background)
     }
+  },
+  mounted() {
+    this.applyDarkMode()
+    this.changeBackground()
   }
 };
 </script>

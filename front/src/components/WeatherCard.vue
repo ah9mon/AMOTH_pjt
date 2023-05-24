@@ -1,14 +1,14 @@
 <template>
-	<v-row>
-			<v-col
-				cols="12"
-				class="blur"
-				align="center"
-			>
-				<h1 class="weather-title" @click="getWeather">WEATHER</h1>
-				<h2 class="weather">{{ weather }}</h2>
-			</v-col>
-		</v-row>
+	<v-row class="mx-1 mb-1">
+		<v-col
+			cols="12"
+			class="blur"
+			align="center"
+		>
+			<h1 class="weather-title" @click="getWeather">WEATHER</h1>
+			<h2 class="weather">{{ weather }}</h2>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -65,10 +65,6 @@ export default {
 
 <style>
 .weather-title {
-	color: black;
 	letter-spacing: 0.5rem;
-}
-.weather {
-	color: black;
 }
 </style>

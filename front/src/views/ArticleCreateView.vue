@@ -40,7 +40,7 @@
 				class="mr-4"
 				@click="validate"
 			>
-				Validate
+				Submit
 			</v-btn>
 
 			<v-btn
@@ -48,14 +48,7 @@
 				class="mr-4"
 				@click="reset"
 			>
-				Reset Form
-			</v-btn>
-
-			<v-btn
-				color="warning"
-				@click="resetValidation"
-			>
-				Reset Validation
+				Reset
 			</v-btn>
 		</v-form>
 	</v-container>

@@ -65,7 +65,7 @@
 		<!-- loading -->
 		<v-row
 			justify="center"
-			class="mt-6 mb-1"
+			class="pt-5 mb-1"
 		>
 			<v-progress-circular
 				color="primary"
@@ -86,6 +86,7 @@
 		>
 			<v-col
 				lg="8"
+				class="px-5"
 			>
 				<MovieCard
 					v-for="(movie, index) in movieList"
@@ -248,6 +249,14 @@ export default {
 						},
 						{
 							role: "user",
+							// content: `And ${this.query}. Please recommend 10 movies perfect for weather like "${this.weather}" in JSON format. {
+							// 	"movies" : {
+							// 		"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
+							// 		"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
+							// 		...
+							// 		}
+							// 	}
+							// 	Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 							content: `And ${this.query}. Please recommend 10 movies perfect for weather like "${this.weather}" in JSON format. {
 								"movies" : {
 									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
@@ -255,7 +264,7 @@ export default {
 									...
 									}
 								}
-								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
+								Like this.`
 						},
 					],
 					temperature: 0.62

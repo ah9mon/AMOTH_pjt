@@ -1,28 +1,40 @@
 <template>
-	<v-container class="blur small-tile d-flex">
+	<v-container class="blur small-tile d-flex"
+		style="flex-direction: column;"
+	>
 		<v-row
 			justify="center"
+			style="max-height: 20vh;"
 		>
 			<v-col
 				lg="4"
 			>
 				<div 
-					class="login d-flex flex-column pt-lg-15"
+					class="d-flex flex-column"
 					style="align-items: center;"
 				>
 					<v-img 
-					:src="logo2"
-					style="max-width: 1000px;"></v-img>
+						:src="logo"
+						class="logo-img"
+					></v-img>
 
-					<h1>LOGIN</h1>
-					<div class="d-flex mt-9" style="justify-content: space-evenly">
-						<a href="http://127.0.0.1:8000/api/kakao">
-							<v-img :src="kakaoLogin" width="100px"></v-img>
-						</a>
-						<a href="http://127.0.0.1:8000/api/naver">
-							<v-img :src="naverLogin" width="100px"></v-img>
-						</a>
-					</div>
+					<h1 class="login-text">LOGIN</h1>
+				</div>
+			</v-col>
+		</v-row>
+
+		<v-row
+			style="justify-content: center;"
+		>
+			<v-col>
+				<div class="d-flex mt-9" 
+					style="justify-content: center">
+					<a href="http://127.0.0.1:8000/api/kakao">
+						<v-img :src="kakaoLogin" class="login-img1"></v-img>
+					</a>
+					<a href="http://127.0.0.1:8000/api/naver">
+						<v-img :src="naverLogin" class="login-img2"></v-img>
+					</a>
 				</div>
 			</v-col>
 		</v-row>
@@ -33,7 +45,6 @@
 import axios from 'axios'
 import { Configuration, OpenAIApi } from 'openai'
 import logo from '@/assets/logo.png'
-import logo2 from '@/assets/logo2.png'
 import kakaoLogin from '@/assets/kakao.png'
 import naverLogin from '@/assets/naver.png'
 
@@ -46,7 +57,6 @@ export default {
 			latitude: null,
 			longitude: null,
 			logo: logo,
-			logo2: logo2,
 			kakaoLogin: kakaoLogin,
 			naverLogin: naverLogin
 		}
@@ -62,7 +72,11 @@ export default {
 	},
 	methods: {
 		initiate() {
-			this.getGeolocation()
+			this.applyDarkMode()
+			// this.getGeolocation()
+		},
+		applyDarkMode() {
+			this.$vuetify.theme.dark = this.$store.state.darkmode
 		},
 		getUserInfo() {
 			axios({
@@ -182,4 +196,25 @@ export default {
 </script>
 
 <style>
+.login-text {
+	position: relative;
+	left: 0.4rem;
+	letter-spacing: 1rem;
+}
+.logo-img {
+	max-width: 300px;
+	margin-bottom: 20px;
+}
+.login-img1 {
+	position: relative;
+	right: 1rem;
+	aspect-ratio: 3.8;
+	max-width: 12vh;
+}
+.login-img2 {
+	position: relative;
+	left: 1rem;
+	aspect-ratio: 3.8;
+	max-width: 12vh;
+}
 </style>

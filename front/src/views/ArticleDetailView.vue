@@ -93,14 +93,14 @@
 							<v-card-actions>
 								<v-spacer></v-spacer>
 								<v-btn
-									color="blue darken-1"
+									color="primary"
 									text
 									@click="closeCommentDialog"
 								>
 									Close
 								</v-btn>
 								<v-btn
-									color="blue darken-1"
+									color="primary"
 									text
 									@click="submitCommentDialog"
 								>
