@@ -1,56 +1,63 @@
 <template>
-	<v-container class="blur big-tile">
-		<v-form
-			ref="form"
-			v-model="valid"
-			lazy-validation
-			@submit.prevent="createArticle"
-		>
-			<v-text-field
-				v-model="title"
-				:counter="100"
-				:rules="titleRules"
-				label="Title"
-				required
-			></v-text-field>
-			<v-text-field
-				v-model="movieTitle"
-				:rules="movieTitleRules"
-				label="MovieTitle"
-				required
-			></v-text-field>
-			<v-text-field
-				v-model="soundtrackTitle"
-				:rules="soundtrackTitleRules"
-				label="SoundtrackTitle"
-				required
-			></v-text-field>
-
-			<v-textarea
-				v-model="content"
-				:rules="contentRules"
-				label="Contents"
-				outlined
-				required
-			></v-textarea>
-
-			<v-btn
-				:disabled="!valid"
-				color="success"
-				class="mr-4"
-				@click="validate"
-			>
-				Submit
-			</v-btn>
-
-			<v-btn
-				color="error"
-				class="mr-4"
-				@click="reset"
-			>
-				Reset
-			</v-btn>
-		</v-form>
+	<v-container class="blur small-tile">
+		<v-row justify="center">
+			<v-col sm="10">
+				<v-form
+					ref="form"
+					v-model="valid"
+					lazy-validation
+					@submit.prevent="createArticle"
+				>
+					<v-text-field
+						v-model="title"
+						:counter="100"
+						:rules="titleRules"
+						label="Title"
+						required
+						dark
+					></v-text-field>
+					<v-text-field
+						v-model="movieTitle"
+						:rules="movieTitleRules"
+						label="Movie Title"
+						required
+						dark
+					></v-text-field>
+					<v-text-field
+						v-model="soundtrackTitle"
+						:rules="soundtrackTitleRules"
+						label="Soundtrack Title"
+						required
+						dark
+					></v-text-field>
+		
+					<v-textarea
+						v-model="content"
+						:rules="contentRules"
+						label="Contents"
+						outlined
+						required
+						dark
+					></v-textarea>
+		
+					<v-btn
+						:disabled="!valid"
+						color="success"
+						class="mr-4"
+						@click="validate"
+					>
+						Submit
+					</v-btn>
+		
+					<v-btn
+						color="error"
+						@click="reset"
+					>
+						Reset
+					</v-btn>
+				</v-form>
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 
@@ -111,10 +118,14 @@ export default {
 						}
 					})
 						.then((res) => {
-							console.log('articledetail', res)
-							this.$router.push({name: 'articleDetail', params:{
-								article:res.data,
-								id:res.data.id}})
+							const temp = String(res.data.id)
+							this.$router.push({
+								name: 'articleDetail', 
+								params:{
+									article: res.data,
+									id: temp
+								}
+							})
 						})
 						.catch((err)=>console.log(err))
 				})

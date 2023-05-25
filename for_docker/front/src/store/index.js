@@ -36,11 +36,9 @@ const store = new Vuex.Store({
           state.movieList = state.movieList.concat(movie)
         }
       }
-      // state.movieList = state.movieList.concat(payload)
       console.log('updated to local storage:', state.movieList)
     },
     UPDATE_DATABASE_LIST(state, payload) {
-      console.log(payload)
       state.databaseList = state.databaseList.concat(payload)
     },
     SAVE_TOKEN(state, payload) {
@@ -59,7 +57,6 @@ const store = new Vuex.Store({
   },
   actions: {
     updateMovieList(context, payload) {
-      console.log('payload: ', payload)
       context.commit('UPDATE_MOVIE_LIST', payload)
     },
     updateDatabaseList(context, payload) {

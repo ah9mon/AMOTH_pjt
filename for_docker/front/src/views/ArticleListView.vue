@@ -60,16 +60,10 @@ export default {
 						url: 'http://localhost:8002/api/community/articles'
 					})
 						.then((res) => {
-							console.log('articleList: ', res)
 							this.articleList = res.data
 						})
 						.catch((err) => console.log(err))
 				})
-		}
-	},
-	watch: {
-		page() {
-			console.log(this.page)
 		}
 	},
 	created() {

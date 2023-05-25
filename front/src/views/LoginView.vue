@@ -61,19 +61,10 @@ export default {
 			naverLogin: naverLogin
 		}
 	},
-	created() {
-		this.initiate()
-		if (this.$route.query.access_token != null) {
-			this.$store.dispatch('saveToken', this.$route.query.access_token)
-			this.$store.dispatch('saveSource', this.$route.query.source)
-			this.getUserInfo()
-			this.$router.push({name: 'search'})
-		}
-	},
 	methods: {
 		initiate() {
 			this.applyDarkMode()
-			// this.getGeolocation()
+			this.getGeolocation()
 		},
 		applyDarkMode() {
 			this.$vuetify.theme.dark = this.$store.state.darkmode
@@ -100,8 +91,6 @@ export default {
 					window.navigator.geolocation.getCurrentPosition((pos) => {
 					this.latitude = pos.coords.latitude
 					this.longitude = pos.coords.longitude
-					console.log(this.latitude)
-					console.log(this.longitude)
 					this.getWeather()
 				})
 			} else {
@@ -120,12 +109,11 @@ export default {
 				params:params
 			})
 				.then((res) => {
-					console.log(res.data.weather[0])
 					this.weather = res.data.weather[0].description
 					this.askChatGPT()
 				})
 				.catch((err) => {
-					console.log('weather error', err)
+					console.log('Error at getWeather', err)
 				})
 		},
 		async askChatGPT() {
@@ -148,11 +136,9 @@ export default {
 						},
 						{
 							role: "user",
-							content: `Please recommend 10 movies perfect for today's weather in JSON format. {
+							content: `Please recommend just one movie perfect for today's weather in JSON format. {
 								"movies" : {
 									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
-									"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
-									...
 									}
 								}
 								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
@@ -188,10 +174,21 @@ export default {
 							}
 						}
 					}
-					this.$store.dispatch('updateMovieList', temp)
+					temp = temp[temp.length - 1]
+					// this.$store.dispatch('updateMovieList', temp)
+					this.$store.dispatch('updateInitialMovie', temp)
 				})
 		},
-	}
+	},
+	created() {
+		this.initiate()
+		if (this.$route.query.access_token != null) {
+			this.$store.dispatch('saveToken', this.$route.query.access_token)
+			this.$store.dispatch('saveSource', this.$route.query.source)
+			this.getUserInfo()
+			this.$router.push({name: 'search'})
+		}
+	},
 }
 </script>
 

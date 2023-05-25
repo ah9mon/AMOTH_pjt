@@ -1,11 +1,12 @@
 <template>
-	<v-container class="blur big-tile">
+	<v-container class="blur big-tile"  style="color: white;">
 		<v-row
 			style="height: 100%"
 		>
 			<!-- left column for profile picture & articles-->
 			<v-col
-				cols="6"
+				cols="12"
+				sm="6"
 			>
 				<v-row
 					class="profile-picture"
@@ -17,18 +18,17 @@
 					<h1 v-else>NO PROFILE PICTURE</h1>
 				</v-row>
 				<v-row
-					class="my-articles"
+					class="bottom-row"
 					style="height: 30%"
 				>
 						<v-list dense
 							class="overflow-y-auto"
 							max-height="100%"
 							width="100%"
-							style="background-color: transparent"
+							style="background-color: transparent;"
 						>
-							<v-subheader>My Articles</v-subheader>
+							<v-subheader style="color: white;">My Articles</v-subheader>
 							<v-list-item-group
-								color="primary"
 							>
 								<v-list-item
 									v-for="(article, index) in myArticles"
@@ -36,7 +36,7 @@
 									@click="toArticleDetail(article)"
 								>
 									<v-list-item-content>
-										<v-list-item-title>
+										<v-list-item-title style="color: white;">
 											{{ article.title }}
 										</v-list-item-title>
 									</v-list-item-content>
@@ -46,7 +46,6 @@
 				</v-row>
 
 				<v-row
-					class="liked-articles"
 					style="height: 25%"
 				>
 					<v-list dense
@@ -55,9 +54,8 @@
 						width="100%"
 						style="background-color: transparent"
 					>
-						<v-subheader>Liked Articles</v-subheader>
+						<v-subheader style="color: white;">Liked Articles</v-subheader>
 						<v-list-item-group
-							color="primary"
 						>
 							<v-list-item
 								v-for="(article, index) in likedArticles"
@@ -65,7 +63,7 @@
 								@click="toArticleDetail(article)"
 							>
 								<v-list-item-content>
-									<v-list-item-title>
+									<v-list-item-title style="color: white;">
 										{{ article.title }}
 									</v-list-item-title>
 								</v-list-item-content>
@@ -76,11 +74,18 @@
 			</v-col>
 			<!-- right column for watched movies -->
 			<v-col
-				cols="6"
+				cols="12"
+				sm="6"
 				class="watched-movies"
 			>
-				watched movies
-				
+				<h3>
+					Watched Movies
+				</h3>
+				<MovieCard
+					v-for="(movie, index) in databaseList"
+					:key="index"
+					:movie="movie"
+				/>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -88,9 +93,13 @@
 
 <script>
 import axios from 'axios'
+import MovieCard from '@/components/MovieCard.vue'
 
 export default {
 	name: 'ProfileView',
+	components: {
+		MovieCard
+	},
 	data() {
 		return {
 			myArticles: null,
@@ -104,11 +113,13 @@ export default {
 		},
 		profile_picture() {
 			return this.$store.state.profile_picture
+		},
+		databaseList() {
+			return this.$store.state.databaseList
 		}
 	},
 	methods: {
 		toArticleDetail(article) {
-			console.log(article)
 			this.$router.push({
 				name: 'articleDetail',
 				params: {
@@ -147,8 +158,9 @@ export default {
 </script>
 
 <style>
-.watched-movies {
-	background-color: green;
+.bottom-row {
+	border-bottom: 2px solid;
+	border-color: rgba(120, 120, 120, 0.5) !important; 
 }
 
 </style>

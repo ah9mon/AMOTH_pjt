@@ -36,10 +36,14 @@ def get_soundtrack(request):
     url = f'{BASE_url}?part={part}&q={q}&maxResults={maxResults}&type={type}&key={YOUTUBE_api_key}'
     res = requests.get(url)
     soundtrack_data = res.json()
-    context = {
-        'id' : soundtrack_data.get('items')[0].get('id'),
-        'title' : soundtrack_data.get('items')[0].get('snippet').get('title'),
-        'thumbnails' : soundtrack_data.get('items')[0].get('snippet').get('thumbnails').get('high')
-    }
+    print(soundtrack_data)
+    if soundtrack_data.get('items'):
+        context = {
+            'id' : soundtrack_data.get('items')[0].get('id'),
+            'title' : soundtrack_data.get('items')[0].get('snippet').get('title'),
+            'thumbnails' : soundtrack_data.get('items')[0].get('snippet').get('thumbnails').get('high')
+        }
+    else:
+        context = {None}
 
     return Response(context)

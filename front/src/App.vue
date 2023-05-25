@@ -9,6 +9,7 @@
 </template>
 <script>
 import MenuButton from './components/MenuButton.vue';
+import backgroundURL from '@/assets/Background.jpg'
 
 export default {
   name: 'App',
@@ -33,10 +34,9 @@ export default {
 			this.$vuetify.theme.dark = this.$store.state.darkmode
 		},
     changeBackground() {
-      const lightBackground = `background: ${this.$vuetify.theme.themes.light.background};`
+      const lightBackground = `background-image: url(${backgroundURL});`
       const darkBackground = `background: ${this.$vuetify.theme.themes.dark.background};`
       const background = this.isDark ? darkBackground : lightBackground
-      console.log(background)
       document.querySelector('#background').setAttribute('style', background)
     }
   },
@@ -62,6 +62,6 @@ export default {
 }
 
 .container::-webkit-scrollbar-thumb {
-  background-color: rgb(129, 129, 129); /* 스크롤바 색상 */
+  background-color: rgba(120, 120, 120, 0.5); /* 스크롤바 색상 */
 }
 </style>

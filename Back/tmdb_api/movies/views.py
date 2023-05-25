@@ -100,7 +100,11 @@ def movies_data(request):
         if movies:
             for key, value in movies.items():
                 title = value.get('title')
+                
                 release_date = value.get('release_date')
+                if not release_date:
+                    release_date = value.get('release_data')
+                
                 movie = get_movie_in_tmdbapi(title,release_date) # TMDB에서 영화 데이터 가져오기 
 
                 # gpt가 잘못된 데이터 줬으면 아래 코드 생략
@@ -143,12 +147,18 @@ def movies_data(request):
 
 
 # 영화 검색 1개 기능 (DB에 있는 거로 없으면)
-@api_view(['POST'])
+@api_view(['GET'])
 def get_movie_in_db(request):
     q = request.GET.get('q') # 검색어가 params로 넘어옴
     lang = detect_lang(q) # 검색어 언어감지
-    translated_text = translate_q(q,lang) # 검색어 영어로 번역 
+    print(lang)
+    if lang != "en":  
+        translated_text = translate_q(q,lang) # 검색어 영어로 번역
+    else:
+        translated_text = q
+    print(translated_text)
     translated_text_list = translated_text.split() # 검색
+    print(translated_text_list)
 
     find_movies = []
     movies = Movie.objects.all()

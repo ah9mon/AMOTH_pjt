@@ -1,5 +1,5 @@
 <template>
-	<v-container class="blur big-tile" v-if="article">
+	<v-container class="blur big-tile" v-if="article" style="color:white;">
 		<!-- title/number of likes -->
 		<v-row class="top-row">
 			<v-col
@@ -24,7 +24,8 @@
 		<!-- content & comments -->
 		<v-row>
 			<v-col
-				cols="8"
+				cols="12"
+				sm="8"
 				class="text-box"
 			>
 				<h2>{{ article.movie_title }}</h2>
@@ -34,18 +35,10 @@
 					v-if="youtubeInfo"
 					:youtube-info="youtubeInfo"
 				/>
-				<v-btn
-					:absolute="true"
-					:bottom="true"
-					:left="true"
-					@click="deleteArticle"
-				>
-					delete article
-				</v-btn>
-
 			</v-col>
 			<v-col
-				cols="4"
+				cols="12"
+				sm="4"
 			>
 
 				<!-- create comment dialog -->
@@ -84,6 +77,7 @@
 												:counter="400"
 												v-model="commentContent"
 												:rules="commentContentRules"
+												autofocus
 												required
 											></v-textarea>
 										</v-col>
@@ -113,18 +107,19 @@
 				
 				<!-- comments -->
 				<v-list dense
-					max-height="85%"
+					max-height="70vh"
 					width="100%"
 					:flat=true
-					style="background-color: transparent"
+					style="background-color: transparent; overflow-y: scroll"
 				>
-					<v-subheader>Comments</v-subheader>
+					<v-subheader style="color:white;">Comments</v-subheader>
 					<v-list-item-group
 						color="primary"
 					>
 						<v-list-item
 							v-for="(comment, index) in comments"
 							:key = index
+							style="color:white;"
 						>
 							<v-list-item-content>
 								<v-list-item-title>
@@ -145,6 +140,16 @@
 						</v-list-item>
 					</v-list-item-group>
 				</v-list>
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col>
+				<v-btn
+					class="delete-button"
+					@click="deleteArticle"
+				>
+					delete article
+				</v-btn>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -186,17 +191,21 @@ export default {
 	},
 	methods: {
 		getYoutubeId() {
-			// axios({
-			// 	method: 'GET',
-			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-			// 	params: {
-			// 		'movie_title': this.article.movie_title,
-			// 		'music_title': this.article.music_title
-			// 	}
-			// })
-			// 	.then((res) => {
-			// 		this.youtubeInfo = res.data
-			// 	})
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+				params: {
+					'movie_title': this.article.movie_title,
+					'music_title': this.article.music_title
+				}
+			})
+				.then((res) => {
+					if (res.data[0] === null) {
+						this.youtubeInfo = null
+					} else {
+						this.youtubeInfo = res.data
+					}
+				})
 		},
 		deleteArticle() {
 			axios({
@@ -223,7 +232,6 @@ export default {
 
 			})
 				.then((res) => {
-					console.log(res.data)
 					this.likedCount = res.data.liked_count,
 					this.article = res.data.article,
 					this.isLiked = res.data.liked
@@ -285,7 +293,6 @@ export default {
 				this.getArticle()
 				this.getComments()
 			})
-		console.log('this is article: ', this.article)
 	}
 }
 </script>
@@ -293,11 +300,10 @@ export default {
 <style>
 .top-row {
 	border-bottom-style: solid;
-	height: 8vh;
 }
 .text-box {
 	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
+	overflow-x: hidden;
+	white-space: wrap;
 }
 </style>
