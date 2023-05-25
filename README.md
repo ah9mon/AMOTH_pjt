@@ -1,6 +1,7 @@
 # [AMOTH] 영화 사운드트랙 추천&커뮤니티 서비스 MSA로 구현하기
 
 <img title="" src="README_assets/2023-05-25-14-53-55-image.png" alt="" width="747">
+
 <span style="color:gray">AMOTH는 영화 사운드트랙 추천&커뮤니티 서비스입니다</span>
 
 AMOTH의 뜻은 A man of the hour로
@@ -22,7 +23,7 @@ AMOTH의 뜻은 A man of the hour로
 | [![](README_assets/2e2889645591e47e3e3c520252dcc740b624a344.png)](https://github.com/hun23) | [<img title="" src="README_assets/f3da24db7a9dde1e72166fa6d9ec5b24fd48360d.png" alt="" width="818">](https://github.com/ah9mon) |
 | **프론트엔드**                                                                                   | **백엔드**                                                                                            |
 
-`<span style="color:gray">`커밋 컨벤션 rule : AngularJS Commit Message Convention
+<span style="color:gray">커밋 컨벤션 rule : AngularJS Commit Message Convention</span>
 
 ## 🔗 목차
 
