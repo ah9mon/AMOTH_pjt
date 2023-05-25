@@ -1,0 +1,651 @@
+[
+{
+    "model": "articles.article",
+    "pk": 1,
+    "fields": {
+        "user_id": "2",
+        "title": "First Avenger",
+        "movie_title": "Captain America: First Avenger",
+        "music_title": "track 1",
+        "content": "wow!",
+        "created_at": "2023-05-25T06:35:01.015Z",
+        "updated_at": "2023-05-25T06:35:01.015Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 2,
+    "fields": {
+        "user_id": "2",
+        "title": "Terminator 2",
+        "movie_title": "Terminator 2",
+        "music_title": "track 2",
+        "content": "classic",
+        "created_at": "2023-05-25T06:35:56.133Z",
+        "updated_at": "2023-05-25T06:35:56.133Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 3,
+    "fields": {
+        "user_id": "2",
+        "title": "Spider-man 3",
+        "movie_title": "Spider-man 3",
+        "music_title": "track 3",
+        "content": "Venom",
+        "created_at": "2023-05-25T06:36:37.873Z",
+        "updated_at": "2023-05-25T06:36:37.873Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 4,
+    "fields": {
+        "user_id": "2",
+        "title": "Fantastic 4",
+        "movie_title": "Fantastic 4",
+        "music_title": "track 4",
+        "content": "Legend",
+        "created_at": "2023-05-25T06:37:07.559Z",
+        "updated_at": "2023-05-25T06:37:07.559Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 5,
+    "fields": {
+        "user_id": "3",
+        "title": "Notebook is great",
+        "movie_title": "Notebook",
+        "music_title": "track 1",
+        "content": "wow",
+        "created_at": "2023-05-25T06:39:36.577Z",
+        "updated_at": "2023-05-25T06:39:36.577Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 9,
+    "fields": {
+        "user_id": "3",
+        "title": "Classic",
+        "movie_title": "Judge Dredd",
+        "music_title": "main theme",
+        "content": "wowow",
+        "created_at": "2023-05-25T06:44:10.282Z",
+        "updated_at": "2023-05-25T06:44:10.282Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 10,
+    "fields": {
+        "user_id": "3",
+        "title": "GOG",
+        "movie_title": "Guardians of Galaxy Vol.3",
+        "music_title": "main theme",
+        "content": "i am",
+        "created_at": "2023-05-25T06:44:56.395Z",
+        "updated_at": "2023-05-25T06:44:56.395Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 11,
+    "fields": {
+        "user_id": "3",
+        "title": "Iron man",
+        "movie_title": "Iron man 3",
+        "music_title": "theme of iron man",
+        "content": "wow",
+        "created_at": "2023-05-25T06:45:29.638Z",
+        "updated_at": "2023-05-25T06:45:29.638Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 12,
+    "fields": {
+        "user_id": "3",
+        "title": "Freeze",
+        "movie_title": "Frozen 2",
+        "music_title": "Into the unknown",
+        "content": "Taeyeon",
+        "created_at": "2023-05-25T06:46:22.498Z",
+        "updated_at": "2023-05-25T06:46:22.498Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 13,
+    "fields": {
+        "user_id": "3",
+        "title": "Freezeeeeee",
+        "movie_title": "Frozen",
+        "music_title": "Let it go",
+        "content": "let it go",
+        "created_at": "2023-05-25T06:46:42.006Z",
+        "updated_at": "2023-05-25T06:46:42.006Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 14,
+    "fields": {
+        "user_id": "3",
+        "title": "Batman",
+        "movie_title": "Batman",
+        "music_title": "Theme of batman",
+        "content": "!!",
+        "created_at": "2023-05-25T06:47:52.654Z",
+        "updated_at": "2023-05-25T06:47:52.654Z"
+    }
+},
+{
+    "model": "articles.article",
+    "pk": 15,
+    "fields": {
+        "user_id": "3",
+        "title": "Superman",
+        "movie_title": "Man of Steel",
+        "music_title": "theme of superman",
+        "content": "!@!@!@",
+        "created_at": "2023-05-25T06:48:22.015Z",
+        "updated_at": "2023-05-25T06:48:22.015Z"
+    }
+},
+{
+    "model": "articles.comment",
+    "pk": 1,
+    "fields": {
+        "user_id": "2",
+        "article": 1,
+        "content": "amazing!!!!!",
+        "created_at": "2023-05-25T06:35:26.537Z",
+        "updated_at": "2023-05-25T06:35:26.537Z"
+    }
+},
+{
+    "model": "articles.comment",
+    "pk": 2,
+    "fields": {
+        "user_id": "2",
+        "article": 2,
+        "content": "old",
+        "created_at": "2023-05-25T06:36:17.209Z",
+        "updated_at": "2023-05-25T06:36:17.209Z"
+    }
+},
+{
+    "model": "articles.comment",
+    "pk": 3,
+    "fields": {
+        "user_id": "3",
+        "article": 9,
+        "content": "please use youtube premium",
+        "created_at": "2023-05-25T06:44:29.905Z",
+        "updated_at": "2023-05-25T06:44:29.905Z"
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 1,
+    "fields": {
+        "user_id": "2",
+        "article": 3
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 2,
+    "fields": {
+        "user_id": "2",
+        "article": 1
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 4,
+    "fields": {
+        "user_id": "3",
+        "article": 5
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 6,
+    "fields": {
+        "user_id": "3",
+        "article": 15
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 12,
+    "fields": {
+        "user_id": "3",
+        "article": 14
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 14,
+    "fields": {
+        "user_id": "3",
+        "article": 1
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 15,
+    "fields": {
+        "user_id": "3",
+        "article": 2
+    }
+},
+{
+    "model": "articles.like",
+    "pk": 17,
+    "fields": {
+        "user_id": "3",
+        "article": 12
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add article",
+        "content_type": 1,
+        "codename": "add_article"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change article",
+        "content_type": 1,
+        "codename": "change_article"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete article",
+        "content_type": 1,
+        "codename": "delete_article"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view article",
+        "content_type": 1,
+        "codename": "view_article"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add like",
+        "content_type": 2,
+        "codename": "add_like"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change like",
+        "content_type": 2,
+        "codename": "change_like"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete like",
+        "content_type": 2,
+        "codename": "delete_like"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view like",
+        "content_type": 2,
+        "codename": "view_like"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add comment",
+        "content_type": 3,
+        "codename": "add_comment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change comment",
+        "content_type": 3,
+        "codename": "change_comment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete comment",
+        "content_type": 3,
+        "codename": "delete_comment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view comment",
+        "content_type": 3,
+        "codename": "view_comment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 4,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 4,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 4,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 4,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 5,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 5,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 5,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 5,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 6,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 6,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 6,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 6,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 7,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 7,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 7,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 7,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 8,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 8,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 8,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 8,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 9,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 9,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 9,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 9,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "articles",
+        "model": "article"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "articles",
+        "model": "like"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "articles",
+        "model": "comment"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+}
+]

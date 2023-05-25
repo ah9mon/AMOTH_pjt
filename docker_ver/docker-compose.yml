@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  back-auth:
+    build:
+      context: ./final-pjt-back/auth
+      dockerfile: dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - my-network
+    image: amoth_auth
+
+  back-tmdb-api:
+    build:
+      context: ./final-pjt-back/tmdb_api
+      dockerfile: dockerfile
+    ports:
+      - 8001:8000
+    networks:
+      - my-network
+    image: amoth_tmdb_api
+
+  back-community:
+    build:
+      context: ./final-pjt-back/community
+      dockerfile: dockerfile
+    ports:
+      - 8002:8000
+    networks:
+      - my-network
+    image: amoth_community
+
+  back-youtube-api:
+    build:
+      context: ./final-pjt-back/youtube-api
+      dockerfile: dockerfile
+    ports:
+      - 8003:8080
+    networks:
+      - my-network
+    image: amoth_youtube_api
+    
+  back-translate:
+    build:
+      context: ./final-pjt-back/translate
+      dockerfile: dockerfile
+    ports:
+      - 8004:8000
+    networks:
+      - my-network
+    image: amoth_translate
+
+  front:
+    build:
+      context: ./final-pjt-front
+      dockerfile: dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - my-network
+    image: amoth_front
+
+networks:
+  my-network:
