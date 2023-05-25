@@ -2,13 +2,9 @@
 
 <img title="" src="README_assets/2023-05-25-14-53-55-image.png" alt="" width="691"><span style="color:gray">AMOTH는 영화 사운드트랙 추천&커뮤니티 서비스입니다</span>
 
-
-
 AMOTH의 뜻은 A man of the hour로 
 
 이 자리(파티, 모임 등)의 주인공, 화제의 인물, 시대를 풍미한 인물 등의 의미로 많이 사용됩니다
-
-
 
 우리는 음악을 들을 때 평범한 것들이 특별하게 되거나 
 
@@ -44,7 +40,7 @@ AMOTH의 뜻은 A man of the hour로
 > 
 > 영화의 사운드 트랙을 쉽게 제공함으로써
 > 
-> -  사용자가 좋아하는 영화에 담긴 의미들을 알 수 있는 경험을 제공
+> - 사용자가 좋아하는 영화에 담긴 의미들을 알 수 있는 경험을 제공
 > 
 > - 사운드 트랙을 들으며 영화를 본 것 같은 경험을 제공
 > 
@@ -85,8 +81,6 @@ AMOTH의 뜻은 A man of the hour로
 ## ⚙️ 개발 핵심 기능
 
 ![](README_assets/2023-05-25-19-42-58-image.png)
-
-
 
 ### Back Server
 
@@ -131,14 +125,9 @@ AMOTH의 뜻은 A man of the hour로
      그래도 MSA의 개념을 직접 느껴보기 위해 
      
      실제 MSA가 나누는 정도보다 비교적 크더라도 기능별로 나눠보기
-     
-     
-   - 기술 스택을 기능별로 다르게 가져갈 수 있는 장점을 보여주기 위해 
-     
-     하나의 기능은 꼭 Spring boot로 구현하기 
-     
-     
-
+- 기술 스택을 기능별로 다르게 가져갈 수 있는 장점을 보여주기 위해 
+  
+  하나의 기능은 꼭 Spring boot로 구현하기 
 4. Docker 
    
    > 기존 웹개발 과정 
@@ -147,15 +136,11 @@ AMOTH의 뜻은 A man of the hour로
    > 
    > 각종 라이브러리 설치 ...
    > 
-   > 
-   > 
    > 만약 이걸 다른 환경에서 마저 개발하고 싶을 땐? (각각의 환경이 모두 다를 때)
    > 
    > 깃허브 등의 다양한 방법을 통해 코드 옮기기 -> 프로그래밍 언어 설치 ->
    > 
    > 프레임워크 설치 -> 라이브러리 설치 ... 반복   
-   > 
-   > 
    > 
    > 이렇게 개발 환경이 다르기 때문에 발생하는 불편함을 해소하기 위해
    > 
@@ -195,7 +180,7 @@ AMOTH의 뜻은 A man of the hour로
 
 - REST API URI 규칙
   
-  1.  URI 마지막에 슬래시(/)를 붙이지 마세요  
+  1. URI 마지막에 슬래시(/)를 붙이지 마세요  
   
   2. 관계를 나타내기 위해 슬래시(/)를 사용하세요  
   
@@ -239,8 +224,6 @@ Youtube API 서비스는 **Spring boot**로 구현하여
 
 MSA의 장점인 **기술 스택을 다르게할 수 있음**을 보였다
 
-  
-
 ![](README_assets/2023-05-26-00-09-59-image.png)
 
 ##### 3. Movie Recommend
@@ -271,8 +254,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 
 이러한 부분들을 정리해놓고 수정하며 발전시켜 나갈 예정이기 때문에 정리 해놓으려 한다 
 
-
-
 - 객체지향 프로그래밍
   
   - 무작정 돌아가는 함수만 짜고 객체지향 프로그래밍은 전혀 신경 쓰지 않았다.
@@ -284,8 +265,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     Class를 통한 추상화, 상속, 다형성, 캡슐화 4가지 특징을 살리는 
     
     코드로 수정할 것이다.
-    
-    
 
 - 코드의 재활용
   
@@ -308,8 +287,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     기능 추가를 진행했다.
     
     이 부분을  같은 함수를 재사용 하는 코드로 수정할 것이다.
-    
-    
 
 - MSA 답지 못하고 마이크로라고 부르기 너무 애매한 서비스들 
   
@@ -324,8 +301,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     Community도 게시글, 댓글, 좋아요 기능들이 한번에 들어있는 마이크로라부르기 너무나 힘든 서비스였다 
     
     (그래도 youtube, papago, Oauth2(유저데이터 저장 제외) api는 정말 api요청만 처리하고 응답하는 서비스라 마음에 듬 )
-    
-    
 
 ### 🤔 향후 진행 방향
 
@@ -339,4 +314,4 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 
 ### Front Server
 
-
+[AMOTH_project/final-pjt-front at main · ah9mon/AMOTH_project · GitHub](https://github.com/ah9mon/AMOTH_project/tree/main/final-pjt-front)
