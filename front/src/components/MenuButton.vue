@@ -27,8 +27,6 @@
 				<v-list-item 
 					v-if="isLoggedIn"
 					@click="toProfileView"
-					class="text-color white--text"
-					:style="'background-image: url(' + this.$store.state.profile_picture + ');' + '\nbackground-position: center center;'"
 					>
 					Profile
         </v-list-item>
@@ -163,5 +161,10 @@ export default {
 	/* mix-blend-mode: difference; */
 	text-shadow: 0px 0px 5px black;
 	background-position: center;
+}
+.menu {
+	position: fixed;
+	bottom: 5%;
+	right: 16px;
 }
 </style>

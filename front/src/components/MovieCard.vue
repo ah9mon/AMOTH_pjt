@@ -2,7 +2,7 @@
 	<v-card 
 		v-if="movie" 
 		class="mt-3 pt-1 d-flex flex-no-wrap blur" 
-		style="height:110px"
+		style="height:110px; color: white;"
 		@click="toMovieDetail"
 		tile
 	>
@@ -56,9 +56,19 @@ export default {
 }
 .content {
 	flex-basis: 88%;
-	/* background-color: red; */
-	overflow:hidden;
+	overflow-y:scroll;
 	white-space: pre-wrap;
 	text-overflow: ellipsis;
+}
+::-webkit-scrollbar {
+  width: 0.2em; /* 스크롤바 너비 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* 스크롤바 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.5); /* 스크롤바 색상 */
 }
 </style>

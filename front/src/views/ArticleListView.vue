@@ -4,18 +4,15 @@
 			v-if="pageLength"
 			justify="center"
 		>
-			<v-col
-				lg="10"
-				style="max-height: 90vh;"
-			>
+			<v-col>
 				<ArticleCard
-					v-for="(article, index) in articleList.slice((page - 1) * 9, page * 9)"
+					v-for="(article, index) in articleList.slice((page - 1) * 10, page * 10)"
 					:key="index"
 					:article="article"
 				/>
 				<!-- pagination! -->
 				<v-pagination
-					class="pagination"
+					class="pagination mt-5"
 					v-model="page"
 					:length="pageLength"
 				></v-pagination>
@@ -45,7 +42,7 @@ export default {
 			if (this.articleList === null) {
 				return 0
 			}
-			return Math.ceil(this.articleList.length / 8)
+			return Math.ceil(this.articleList.length / 10)
 		}
 	},
 	methods: {
@@ -63,21 +60,14 @@ export default {
 						url: 'http://127.0.0.1:8002/api/community/articles'
 					})
 						.then((res) => {
-							console.log('articleList: ', res)
 							this.articleList = res.data
 						})
 						.catch((err) => console.log(err))
 				})
 		}
 	},
-	watch: {
-		page() {
-			console.log(this.page)
-		}
-	},
 	created() {
 		this.getArticleList()
-		console.log('aaaa',this.articleList)
 	}
 }
 </script>

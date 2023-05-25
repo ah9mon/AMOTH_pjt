@@ -233,7 +233,6 @@ export default {
 
 			})
 				.then((res) => {
-					console.log(res.data)
 					this.likedCount = res.data.liked_count,
 					this.article = res.data.article,
 					this.isLiked = res.data.liked
@@ -295,7 +294,6 @@ export default {
 				this.getArticle()
 				this.getComments()
 			})
-		console.log('this is article: ', this.article)
 	}
 }
 </script>

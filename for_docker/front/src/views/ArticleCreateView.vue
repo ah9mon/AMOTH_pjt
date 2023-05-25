@@ -118,7 +118,6 @@ export default {
 						}
 					})
 						.then((res) => {
-							console.log('articledetail', res)
 							this.$router.push({name: 'articleDetail', params:{
 								article:res.data,
 								id:res.data.id}})

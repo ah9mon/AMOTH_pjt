@@ -1,5 +1,7 @@
 <template>
-	<v-container class="blur big-tile" :fluid="true">
+	<v-container class="blur big-tile" :fluid="true"
+		style="color: white;"
+	>
 		<!-- poster & youtube -->
 		<v-row
 		>
@@ -62,7 +64,7 @@
 
 <script>
 import axios from 'axios'
-// import imgURL from '@/assets/Background.jpg'
+import backgroundURL from '@/assets/Background.jpg'
 import SoundtrackCard from '@/components/SoundtrackCard.vue'
 
 export default {
@@ -85,7 +87,14 @@ export default {
 	},
 	computed: {
 		movie() {
-			return this.$store.getters.getMovie(Number(this.id))
+			let movie = this.$store.getters.getFromMovieList(Number(this.id))
+			if (movie === undefined) {
+				movie = this.$store.getters.getFromDatabaseList(Number(this.id))
+				if (movie === undefined) {
+					movie = this.$store.getters['getFromInitialMovie']
+				}
+			}
+			return movie
 		},
 		isDark() {
 			return this.$vuetify.theme.dark
@@ -98,17 +107,16 @@ export default {
 	},
 	methods: {
 		getYoutubeInfo() {
-			// axios({
-			// 	method: 'GET',
-			// 	url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
-			// 	params: {
-			// 		'movie_title': this.movie.title,
-			// 	}
-			// })
-			// 	.then((res) => {
-			// 		console.log(res.data)
-			// 		this.youtubeInfo = res.data
-			// 	})
+			axios({
+				method: 'GET',
+				url: 'http://127.0.0.1:8003/api/youtube/soundtrack',
+				params: {
+					'movie_title': this.movie.title,
+				}
+			})
+				.then((res) => {
+					this.youtubeInfo = res.data
+				})
 		},
 		getSoundtracks() {
 			axios({
@@ -117,9 +125,7 @@ export default {
 				params:{'movie_title': this.movie.title}
 			})
 				.then((res) => {
-					console.log('youtube: ',res)
 					this.soundtrackId = res.data.id.playlistId
-					console.log(this.soundtrackId)
 				})
 				.catch((err) => console.log(err))
 		},
@@ -143,8 +149,6 @@ export default {
 			params: {api_key:'1395a6d8b9a1c30c3699c8181b8663a6'}
 		})
 			.then((res) => {
-				console.log(res)
-				console.log('results', res.data.results)
 				this.youtubeId = res.data.results.filter((elem) => {
 					if (elem.type === 'Trailer') {
 						return true
@@ -153,7 +157,7 @@ export default {
 				})[0].key
 			})
 			.catch((err) => {
-				console.log(err)
+				console.log('Error at MovieDetailView', err)
 			})
 		this.getYoutubeInfo()
 	},
@@ -161,8 +165,8 @@ export default {
 		this.changeMode()
 	},
 	beforeDestroy() {
-		const lightBackground = `background: ${this.$vuetify.theme.themes.light.background.base};`
-		const darkBackground = `background: ${this.$vuetify.theme.themes.dark.background.base};`
+		const lightBackground = `background-image: url(${backgroundURL});`
+		const darkBackground = `background: ${this.$vuetify.theme.themes.dark.background};`
 		const background = this.isDark ? darkBackground : lightBackground
 		document.querySelector('#background').setAttribute('style', background)
 	}

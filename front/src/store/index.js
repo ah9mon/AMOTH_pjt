@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   state: {
     movieList: [],
     databaseList: [],
+    initialMovie: null,
     token: null,
     source: null,
     user_id: null,
@@ -18,9 +19,15 @@ const store = new Vuex.Store({
     darkmode: true
   },
   getters: {
-    getMovie: (state) => (id) => {
+    getFromMovieList: (state) => (id) => {
       return state.movieList.find((elem) => elem.id === id)
-    } 
+    },
+    getFromDatabaseList: (state) => (id) => {
+      return state.databaseList.find((elem) => elem.id === id)
+    },
+    getFromInitialMovie(state) {
+      return state.initialMovie
+    },
   },
   mutations: {
     UPDATE_MOVIE_LIST(state, payload) {
@@ -39,12 +46,19 @@ const store = new Vuex.Store({
           state.movieList.splice(0, 0, movie)
         }
       }
-      // state.movieList = state.movieList.concat(payload)
-      console.log('updated to local storage:', state.movieList)
     },
     UPDATE_DATABASE_LIST(state, payload) {
-      console.log(payload)
-      state.databaseList = payload.concat(state.databaseList)
+      for (const movie of payload) {
+        let isNew = true
+        for (const movieKey in state.databaseList) {
+          if (state.databaseList[movieKey].movie_id === movie.movie_id) {
+            isNew = false
+          }
+        }
+        if (isNew) {
+          state.databaseList.splice(0, 0, movie)
+        }
+      }
     },
     SAVE_TOKEN(state, payload) {
       state.token = payload
@@ -53,9 +67,10 @@ const store = new Vuex.Store({
       state.source = payload
     },
     DELETE_LOCAL_STORE(state) {
-      console.log('logout and delet local storage')
+      console.log('logout and cleared local storage')
       state.movieList = []
       state.databaseList = []
+      state.initialMovie = null
       state.token = null
       state.source = null
       state.user_id = null
@@ -67,11 +82,13 @@ const store = new Vuex.Store({
     },
     TOGGLE_DARK_MODE(state, payload) {
       state.darkmode = payload
+    },
+    UPDATE_INITIAL_MOVIE(state, payload) {
+      state.initialMovie = payload
     }
   },
   actions: {
     updateMovieList(context, payload) {
-      console.log('payload: ', payload)
       context.commit('UPDATE_MOVIE_LIST', payload)
     },
     updateDatabaseList(context, payload) {
@@ -91,6 +108,9 @@ const store = new Vuex.Store({
     },
     toggleDarkMode(context, payload) {
       context.commit('TOGGLE_DARK_MODE', payload)
+    },
+    updateInitialMovie(context, payload) {
+      context.commit('UPDATE_INITIAL_MOVIE', payload)
     }
   },
   modules: {

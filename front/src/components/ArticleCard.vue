@@ -1,32 +1,34 @@
 <template>
 	<v-card 
 		v-if="article"
-		class="article-card mt-3 pa-1 d-flex flex-no-wrap"
+		class="article-card mt-3 border-around"
 		@click="toArticleDetail"
 		tile
+		style="color:white"
 	>
-
-		<div class="writer">
-			<div>
-				<span class="text-h6">{{ article.movie_title }}</span>
-			</div>
-			<div>
-				<span class="text-subtitle-1">{{ article.music_title }}</span>
-			</div>
-			<!-- <v-img :src="url + movie.posterPath" contain class="posterImage"></v-img> -->
-			<!-- profilepicture??? -->
-		</div>
-		<div class='title'>
-			<span class="text-h4">{{ article.title }}</span>
-		</div>
-		<div class="like-button">
-			<LikeButton
-				:isLiked="isLiked"
-				:article="article"
-				:likedCount="likedCount"
-				@update="getArticle"
-			/>
-		</div>
+		<v-row>
+			<v-col class="writer" cols="12" sm="4">
+				<div>
+					<span class="text-h6">{{ article.movie_title }}</span>
+				</div>
+				<div>
+					<span class="text-subtitle-1">{{ article.music_title }}</span>
+				</div>
+			</v-col>
+			
+			<v-col class="title" cols="9" sm="6">
+				<span class="text-h4">{{ article.title }}</span>
+			</v-col>
+	
+			<v-col class="like-button" cols="3" sm="2">
+				<LikeButton
+					:isLiked="isLiked"
+					:article="article"
+					:likedCount="likedCount"
+					@update="getArticle"
+				/>
+			</v-col>
+		</v-row>
 	</v-card>
 </template>
 
@@ -55,9 +57,10 @@ export default {
 	},
 	methods: {
 		toArticleDetail() {
+			const temp = String(this.article.id)
 			this.$router.push({name: 'articleDetail', 
 				params:{
-					id: String(this.article.id)
+					id: temp
 			}})
 		},
 		getArticle() {
@@ -69,7 +72,6 @@ export default {
 				}
 			})
 				.then((res) => {
-					console.log(res.data)
 					this.likedCount = res.data.liked_count,
 					this.isLiked = res.data.liked
 				})
@@ -83,29 +85,22 @@ export default {
 
 <style>
 .article-card {
-	height: 7.8vh;
 	background-color: transparent !important;
 	backdrop-filter: blur(10px) !important;
 }
 .writer {
-	flex-basis: 32%;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	padding-left: 1vh;
-	border-right-style: solid;
 }
 .title {
-	flex-basis: 55%;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	padding-left: 1vh;
 }
-.like-button {
-	flex-basis: 10%;
-	display: flex;
-	justify-content: center;
+.border-around {
+	border-top: 1px solid;
+	border-color: rgba(120, 120, 120, 0.5) !important; 
+	margin-bottom: 21px;
 }
-
 </style>

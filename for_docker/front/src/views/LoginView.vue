@@ -74,8 +74,6 @@ export default {
 					window.navigator.geolocation.getCurrentPosition((pos) => {
 					this.latitude = pos.coords.latitude
 					this.longitude = pos.coords.longitude
-					console.log(this.latitude)
-					console.log(this.longitude)
 					this.getWeather()
 				})
 			} else {

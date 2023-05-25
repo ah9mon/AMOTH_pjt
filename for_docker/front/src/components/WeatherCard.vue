@@ -46,14 +46,11 @@ export default {
 				params:params
 			})
 				.then((res) => {
-					console.log(res.data.weather[0])
 					this.weather = res.data.weather[0].description
 					this.$emit('getWeather', this.weather)
 				})
 				.catch((err) => {
-					console.log('wsaefwae', this.latitude)
-					console.log('sdafads',this.longitude)
-					console.log(err)
+					console.log('Error at getWeather', err)
 				})
 		},
 	},

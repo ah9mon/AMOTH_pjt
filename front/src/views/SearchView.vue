@@ -1,5 +1,7 @@
 <template>
 	<v-container id="search">
+		<div class="mt-5" style='height: 100px;'>
+		</div>
 		<!-- side bar -->
 		<!-- <SideBar/> -->
 		<!-- weather -->
@@ -21,7 +23,6 @@
 						>
 							<v-text-field
 								hide-details
-								append-icon="mdi-magnify"
 								single-line
 								v-model="query"
 								@keyup.enter="sendQuery"
@@ -37,11 +38,11 @@
 							<v-btn
 								class="searchMenu"
 								:color="ask ? 'primary' : 'secondary'"
-								dark
 								v-bind="attrs"
 								v-on="on"
+								icon
 							>
-							<v-icon size="30">
+							<v-icon size="32">
 								mdi-magnify</v-icon>
 							</v-btn>
 						</template>
@@ -65,14 +66,14 @@
 		<!-- loading -->
 		<v-row
 			justify="center"
-			class="pt-5 mb-1"
+			class="pt-5"
 		>
 			<v-progress-circular
 				color="primary"
 				indeterminate
 				v-if="isAsking"
-				size="100"
-				width="8"
+				size="90"
+				width="7"
 			>
 			</v-progress-circular>
 			<h1>{{ GPTerror }}</h1>
@@ -155,15 +156,20 @@ export default {
 		},	
 		toggleGPT() {
 			this.ask = true
-			// this.sendQuery()
+			if (this.query != null) {
+				this.sendQuery()
+			}
 		},
 		toggleDB() {
 			this.ask = false
-			// this.sendQuery()
+			if (this.query != null) {
+				this.sendQuery()
+			}
 		},
 		sendQuery() {
 			if (this.isAsking) {
-				console.log('U R asking')
+				this.ask = !this.ask
+				alert('GPT is working. Please wait......')
 				return
 			}
 			this.isAsking = true
@@ -179,13 +185,14 @@ export default {
 		},
 		findDB() {
 			axios({
-				method: 'POST',
+				method: 'GET',
 				url: 'http://127.0.0.1:8001/api/tmdb/movies/search',
 				params: {
 					'q': this.query
 				}
 			})
 				.then((res) => {
+					console.log('found at DB:', res)
 					this.$store.dispatch('updateDatabaseList', res.data)
 					this.isAsking = false
 					this.scrollUp()
@@ -231,7 +238,7 @@ export default {
 		},
 		async askChatGPT() {
 			try {
-				console.log('ASK START:')
+				console.log('GPT START:')
 				const configuration = new Configuration({
 					apiKey: process.env.VUE_APP_GPT_KEY
 				})
@@ -249,14 +256,6 @@ export default {
 						},
 						{
 							role: "user",
-							// content: `And ${this.query}. Please recommend 10 movies perfect for weather like "${this.weather}" in JSON format. {
-							// 	"movies" : {
-							// 		"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
-							// 		"movie2":{"title" : "title of movie2", "release_data":"date", "reason": "reason for recommend"},
-							// 		...
-							// 		}
-							// 	}
-							// 	Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 							content: `And ${this.query}. Please recommend 10 movies perfect for weather like "${this.weather}" in JSON format. {
 								"movies" : {
 									"movie1":{"title" : "title of movie1", "release_data":"date","reason": "reason for recommend"},
@@ -264,7 +263,7 @@ export default {
 									...
 									}
 								}
-								Like this.`
+								Like this. And please send me the reason for the recommendation in Korean. But the movie title should be English.`
 						},
 					],
 					temperature: 0.62
@@ -291,14 +290,9 @@ export default {
 	font-size: large !important;
 	width: 100px !important;
 }
-.menu {
-	position: fixed;
-	bottom: 5%;
-	right: 16px;
-}
 .searchMenu {
 	position: absolute;
-	top: 24%;
-	right: 1vw;
+	top: 25%;
+	right: 2.5vw;
 }
 </style>

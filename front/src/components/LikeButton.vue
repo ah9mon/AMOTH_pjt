@@ -33,7 +33,6 @@ export default {
 	},
 	methods: {
 		likeArticle() {
-
 			axios({
 				method: 'POST',
 				url: `http://127.0.0.1:8002/api/community/articles/${this.article.id}/likes`,
