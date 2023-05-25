@@ -5,16 +5,21 @@
 			justify="center"
 		>
 			<v-col>
-				<ArticleCard
-					v-for="(article, index) in articleList.slice((page - 1) * 10, page * 10)"
+				<span
+					v-for="(article, index) in articleList"
 					:key="index"
-					:article="article"
-				/>
+				>
+					<ArticleCard
+						v-show="isInRange(index)"
+						:article="article"
+					/>
+				</span>
 				<!-- pagination! -->
 				<v-pagination
 					class="pagination mt-5"
 					v-model="page"
 					:length="pageLength"
+					@input="updatePage"
 				></v-pagination>
 			</v-col>
 		</v-row>
@@ -34,7 +39,7 @@ export default {
 	data() {
 		return {
 			articleList: null,
-			page: 1,
+			page: this.$store.state.page
 		}
 	},
 	computed: {
@@ -43,9 +48,18 @@ export default {
 				return 0
 			}
 			return Math.ceil(this.articleList.length / 10)
-		}
+		},
 	},
 	methods: {
+		isInRange(idx) {
+			if ((this.page - 1) * 10 <= idx && idx < this.page * 10) {
+				return true
+			}
+			return false
+		},
+		updatePage() {
+			this.$store.dispatch('updatePage', this.page)
+		},
 		getArticleList() {
 			axios({
 				method: 'GET',
@@ -68,7 +82,7 @@ export default {
 	},
 	created() {
 		this.getArticleList()
-	}
+	},
 }
 </script>
 
