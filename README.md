@@ -4,9 +4,13 @@
 
 <span style="color:gray">AMOTH는 영화 사운드트랙 추천&커뮤니티 서비스입니다</span>
 
+
+
 AMOTH의 뜻은 A man of the hour로
 
 이 자리(파티, 모임 등)의 주인공, 화제의 인물, 시대를 풍미한 인물 등의 의미로 많이 사용됩니다
+
+
 
 우리는 음악을 들을 때 평범한 것들이 특별하게 되거나
 
@@ -18,10 +22,10 @@ AMOTH의 뜻은 A man of the hour로
 
 ## 👨🏻‍💻Contributors
 
-| 김동훈                                                                                         | 엄한결                                                                                                |
-|:-------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|
+| 김동훈                                                                                         | 엄한결                                                                                                                             |
+|:-------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------:|
 | [![](README_assets/2e2889645591e47e3e3c520252dcc740b624a344.png)](https://github.com/hun23) | [<img title="" src="README_assets/f3da24db7a9dde1e72166fa6d9ec5b24fd48360d.png" alt="" width="818">](https://github.com/ah9mon) |
-| **프론트엔드**                                                                                   | **백엔드**                                                                                            |
+| **프론트엔드**                                                                                   | **백엔드**                                                                                                                         |
 
 <span style="color:gray">커밋 컨벤션 rule : AngularJS Commit Message Convention</span>
 
@@ -39,7 +43,7 @@ AMOTH의 뜻은 A man of the hour로
   - Back Server
   - Front Server
 
-## 🏙️ 배경 `<span style="color:gray">`Problem
+## 🏙️ 배경 <span style="color:gray">Problem</span>
 
 1. [영화음악이 영상에 미치는 효과]([영화음악이 영상에 미치는 효과 -영화 「인생은 아름다워(Life is beautiful)」를 중심으로-](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002199626))
    
@@ -69,11 +73,11 @@ AMOTH의 뜻은 A man of the hour로
 > - 사운드 트랙을 들으며 영화의 주인공이 된 것 같은 경험을 제공
 > - 사운드 트랙을 들음으로써 보고 싶어지는 영화를 찾게되는 경험을 제공
 
-### 서비스 정보 구조 `<span style="color:gray">`Information Architecture
+### 서비스 정보 구조 <span style="color:gray">Information Architecture</span>
 
 ![](README_assets/2023-05-25-19-40-30-image.png)
 
-### 시스템 아키텍처 `<span style="color:gray">`System Architecture
+### 시스템 아키텍처 <span style="color:gray">System Architecture</span>
 
 ![](README_assets/2023-05-25-20-20-50-image.png)
 
@@ -177,7 +181,7 @@ AMOTH의 뜻은 A man of the hour로
    
    - 그렇게 생성된 Container들을 Docker-compose를 이용해 여러개의 Container로 이루어진 서비스를 구축 및 실행 자동화하기
 
-#### ERD `<span style="color:gray">`Entity Relationship Diagram
+#### ERD <span style="color:gray">Entity Relationship Diagram</span>
 
 ![](README_assets/2023-05-25-21-54-01-image.png)
 
@@ -206,7 +210,7 @@ AMOTH의 뜻은 A man of the hour로
 
 <img title="" src="README_assets/2023-05-25-22-16-15-image.png" alt="" width="431">
 
-#### 주요 기능 프로세스 `<span style="color:gray">`Process
+#### 주요 기능 프로세스 <span style="color:gray">Process</span>
 
 ##### 1. Authentication, Authorization
 
