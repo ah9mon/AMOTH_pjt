@@ -18,13 +18,23 @@ AMOTH의 뜻은 A man of the hour로
 
 ![](README_assets/2023-05-25-20-28-26-image.png)
 
+<span style="color:gray">커밋 컨벤션 rule : AngularJS Commit Message Convention</span>
+
 ## 🔗 목차
 
-- [배경](##🏙️ 배경 Problem)
+- 서비스 배경
 
-- [서비스 소개](##🎧 서비스 소개)
+- 서비스 소개
+  
+  - Information Architecture
+  
+  - System Architecture
 
-- [개발 핵심 기능](##⚙️ 개발 핵심 기능)
+- 개발 핵심 기능
+  
+  - Back Server
+  
+  - Front Server
 
 ## 🏙️ 배경 <span style="color:gray">Problem</span>
 
