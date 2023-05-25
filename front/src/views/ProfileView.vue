@@ -18,7 +18,6 @@
 					<h1 v-else>NO PROFILE PICTURE</h1>
 				</v-row>
 				<v-row
-					class="bottom-row"
 					style="height: 30%"
 				>
 						<v-list dense
@@ -158,9 +157,5 @@ export default {
 </script>
 
 <style>
-.bottom-row {
-	border-bottom: 2px solid;
-	border-color: rgba(120, 120, 120, 0.5) !important; 
-}
 
 </style>
