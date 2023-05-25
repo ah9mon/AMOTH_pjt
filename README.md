@@ -45,7 +45,7 @@ AMOTH의 뜻은 A man of the hour로
 
 ## 🏙️ 배경 <span style="color:gray">Problem</span>
 
-1. [영화음악이 영상에 미치는 효과]([영화음악이 영상에 미치는 효과 -영화 「인생은 아름다워(Life is beautiful)」를 중심으로-](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002199626))
+1. [영화음악이 영상에 미치는 효과](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002199626)
    
    - 영화음악은 영상으로는 묘사하지 못하는 영화 이면에 있는 본질을 표현할 수 있음
 
