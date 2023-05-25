@@ -16,7 +16,8 @@ const store = new Vuex.Store({
     source: null,
     user_id: null,
     profile_picture: null,
-    darkmode: true
+    darkmode: true,
+    page: 1
   },
   getters: {
     getFromMovieList: (state) => (id) => {
@@ -85,6 +86,9 @@ const store = new Vuex.Store({
     },
     UPDATE_INITIAL_MOVIE(state, payload) {
       state.initialMovie = payload
+    },
+    UPDATE_PAGE(state, payload) {
+      state.page = payload
     }
   },
   actions: {
@@ -111,6 +115,9 @@ const store = new Vuex.Store({
     },
     updateInitialMovie(context, payload) {
       context.commit('UPDATE_INITIAL_MOVIE', payload)
+    },
+    updatePage(context, payload) {
+      context.commit('UPDATE_PAGE', payload)
     }
   },
   modules: {

@@ -22,9 +22,6 @@ export default {
 			youtubePlaylistURL: 'https://www.youtube.com/watch?v=&list=',
 		}
 	},
-	created(){
-		console.log(this.youtubeInfo)
-	},
 	computed: {
 		videoId() {
 			if (this.youtubeInfo != null) {
