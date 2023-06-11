@@ -308,10 +308,10 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 
 ### 🤔 향후 진행 방향
 
-- Kubernetes를 이용해 이미지들을 하나의 Pod으로
-- 이 다수의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
-- Kubernetes를 이용해 Docker로 생성한 이미지(컨테이너)들 CI/CD 구축
+- github action으로 CI/CD 자동화 해보기 
+- 백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
 - Clean code 작성하기
+- (추가) Spring으로 서비스들 작성해보기 
 
 ### Front Server
 
