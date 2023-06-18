@@ -309,7 +309,9 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 ### 🤔 향후 진행 방향
 
 - docker 이미지 docker hub에 올리기 
+  - https://velog.io/@eoveol/docker-docker-hub%EC%97%90-image-%EC%98%AC%EB%A6%AC%EA%B8%B0
 - docker compose에서 이미지를 docker hub에서 가져오도록 하기 
+  - https://velog.io/@eoveol/Docker-Docker-compose%EC%8B%9C-docker-hub%EC%97%90-%EC%9E%88%EB%8A%94-image-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B2%8C-%ED%95%98%EA%B8%B0
 - github action으로 CI/CD 자동화 해보기 
 - 백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
 - Clean code 작성하기

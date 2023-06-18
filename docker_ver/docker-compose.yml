@@ -2,64 +2,54 @@ version: '3'
 
 services:
   back-auth:
-    build:
-      context: ./final-pjt-back/auth
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_auth:1.0
     ports:
       - 8000:8000
     networks:
       - my-network
-    image: amoth_auth
 
   back-tmdb-api:
-    build:
-      context: ./final-pjt-back/tmdb_api
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_tmdb_api:1.0
     ports:
       - 8001:8000
     networks:
       - my-network
-    image: amoth_tmdb_api
 
   back-community:
-    build:
-      context: ./final-pjt-back/community
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_community:1.0
     ports:
       - 8002:8000
     networks:
       - my-network
-    image: amoth_community
 
   back-youtube-api:
-    build:
-      context: ./final-pjt-back/youtube-api
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_youtube_api:1.0
     ports:
       - 8003:8080
     networks:
       - my-network
-    image: amoth_youtube_api
     
   back-translate:
-    build:
-      context: ./final-pjt-back/translate
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_translate:1.0
     ports:
       - 8004:8000
     networks:
       - my-network
-    image: amoth_translate
 
   front:
-    build:
-      context: ./final-pjt-front
-      dockerfile: dockerfile
+    image: hangyeoleom/amoth_frontend:1.0
     ports:
       - 8080:8080
     networks:
       - my-network
-    image: amoth_front
+
+    depends_on:
+      - back-auth
+      - back-community
+      - back-tmdb-api
+      - back-youtube-api
+      - back-translate
+
 
 networks:
   my-network:
