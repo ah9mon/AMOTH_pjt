@@ -226,3 +226,8 @@ def NaverAuth(request):
     else:
         login_url = "http://localhost:8080/login"
         return redirect(login_url)
+    
+
+    '''
+    test
+    '''
