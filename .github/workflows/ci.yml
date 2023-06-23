@@ -1,12 +1,9 @@
 name: CI MSA build and push
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
+  push:
+    branches-ignore:
       - main
-    run : echo "Action"
 
 jobs:
   build_and_push:
@@ -40,7 +37,7 @@ jobs:
             compose_file="docker_ver/docker-compose.yml"
             # Docker Compose 파일의 경로
 
-            if [ -n "$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} -- $service_directory)" ]; then
+            if [[ "${{ github.ref }}" =~ (fix|feature)/${service} ]]; then
 
               echo "${service} 변경사항 있음"
               # 해당 서비스 디렉토리의 변경 사항을 감지하여 빌드 및 푸시
