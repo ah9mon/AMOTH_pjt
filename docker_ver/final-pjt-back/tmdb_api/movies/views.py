@@ -32,25 +32,26 @@ def get_movie_in_tmdbapi(movie_title, release_data):
     '''
     TMDB API를 이용해서 영화 데이터 가져오는 함수  
     '''
+
     query = movie_title
     language = "en-US"
     primary_release_year = release_data[:4]
-    url = f'{BASE_url}?query={query}&language={language}&primary_release_year={primary_release_year}&api_key={TMDB_api_key}&page=1'
+    url = f"{BASE_url}?query={query}&language={language}&primary_release_year={primary_release_year}&api_key={TMDB_api_key}&page=1"
     headers = {
         "accept": "application/json",
-        "Authorization": f'Bearer {TMDB_api_key}'
+        "Authorization": f"Bearer {TMDB_api_key}"
     }
     res = requests.get(url, headers=headers)
-    movie_data = res.json().get('results') # api로 요청한 영화 데이터
+    movie_data = res.json().get("results") # api로 요청한 영화 데이터
 
     if movie_data:
         data = {
-            "movie_id" : movie_data[0].get('id'),
-            "title" : movie_data[0].get('title'),
-            "overview" : movie_data[0].get('overview'),
-            "release_date" : movie_data[0].get('release_date'),
-            "poster_path" : movie_data[0].get('poster_path'),
-            "backdrop_path" : movie_data[0].get('backdrop_path')
+            "movie_id" : movie_data[0].get("id"),
+            "title" : movie_data[0].get("title"),
+            "overview" : movie_data[0].get("overview"),
+            "release_date" : movie_data[0].get("release_date"),
+            "poster_path" : movie_data[0].get("poster_path"),
+            "backdrop_path" : movie_data[0].get("backdrop_path")
         }
 
         return data
@@ -60,31 +61,31 @@ def get_movie_in_tmdbapi(movie_title, release_data):
 def detect_lang(q):
     papago_detect_url = f"http://localhost:8004/api/papago/detect?q={q}" # 검색어만 prams넣고 보내기
     detected = requests.get(papago_detect_url)
-    return detected.json().get('langCode')
+    return detected.json().get("langCode")
 
 def translate_q(q,lang):
     papago_translate_url = f"http://localhost:8004/api/papago/translate?q={q}&lang={lang}"  # 검색어와 언어감지 결과 같이 보내기 
     translated = requests.get(papago_translate_url)
-    return translated.json().get('message').get('result').get('translatedText')
+    return translated.json().get("message").get("result").get("translatedText")
 
 ###################################
 ###################################
 ###################################
 
 # tmdb에서 영화리스트 데이터 가져오기 
-@api_view(['POST']) # gpt, 내가 본 영화등록 : POST / CRUD의 사운드 트랙 게시글은 GET
+@api_view(["POST"]) # gpt, 내가 본 영화등록 : POST / CRUD의 사운드 트랙 게시글은 GET
 def movies_data(request):
-    '''
+    '''    
     front에서 줘야할 데이터 
     { 
     	movies :  {
     		movie1 : {
-    			Title : 'title', 
-    			Reason for Recommendation: 'reason'
+    			Title : "title", 
+    			Reason for Recommendation: "reason"
     		}, 
     		movie2 : {
-    			Title2:'title', 
-    			Reason:'reason'
+    			Title2:"title", 
+    			Reason:"reason"
     		},
     	    ...
         }
@@ -99,11 +100,11 @@ def movies_data(request):
 
         if movies:
             for key, value in movies.items():
-                title = value.get('title')
+                title = value.get("title")
                 
-                release_date = value.get('release_date')
+                release_date = value.get("release_date")
                 if not release_date:
-                    release_date = value.get('release_data')
+                    release_date = value.get("release_data")
                 
                 movie = get_movie_in_tmdbapi(title,release_date) # TMDB에서 영화 데이터 가져오기 
 
@@ -111,7 +112,7 @@ def movies_data(request):
                 if not movie:
                     continue
                 
-                movie_id = movie.get('movie_id')
+                movie_id = movie.get("movie_id")
 
                 try:
                     existing_movie = Movie.objects.get(movie_id = movie_id)
@@ -147,9 +148,9 @@ def movies_data(request):
 
 
 # 영화 검색 1개 기능 (DB에 있는 거로 없으면)
-@api_view(['GET'])
+@api_view(["GET"])
 def get_movie_in_db(request):
-    q = request.GET.get('q') # 검색어가 params로 넘어옴
+    q = request.GET.get("q") # 검색어가 params로 넘어옴
     lang = detect_lang(q) # 검색어 언어감지
     print(lang)
     if lang != "en":  
@@ -164,7 +165,7 @@ def get_movie_in_db(request):
     movies = Movie.objects.all()
     for movie in movies:
         for text in translated_text_list :
-            if text in movie.title and text != 'The':
+            if text in movie.title and text != "The":
                 find_movies.append(movie)
                 continue
     find_movies = sorted(find_movies, key=lambda x: -1 * find_movies.count(x))
