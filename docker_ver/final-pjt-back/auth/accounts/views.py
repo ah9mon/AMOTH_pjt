@@ -233,4 +233,8 @@ def NaverAuth(request):
     test
     test
     test
+    test
+    test
+    test
+    test
     '''
