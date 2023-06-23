@@ -61,7 +61,7 @@ jobs:
           git config --global user.email eomgyeol97@gmail.com
           git add docker_ver/docker-compose.yml
           git commit -m "fix : Update Docker Compose"
-          git push
+          git push origin ${{ github.ref }}
         # 수정된 Docker Compose 파일을 커밋하고 푸시
 
       - name: Deploy
