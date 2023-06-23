@@ -1,0 +1,70 @@
+name: CI MSA build and push
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        # GitHub 저장소에서 코드를 체크아웃
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        # DockerHub에 로그인하는 단계
+
+      - name: Build and Push Docker Images
+        run: |
+          DOCKER_TAG=${{ github.run_number }}
+          # GitHub Actions에서 생성된 고유한 빌드 번호를 가져오기
+
+          services=("auth" "community" "tmdb_api" "translate" "youtube-api")
+          # 빌드 및 푸시할 서비스의 목록입니다.
+
+          for service in "${services[@]}"; do
+            service_directory="docker_ver/final-pjt-back/${service}"
+            # 서비스의 디렉토리 경로
+
+            compose_file="docker_ver/docker-compose.yml"
+            # Docker Compose 파일의 경로
+
+            if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- $service_directory)" ]; then
+              # 해당 서비스 디렉토리의 변경 사항을 감지하여 빌드 및 푸시
+
+              docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG} $service_directory
+              docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG}
+              # Docker 이미지를 빌드하고 DockerHub에 푸시
+
+              image_placeholder="amoth_${service}:placeholder"
+              image_replacement="${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG}"
+              # 이미지 이름과 태그로 치환할 문자열
+
+              sed -i "s|${image_placeholder}|${image_replacement}|g" "${compose_file}"
+              # Docker Compose 파일을 수정하여 이미지 이름과 태그를 치환
+            fi
+          done
+
+      - name: Commit and Push Docker Compose changes
+        run: |
+          git config --global user.name ah9mon
+          git config --global user.email eomgyeol97@gmail.com
+          git add docker_ver/docker-compose.yml
+          git commit -m "fix : Update Docker Compose"
+          git push origin fix/dockercompose
+        # 수정된 Docker Compose 파일을 커밋하고 푸시
+
+      - name: Deploy
+        run: |
+          echo "Deploy"
+        # 배포 작업을 실행하는 단계
+        # 현재 코드에서는 "Deploy"라는 메시지를 출력
