@@ -26,6 +26,7 @@ jobs:
 
       - name: Build and Push Docker Images
         run: |
+          echo "TEST!!!!"
           DOCKER_TAG=${{ github.run_number }}
           # GitHub Actions에서 생성된 고유한 빌드 번호를 가져오기
 
@@ -39,7 +40,7 @@ jobs:
             compose_file="docker_ver/docker-compose.yml"
             # Docker Compose 파일의 경로
 
-            if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- $service_directory)" ]; then
+            if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- $service_directory)" ]; then
               echo "${service} 변경사항 있음"
               # 해당 서비스 디렉토리의 변경 사항을 감지하여 빌드 및 푸시
               
