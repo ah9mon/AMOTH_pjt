@@ -6,6 +6,7 @@ on:
       - closed
     branches:
       - main
+    run : echo "Action"
 
 jobs:
   build_and_push:
@@ -39,8 +40,9 @@ jobs:
             # Docker Compose 파일의 경로
 
             if [ -n "$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} -- $service_directory)" ]; then
+              echo "${service} 변경사항 있음"
               # 해당 서비스 디렉토리의 변경 사항을 감지하여 빌드 및 푸시
-
+              
               docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG} $service_directory
               docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG}
               # Docker 이미지를 빌드하고 DockerHub에 푸시
