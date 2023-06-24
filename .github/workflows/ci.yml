@@ -39,9 +39,17 @@ jobs:
               echo "${service} 변경사항 있음"
               # 해당 서비스 디렉토리의 변경 사항을 감지하여 빌드 및 푸시
               
+              # 빌드 
               docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG} $service_directory
+              
+              # latest 태그 추가
+              # 이미지에 다른 태그 추가
+              docker tag ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG} ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:latest
+              
+              # docker hub에 push
               docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG}
-              # Docker 이미지를 빌드하고 DockerHub에 푸시
+              docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:latest
+
             fi
           done
 
