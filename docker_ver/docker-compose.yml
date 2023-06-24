@@ -2,42 +2,42 @@ version: '3'
 
 services:
   back-auth:
-    image: hangyeoleom/amoth_auth:1.0
+    image: hangyeoleom/amoth_auth:latest
     ports:
       - 8000:8000
     networks:
       - my-network
 
   back-tmdb-api:
-    image: hangyeoleom/amoth_tmdb_api:1.0
+    image: hangyeoleom/amoth_tmdb_api:latest
     ports:
       - 8001:8000
     networks:
       - my-network
 
   back-community:
-    image: hangyeoleom/amoth_community:1.0
+    image: hangyeoleom/amoth_community:latest
     ports:
       - 8002:8000
     networks:
       - my-network
 
   back-youtube-api:
-    image: hangyeoleom/amoth_youtube-api:1.0
+    image: hangyeoleom/amoth_youtube-api:latest
     ports:
       - 8003:8080
     networks:
       - my-network
     
   back-translate:
-    image: hangyeoleom/amoth_translate:1.0
+    image: hangyeoleom/amoth_translate:latest
     ports:
       - 8004:8000
     networks:
       - my-network
 
   front:
-    image: hangyeoleom/amoth_frontend:1.0
+    image: hangyeoleom/amoth_frontend:latest
     ports:
       - 8080:8080
     networks:
