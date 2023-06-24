@@ -23,7 +23,7 @@ services:
       - my-network
 
   back-youtube-api:
-    image: hangyeoleom/amoth_youtube-api:latest
+    image: hangyeoleom/amoth_youtube_api:latest
     ports:
       - 8003:8080
     networks:
