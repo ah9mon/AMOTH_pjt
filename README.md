@@ -270,7 +270,7 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     
     코드로 수정할 것이다.
 
-- 코드의 재활용
+- 코드 리팩토링
   
   - 인증과 인가 부분을 Oauth2.0을 사용하기로 결심했을 때
     
@@ -290,7 +290,7 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     
     기능 추가를 진행했다.
     
-    이 부분을  같은 함수를 재사용 하는 코드로 수정할 것이다.
+    이 부분을 중복코드를 제거하고 리팩토링할 것이다.
 
 - MSA 답지 못하고 마이크로라고 부르기 너무 애매한 서비스들
   
@@ -315,7 +315,7 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 - github action으로 CI/CD 자동화 해보기
   - CI : https://velog.io/@eoveol/CI-Github-Action%EC%9C%BC%EB%A1%9C-Docker-image-upload-%EC%9E%90%EB%8F%99%ED%99%94%ED%95%98%EA%B8%B0
 - 백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
-- Clean code 작성하기
+- Clean code 작성하기 (코드 리팩토링)
 - (추가) Spring으로 서비스들 작성해보기 
 
 ### Front Server
