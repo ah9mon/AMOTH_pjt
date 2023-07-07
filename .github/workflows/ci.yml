@@ -46,8 +46,7 @@ jobs:
               docker tag ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG} ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:latest
               
               # docker hub에 push
-              docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:${DOCKER_TAG}
-              docker push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service}:latest
+              docker image push ${{ secrets.DOCKERHUB_USERNAME }}/amoth_${service} --all-tags
 
             fi
           done
