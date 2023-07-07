@@ -316,6 +316,10 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
   - CI : https://velog.io/@eoveol/CI-Github-Action%EC%9C%BC%EB%A1%9C-Docker-image-upload-%EC%9E%90%EB%8F%99%ED%99%94%ED%95%98%EA%B8%B0
 - 백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
 - Clean code 작성하기 (코드 리팩토링)
+  - ~~auth~~
+  - ~~community~~
+  - tmdb api
+  - translate api
 - (추가) Spring으로 서비스들 작성해보기 
 
 ### Front Server
