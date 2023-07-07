@@ -11,4 +11,3 @@ urlpatterns = [
     path("naver/callback", views.process_naver_callback, name="NaverCallBack"),
     path("naver/auth", views.process_naver_auth, name="NaverAuth"),
 ]
-
