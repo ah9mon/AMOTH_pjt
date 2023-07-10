@@ -318,9 +318,8 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 - Clean code 작성하기 (코드 리팩토링)
   - ~~auth~~
   - ~~community~~
-  - tmdb api
-  - translate api
-- (추가) Spring으로 서비스들 작성해보기 
+  - ~~tmdb api~~
+  - ~~translate api~~ 
 
 ### Front Server
 
