@@ -108,22 +108,9 @@ AMOTH의 뜻은 A man of the hour로
 2. API
    
    - 최대한 많은 API 사용해보며 API사용에 익숙해지기
+   - OAuth2 소셜로그인을 사용해 인증과정을 구현해보기
 
 3. MicroService Architecture (MSA)
-   
-   > **느슨하게 결합된 서비스의 모임으로 구조화하는 *서비스 지향 아키텍처(SOA) 스타일의 일종인 소프트웨어 개발 기법**
-   > 
-   > - 독립적으로 배포 가능한 각각의 기능을 수행하는 서비스로 구성
-   > - 각각이 하나의 서비스 기능만 수행
-   > - 어플리케이션을 다양한 언어와 기술로 구축 가능
-   > 
-   > 따라서,
-   > 
-   > ****기능별 기술 스택을 다르게 가져갈 수 있음****
-   > 
-   > ****각각 개별의 서비스 개발을 빠르게하며 유지보수가 쉬움****
-   > 
-   > ****서비스별로 독립적 배포 및 다른 서비스에서 재사용 가능****
    
    - 소규모의 프로젝트에서는 **MSA**보다는
      
@@ -138,42 +125,6 @@ AMOTH의 뜻은 A man of the hour로
   
   하나의 기능은 꼭 Spring boot로 구현하기
 4. Docker
-   
-   > 기존 웹개발 과정
-   > 
-   > 운영체제 -> 파이썬 설치 -> VSC설치 -> 프레임워크(Django 등) 설치 ->
-   > 
-   > 각종 라이브러리 설치 ...
-   > 
-   > 만약 이걸 다른 환경에서 마저 개발하고 싶을 땐? (각각의 환경이 모두 다를 때)
-   > 
-   > 깃허브 등의 다양한 방법을 통해 코드 옮기기 -> 프로그래밍 언어 설치 ->
-   > 
-   > 프레임워크 설치 -> 라이브러리 설치 ... 반복
-   > 
-   > 이렇게 개발 환경이 다르기 때문에 발생하는 불편함을 해소하기 위해
-   > 
-   > 가상머신(Virtual Machine) 존재
-   > 
-   > ![](README_assets/2023-05-25-21-23-51-image.png)
-   > 
-   > 가상머신으로 하면 되는데 왜 도커가 핫할까?
-   > 
-   > 가상머신 -> 컴퓨터안에 가상의 컴퓨터 환경을 만듦 -> OS를 또 설치
-   > 
-   > ->  속도 저하 및 많은 리소스 사용
-   > 
-   > ![](README_assets/2023-05-25-21-32-50-image.png)
-   > 
-   > 반면, 도커는 격리된 공간(Container)에 프로그램을 실행시키는데 필요한
-   > 
-   > 라이브러리, 실행파일만 담아놓고 사용!!
-   > 
-   > -> 비교적 리소스 감소, 속도 향상
-   > 
-   > \+ 도커는 이러한 컨테이너 생성 및 관리가 매우 용이 (배포)
-   > 
-   > 즉, 가벼운 모듈식(경량화) 가상머신
    
    - 추후 해당 프로젝트를 개발, 관리, 배포를 편하게 하기위해 도커를 사용해
      
@@ -264,11 +215,11 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     
     사실 전혀 할 줄 모른다.
     
-    **무조건** 객체지향 프로그래밍, 클린코드를 공부하고
+    객체지향 프로그래밍, 클린코드를 공부하고
     
     Class를 통한 추상화, 상속, 다형성, 캡슐화 4가지 특징을 살리는
     
-    코드로 수정할 것이다.
+    코드가 무엇인지 공부할 것이다.
 
 - 코드 리팩토링
   
@@ -290,7 +241,7 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     
     기능 추가를 진행했다.
     
-    이 부분을 중복코드를 제거하고 리팩토링할 것이다.
+    중복코드를 제거하고 리팩토링해야 하는 부분이 많을 것이기 때문에 수정할 것이다.
 
 - MSA 답지 못하고 마이크로라고 부르기 너무 애매한 서비스들
   
@@ -308,13 +259,17 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 
 ### 🤔 향후 진행 방향
 
-- docker 이미지 docker hub에 올리기 
+- ~~docker 이미지 docker hub에 올리기~~
   - https://velog.io/@eoveol/docker-docker-hub%EC%97%90-image-%EC%98%AC%EB%A6%AC%EA%B8%B0
-- docker compose에서 이미지를 docker hub에서 가져오도록 하기 
+- ~~docker compose에서 이미지를 docker hub에서 가져오도록 하기~~ 
   - https://velog.io/@eoveol/Docker-Docker-compose%EC%8B%9C-docker-hub%EC%97%90-%EC%9E%88%EB%8A%94-image-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B2%8C-%ED%95%98%EA%B8%B0
-- github action으로 CI/CD 자동화 해보기
+- ~~github action으로 CI/CD 자동화 해보기~~
   - CI : https://velog.io/@eoveol/CI-Github-Action%EC%9C%BC%EB%A1%9C-Docker-image-upload-%EC%9E%90%EB%8F%99%ED%99%94%ED%95%98%EA%B8%B0
-- 백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기
+  - CD : https://github.com/AnywayClear/mokumoku-backend 
+    - 위의 프로젝트에서 구현 성공
+- ~~백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기~~
+  - https://github.com/AnywayClear/mokumoku-backend
+  - 위의 프로젝트에서 구현 성공
 - Clean code 작성하기 (코드 리팩토링)
   - ~~auth~~
   - ~~community~~
