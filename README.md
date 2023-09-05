@@ -254,8 +254,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
     결국 영화 데이터를 저장하고 처리하는 Movie 서비스가 되어 버렸고
     
     Community도 게시글, 댓글, 좋아요 기능들이 한번에 들어있는 마이크로라부르기 너무나 힘든 서비스였다
-    
-    (그래도 youtube, papago, Oauth2(유저데이터 저장 제외) api는 정말 api요청만 처리하고 응답하는 서비스라 마음에 듬 )
 
 ### 🤔 향후 진행 방향
 
@@ -270,11 +268,6 @@ TMDB API서비스가 Papago API 서비스로 Text를 보내어 어떤 언어인�
 - ~~백엔드의 마이크로 서비스들을 하나의 AWS EC2로 배포해보기~~
   - https://github.com/AnywayClear/mokumoku-backend
   - 위의 프로젝트에서 구현 성공
-- Clean code 작성하기 (코드 리팩토링)
-  - ~~auth~~
-  - ~~community~~
-  - ~~tmdb api~~
-  - ~~translate api~~ 
 
 ### Front Server
 
