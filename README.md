@@ -1,25 +1,3 @@
-# [AMOTH] 영화 사운드트랙 추천&커뮤니티 서비스 MSA로 구현하기
-
-<img title="" src="README_assets/2023-05-25-14-53-55-image.png" alt="" width="747">
-
-<span style="color:gray">AMOTH는 영화 사운드트랙 추천&커뮤니티 서비스입니다</span>
-
-
-
-AMOTH의 뜻은 A man of the hour로
-
-이 자리(파티, 모임 등)의 주인공, 화제의 인물, 시대를 풍미한 인물 등의 의미로 많이 사용됩니다
-
-
-
-우리는 음악을 들을 때 평범한 것들이 특별하게 되거나
-
-마치 내가 영화 주인공이 된 것 같은 느낌을 받을 때가 있습니다
-
-서비스의 이름처럼 이 서비스를 이용하는 사용자가
-
-영화의 사운드트랙을 들으며 잠시라도 영화 주인공처럼 특별한 사람이 되기를 바랍니다
-
 ## 👨🏻‍💻Contributors
 
 | 김동훈                                                                                         | 엄한결                                                                                                                             |
@@ -31,47 +9,12 @@ AMOTH의 뜻은 A man of the hour로
 
 ## 🔗 목차
 
-- 서비스 배경
-
-- 서비스 소개
-  
-  - Information Architecture
-  - System Architecture
+- Information Architecture
+- System Architecture
 
 - 개발 핵심 기능
-  
   - Back Server
   - Front Server
-
-## 🏙️ 배경 <span style="color:gray">Problem</span>
-
-1. [영화음악이 영상에 미치는 효과](https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002199626)
-   
-   - 영화음악은 영상으로는 묘사하지 못하는 영화 이면에 있는 본질을 표현할 수 있음
-
-2. 영화의 사운드 트랙을 들으면 한편의 영화를 보는 것 같은 효과를 줌
-
-3. 날씨와 기분과 맞아떨어지는 음악을 들을 때 마치 내가 주인공이 된듯한 경험이 있음
-
-> 사용자의 위치의 날씨와 어울리는 영화와 사운드 트랙을 추천하고
-> 
-> 영화의 사운드 트랙을 쉽게 제공함으로써
-> 
-> - 사용자가 좋아하는 영화에 담긴 의미들을 알 수 있는 경험을 제공
-> - 사운드 트랙을 들으며 영화를 본 것 같은 경험을 제공
-> - 사운드 트랙을 들으며 영화의 주인공이 된 것 같은 경험을 제공
-> - 사운드 트랙을 들음으로써 보고 싶어지는 영화를 찾게되는 경험을 제공
-
-## 🎧 서비스 소개
-
-> 사용자의 위치의 날씨와 어울리는 영화와 사운드 트랙을 추천하고
-> 
-> 영화의 사운드 트랙을 쉽게 제공함으로써
-> 
-> - 사용자가 좋아하는 영화에 담긴 의미들을 알 수 있는 경험을 제공
-> - 사운드 트랙을 들으며 영화를 본 것 같은 경험을 제공
-> - 사운드 트랙을 들으며 영화의 주인공이 된 것 같은 경험을 제공
-> - 사운드 트랙을 들음으로써 보고 싶어지는 영화를 찾게되는 경험을 제공
 
 ### 서비스 정보 구조 <span style="color:gray">Information Architecture</span>
 
